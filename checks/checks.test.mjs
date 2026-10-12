@@ -87,3 +87,20 @@ test("the theme switch sets the theme, keeps it for the next visit, and Auto fol
     await server.close();
   }
 });
+
+test("each sentence of the claims canary is reported on its own", async () => {
+  const html = readFileSync(join(canaries, "claim-sentences.html"), "utf8");
+  const sentences = [...html.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((m) => m[1].replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
+  assert.ok(sentences.length >= 20, `found ${sentences.length} sentences`);
+  const server = await serve();
+  try {
+    const problems = await check(server.url, ["/canaries/claim-sentences.html"], { widths: [1280], themes: ["light"] });
+    const details = problems.filter((p) => p.kind === "claim").map((p) => p.detail.replace(/\s+/g, " "));
+    const read = (s) => s.replace(/\s+/g, "");
+    for (const sentence of sentences) {
+      assert.ok(details.some((d) => read(d).includes(read(sentence).slice(0, 30))), `not reported: ${sentence}`);
+    }
+  } finally {
+    await server.close();
+  }
+});

@@ -16,7 +16,7 @@
   const CLAIM = new RegExp(
     [
       "\\b(?<!\\b(?:rather|other) )than\\b",
-      "\\b(twice|thrice|half|double|triple|\\w+ times|\\d+(\\.\\d+)?x) (as \\w+ as|the \\w+)\\b",
+      "(\\b(twice|thrice|half|double|triple|\\w+ times)|\\b\\d+(\\.\\d+)? ?[x×]) (as|the|more|less|fewer)\\b",
       "\\b(better|best|faster|fastest|quicker|quickest|superior|leading|unmatched|unrivall?ed|unbeaten|second to none)\\b",
       "\\b(closest|tightest|smallest|lowest|highest|largest|greatest|finest|strongest|easiest|simplest|cheapest|lightest|truest)\\b",
       "\\b(outperforms?|outperformed|outdoes|beats?|surpass(es)?|exceeds?|trumps?)\\b",
