@@ -5,12 +5,16 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Weekly, so a release published elsewhere that the page doesn't list yet fails the link check.
+  schedule:
+    - cron: "17 12 * * 1"
 
 permissions:
   contents: read
 
 jobs:
   page:
+    if: github.event_name != 'schedule'
     # The page laid out at every width from 320 to 1,920 px in each theme, with nothing clipped,
     # and the checks' own tests, on each system a reader might use.
     name: page (${{ matrix.os }})
