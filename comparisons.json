@@ -1,0 +1,7 @@
+[
+  {
+    "url": "https://hpr.fusionspace.co/simulator-compared.html",
+    "what": "FusionSpace HPR · Sim against OpenRocket, RocketPy and RASAero II, capability by capability, each cell read from the tool's own documentation with its page and date",
+    "committed": "nrdptel/fusionspace-eridanus: validation/features/simulator.toml, drawn into docs/simulator-compared.md"
+  }
+]

@@ -1,0 +1,63 @@
+/* SPDX-License-Identifier: MIT OR Apache-2.0 */
+/* fusionspace.co's own layout, on the design system's roles and components (fusionspace.css).
+   Only roles (--fs-*) here, never a colour value. */
+
+html { scroll-padding-top: 16px; }
+
+/* Hidden until focused, then drawn over the strip's corner, inside the page's margin. */
+.skip { position: absolute; left: 16px; top: 8px; z-index: 1; padding: 8px 12px; background: var(--fs-surface);
+  border: 2px solid var(--fs-action); font: 600 14px/20px var(--fs-font-mono); transform: translateY(-200%); }
+.skip:focus { transform: none; }
+
+.fs-logo { gap: 0; }
+.fs-logo img { height: 24px; width: auto; }
+
+.intro { padding: 56px 0 40px; display: grid; gap: 20px; max-width: 760px; }
+.intro h1 { font: var(--fs-type-display); }
+@media (max-width: 479px) { .intro { padding: 40px 0 32px; } .intro h1 { font: var(--fs-type-title); } }
+
+/* The register: a table of numbered rows. Wide screens read it as columns; below 720 px each row
+   becomes a block with its fields labelled, so nothing is cut off or scrolls sideways. */
+.register { width: 100%; border-collapse: collapse; }
+.register caption { text-align: left; caption-side: top; padding-bottom: 8px; font: var(--fs-type-small); color: var(--fs-ink-muted); }
+.register th { font: var(--fs-type-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--fs-ink-muted); text-align: left;
+  padding: 8px 12px 8px 0; border-bottom: 2px solid var(--fs-ink); vertical-align: bottom; }
+.register td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--fs-rule); vertical-align: top; }
+.register td:first-child { width: 1%; }
+.register td > div { margin-top: 4px; }
+.register .fs-tag { white-space: nowrap; }
+
+@media (max-width: 719px) {
+  .register thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .register, .register tbody, .register tr, .register td { display: block; width: auto; }
+  .register caption { display: block; }
+  .register tr { padding: 12px 0; border-bottom: 1px solid var(--fs-rule); display: grid; gap: 8px; }
+  .register tbody tr:first-child { border-top: 2px solid var(--fs-ink); }
+  .register td { padding: 0; border: 0; }
+  .register td:first-child { width: auto; }
+  .register td::before { content: attr(data-label); display: block; font: var(--fs-type-label); text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--fs-ink-muted); margin-bottom: 2px; }
+  .register td[data-label="Product"]::before, .register td[data-label="Project"]::before, .register td[data-label="Tool"]::before { content: none; }
+  .register td[data-label="No."] { order: -1; }
+}
+/* A designation is one unit and is never broken; on the narrowest screens it is set smaller so it still fits. */
+@media (max-width: 359px) { .register .fs-tag { font-size: 11px; letter-spacing: 0; padding-inline: 6px; } }
+
+.links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.links li { max-width: none; }
+.links a { display: inline-flex; align-items: center; min-height: 24px; }
+
+.principles { display: grid; gap: 16px; max-width: var(--fs-measure); }
+.principles > div { border-top: 1px solid var(--fs-rule); padding-top: 12px; display: grid; gap: 4px; }
+.principles dd { margin: 0; }
+
+/* The title block wraps its cells instead of squeezing them, so no value is ever cut off. */
+.fs-titleblock { display: flex; flex-wrap: wrap; }
+.fs-titleblock > div { flex: 1 1 132px; }
+.fs-titleblock > .wide { flex-basis: 264px; }
+.fs-titleblock .mark .v { display: flex; align-items: center; gap: 8px; }
+.fs-titleblock .mark img { width: 24px; height: 24px; }
+
+@media print {
+  .skip { display: none; }
+}
