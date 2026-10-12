@@ -1,0 +1,12 @@
+# Response headers on Cloudflare Pages (https://developers.cloudflare.com/pages/configuration/headers/).
+# Everything the page loads is its own: no script, style, font or image from another site.
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), autoplay=(), camera=(), display-capture=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+
+# A browser must fetch the service worker afresh each time, so the old site's worker is replaced
+# on the first visit after the switch.
+/sw.js
+  Cache-Control: no-cache

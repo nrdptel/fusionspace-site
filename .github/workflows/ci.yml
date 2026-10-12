@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # Weekly, so a release published elsewhere that the page doesn't list yet fails the link check.
+  schedule:
+    - cron: "17 12 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  page:
+    if: github.event_name != 'schedule'
+    # The page laid out at every width from 320 to 1,920 px in each theme, with nothing clipped,
+    # and the checks' own tests, on each system a reader might use.
+    name: page (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Layout, claims and origins
+        run: node checks/check.mjs
+      - name: Tests of the checks
+        run: node --test checks/checks.test.mjs
+
+  links:
+    # Links out of the site answer, and the release it states is the latest published.
+    name: links
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Links and releases
+        run: node checks/links.mjs
