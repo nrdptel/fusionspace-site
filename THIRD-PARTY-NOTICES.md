@@ -12,7 +12,7 @@ is under the repository's MIT or Apache-2.0 license.
   the licenses are beside them, `site/fonts/OFL-Archivo.txt` and `site/fonts/OFL-CascadiaMono.txt`.
 
 - **The FusionSpace brand files** (`site/brand/`: the horizontal lockup in Void and white, the
-  colour mark, `favicon.svg`, `favicon-32.png` and `apple-touch-icon.png`) and the icons drawn
+  color mark, `favicon.svg`, `favicon-32.png` and `apple-touch-icon.png`) and the icons drawn
   inline in the page (check, edit, close and external, from `product/icons/`): from `kit/logo/svg/`,
   `kit/web/` and `product/icons/` of fusionspace-design at `f45454f`, unchanged. They are the
   project owner's, Neer Patel's, under fusionspace-design's `LICENSE` and `TRADEMARKS.md`: all

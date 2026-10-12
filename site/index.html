@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FusionSpace: open-source software for hobby and high-power rockets</title>
-<meta name="description" content="FusionSpace makes free, open-source software for hobby and high-power rocketry: FusionSpace HPR, a flight simulator and the suite around it, and four web tools.">
+<meta name="description" content="FusionSpace makes free, open-source software for hobby and high-power rocketry: the FusionSpace HPR suite, starting with its flight simulator, and four web tools.">
+<link rel="canonical" href="https://fusionspace.co/">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F3F4F7">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B0F1C">
@@ -19,7 +20,7 @@
 <script src="/theme.js"></script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to the register</a>
+<a class="skip" href="#main">Skip to the content</a>
 <div class="fs-strip"></div>
 <div class="fs-page">
   <header class="fs-header">
@@ -43,8 +44,8 @@
   <main id="main">
     <section class="intro" aria-labelledby="title">
       <span class="fs-tag">FS · SITE 001</span>
-      <h1 id="title">Open-source software for hobby and high&#8209;power rockets.</h1>
-      <p class="fs-lead">FusionSpace makes free software for rocketry. Each tool shows its working and says how far to trust it.</p>
+      <h1 id="title">Open-source software for hobby and <span class="nowrap">high-power</span> rockets.</h1>
+      <p class="fs-lead">FusionSpace makes free software for rocketry: HPR Sim, a flight simulator, and the suite being built around it.</p>
       <div class="fs-row">
         <a class="fs-btn" href="https://hpr.fusionspace.co/the-simulator.html">Start with HPR Sim</a>
         <a class="fs-btn" data-variant="secondary" href="https://github.com/nrdptel">Source on GitHub
@@ -62,16 +63,15 @@
         <p>One suite for hobby and high-power rockets, written in Rust: a flight simulator first, then a flight analyzer, a competition kit and an app. Every product's source and releases live in one repository, <a href="https://github.com/nrdptel/fusionspace-eridanus">nrdptel/fusionspace-eridanus</a>, under the MIT or Apache-2.0 license.</p>
         <p>HPR Sim is the one released so far. Before you rely on a number from it, read <a href="https://hpr.fusionspace.co/trusting-a-simulation.html">how far to trust a simulation</a>: what it was checked against, and where it hasn't been.</p>
         <table class="register">
-          <caption>Each product, numbered like a drawing. Released means published and maintained; in preparation means not published yet.</caption>
+          <caption>Each product is numbered like a part on a drawing once it ships. Released means published and maintained; in preparation means not published yet.</caption>
           <thead>
-            <tr><th scope="col">No.</th><th scope="col">Product</th><th scope="col">Status</th><th scope="col">Guide, docs and release</th></tr>
+            <tr><th scope="col">Product</th><th scope="col">Status</th><th scope="col">Guide, docs and release</th></tr>
           </thead>
           <tbody>
             <tr>
-              <td data-label="No."><span class="fs-tag">FS-ACHERNAR · SW · TOOL 001</span></td>
-              <td data-label="Product"><b>FusionSpace HPR · Sim</b><div class="fs-small fs-muted">A flight simulator for hobby and high-power rockets: a Rust library, the <code>hpr</code> command and a Python package.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span><div class="fs-small fs-muted"><span class="fs-mono" data-release="fusionspace-hpr">0.1.0</span> · 2026-10-08</div></td>
-              <td data-label="Guide, docs and release">
+              <td><div class="no"><span class="fs-tag">FS-ACHERNAR · SW · TOOL 001</span></div><b>FusionSpace HPR · Sim</b><div class="fs-small fs-muted">A flight simulator for hobby and high-power rockets: a Rust library, the <code>hpr</code> command and a Python package.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span><div class="fs-small fs-muted"><span class="fs-mono" data-release="fusionspace-hpr">0.1.0</span> · 2026-10-08</div></td>
+              <td><span class="label" aria-hidden="true">Guide, docs and release</span>
                 <ul class="links">
                   <li><a href="https://hpr.fusionspace.co/the-simulator.html">Guide</a></li>
                   <li><a href="https://hpr.fusionspace.co/simulator-tour.html">A tour</a></li>
@@ -83,40 +83,34 @@
               </td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-muted fs-small">Numbered when it ships</span></td>
-              <td data-label="Product"><b>FusionSpace HPR · Analyzer</b><div class="fs-small fs-muted">Reads a flight computer's log and sets the flight beside its simulation.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">Planned for release 0.2</div></td>
-              <td data-label="Guide, docs and release"><span class="fs-muted fs-small">None yet</span></td>
+              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Analyzer</b><div class="fs-small fs-muted">Reads a flight computer's log and sets the flight beside its simulation.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">Planned for release 0.2</div></td>
+              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-muted fs-small">Numbered when it ships</span></td>
-              <td data-label="Product"><b>FusionSpace HPR · Competition Kit</b><div class="fs-small fs-muted">Challenge rules, presets and submission packs for student rocketry competitions.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">Planned for release 0.4</div></td>
-              <td data-label="Guide, docs and release"><span class="fs-muted fs-small">None yet</span></td>
+              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Competition Kit</b><div class="fs-small fs-muted">Challenge rules, presets and submission packs for student rocketry competitions.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">Planned for release 0.4</div></td>
+              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-muted fs-small">Numbered when it ships</span></td>
-              <td data-label="Product"><b>FusionSpace HPR</b> (the app)<div class="fs-small fs-muted">Design, simulation and flight replay on the desktop, the web and phones.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">A preview in release 0.5, then 1.0</div></td>
-              <td data-label="Guide, docs and release"><span class="fs-muted fs-small">None yet</span></td>
+              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR</b> (the app)<div class="fs-small fs-muted">Design, simulation and flight replay on the desktop, the web and phones.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">A preview in release 0.5, then 1.0</div></td>
+              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-muted fs-small">Numbered when it ships</span></td>
-              <td data-label="Product"><b>FusionSpace HPR · Motor Designer</b><div class="fs-small fs-muted">Design of experimental solid motors.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">After release 1.0</div></td>
-              <td data-label="Guide, docs and release"><span class="fs-muted fs-small">None yet</span></td>
+              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Motor Designer</b><div class="fs-small fs-muted">Design of experimental solid motors.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">After release 1.0</div></td>
+              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-muted fs-small">Numbered when it ships</span></td>
-              <td data-label="Product"><b>FusionSpace HPR · Recovery Designer</b><div class="fs-small fs-muted">Parachute gores and opening loads.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">After release 1.0</div></td>
-              <td data-label="Guide, docs and release"><span class="fs-muted fs-small">None yet</span></td>
+              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Recovery Designer</b><div class="fs-small fs-muted">Parachute gores and opening loads.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">After release 1.0</div></td>
+              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-muted fs-small">Numbered when it ships</span></td>
-              <td data-label="Product"><b>FusionSpace HPR · Avionics</b><div class="fs-small fs-muted">Flight computer logic and a ground station.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">After release 1.0</div></td>
-              <td data-label="Guide, docs and release"><span class="fs-muted fs-small">None yet</span></td>
+              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Avionics</b><div class="fs-small fs-muted">Flight computer logic and a ground station.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">After release 1.0</div></td>
+              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
             </tr>
           </tbody>
         </table>
@@ -131,40 +125,35 @@
       <div class="fs-sheet-body">
         <p>The brand system every FusionSpace tool follows, with its two tools, and the two projects FusionSpace HPR replaced.</p>
         <table class="register">
-          <caption>Withdrawn means no longer maintained; its site stays up for now.</caption>
+          <caption>Withdrawn means no longer maintained; the tool stays online for now.</caption>
           <thead>
-            <tr><th scope="col">No.</th><th scope="col">Project</th><th scope="col">Status</th><th scope="col">Where</th></tr>
+            <tr><th scope="col">Project</th><th scope="col">Status</th><th scope="col">Where</th></tr>
           </thead>
           <tbody>
             <tr>
-              <td data-label="No."><span class="fs-tag">FS-ARA</span></td>
-              <td data-label="Project"><b>FusionSpace brand system</b><div class="fs-small fs-muted">The name, the mark and the product rules: how every FusionSpace site, tool and app is designed.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span><div class="fs-small fs-muted">Rev C</div></td>
-              <td data-label="Where"><a href="https://github.com/nrdptel/fusionspace-design">nrdptel/fusionspace-design</a></td>
+              <td><div class="no"><span class="fs-tag">FS-ARA</span></div><b>FusionSpace brand system</b><div class="fs-small fs-muted">The name, the mark and the product rules: how every FusionSpace site, tool and app is designed.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span><div class="fs-small fs-muted">Rev C</div></td>
+              <td><span class="label" aria-hidden="true">Where</span><a href="https://github.com/nrdptel/fusionspace-design">nrdptel/fusionspace-design</a></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-tag">FS-CERVANTES · SW · TOOL 001</span></td>
-              <td data-label="Project"><b>Callsign</b><div class="fs-small fs-muted">The star-name tool: each project takes a constellation, each product one of its stars.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td data-label="Where"><a href="https://github.com/nrdptel/fusionspace-design/tree/main/tools/callsign">In the brand system</a></td>
+              <td><div class="no"><span class="fs-tag">FS-CERVANTES · SW · TOOL 001</span></div><b>Callsign</b><div class="fs-small fs-muted">The star-name tool: each project takes a constellation, each product one of its stars.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
+              <td><span class="label" aria-hidden="true">Where</span><a href="https://github.com/nrdptel/fusionspace-design/tree/main/tools/callsign">In the brand system</a></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-tag">FS-INQUILL · SW · TOOL 001</span></td>
-              <td data-label="Project"><b>Mark Tuner</b><div class="fs-small fs-muted">Tunes the mark and both lockups in the browser and exports them as SVG.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td data-label="Where"><a href="https://github.com/nrdptel/fusionspace-design/tree/main/tools/mark-tuner">In the brand system</a></td>
+              <td><div class="no"><span class="fs-tag">FS-INQUILL · SW · TOOL 001</span></div><b>Mark Tuner</b><div class="fs-small fs-muted">Tunes the mark and both lockups in the browser and exports them as SVG.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
+              <td><span class="label" aria-hidden="true">Where</span><a href="https://github.com/nrdptel/fusionspace-design/tree/main/tools/mark-tuner">In the brand system</a></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-muted fs-small">Never numbered</span></td>
-              <td data-label="Project"><b>Loft</b><div class="fs-small fs-muted">A flight simulator for the browser that read OpenRocket designs. FusionSpace HPR · Sim replaces it.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="off"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M5.5 5.5 L18.5 18.5"/><path d="M18.5 5.5 L5.5 18.5"/></svg>Withdrawn</span></td>
-              <td data-label="Where"><a href="https://github.com/nrdptel/fusionspace-loft">nrdptel/fusionspace-loft</a></td>
+              <td><div class="no"><span class="fs-muted fs-small">Not numbered</span></div><b>Loft</b><div class="fs-small fs-muted">A flight simulator for the browser that read OpenRocket designs. Replaced by FusionSpace HPR · Sim: from the command line and Python now, in the browser with the app.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="off"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M5.5 5.5 L18.5 18.5"/><path d="M18.5 5.5 L5.5 18.5"/></svg>Withdrawn</span></td>
+              <td><span class="label" aria-hidden="true">Where</span><ul class="links"><li><a href="https://loft.fusionspace.co">Site</a></li><li><a href="https://github.com/nrdptel/fusionspace-loft">Source</a></li></ul></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-muted fs-small">Never numbered</span></td>
-              <td data-label="Project"><b>Debrief</b><div class="fs-small fs-muted">A flight-log analyzer for the browser. FusionSpace HPR · Analyzer replaces it.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="off"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M5.5 5.5 L18.5 18.5"/><path d="M18.5 5.5 L5.5 18.5"/></svg>Withdrawn</span></td>
-              <td data-label="Where"><a href="https://github.com/nrdptel/fusionspace-debrief">nrdptel/fusionspace-debrief</a></td>
+              <td><div class="no"><span class="fs-muted fs-small">Not numbered</span></div><b>Debrief</b><div class="fs-small fs-muted">A flight-log analyzer for the browser. FusionSpace HPR · Analyzer is to replace it, in release 0.2.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="off"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M5.5 5.5 L18.5 18.5"/><path d="M18.5 5.5 L5.5 18.5"/></svg>Withdrawn</span></td>
+              <td><span class="label" aria-hidden="true">Where</span><ul class="links"><li><a href="https://debrief.fusionspace.co">Site</a></li><li><a href="https://github.com/nrdptel/fusionspace-debrief">Source</a></li></ul></td>
             </tr>
           </tbody>
         </table>
@@ -177,36 +166,32 @@
         <h2 id="tools-title">Web tools</h2>
       </div>
       <div class="fs-sheet-body">
-        <p>Four tools for the browser that came before FusionSpace HPR. Each is being rebuilt inside it; until its rebuild ships, the tool keeps working at its own address.</p>
+        <p>Four tools for the browser that came before FusionSpace HPR. Each will be rebuilt inside it; until its rebuild ships, the tool keeps working at its own address.</p>
         <table class="register">
           <caption>All four are released and maintained.</caption>
           <thead>
-            <tr><th scope="col">No.</th><th scope="col">Tool</th><th scope="col">Status</th><th scope="col">Where</th></tr>
+            <tr><th scope="col">Tool</th><th scope="col">Status</th><th scope="col">Where</th></tr>
           </thead>
           <tbody>
             <tr>
-              <td data-label="No."><span class="fs-tag">FS · SW · TOOL 001</span></td>
-              <td data-label="Tool"><b>HPR Motor Finder</b><div class="fs-small fs-muted">AeroTech, Cesaroni and Loki motor stock and prices across U.S. vendors, matched to ThrustCurve.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td data-label="Where"><a class="fs-mono" href="https://motor.fusionspace.co">motor.fusionspace.co</a></td>
+              <td><div class="no"><span class="fs-tag">FS · SW · TOOL 001</span></div><b>HPR Motor Finder</b><div class="fs-small fs-muted">AeroTech, Cesaroni and Loki motor stock and prices across U.S. vendors, matched to ThrustCurve.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
+              <td><span class="label" aria-hidden="true">Where</span><a class="fs-mono" href="https://motor.fusionspace.co">motor.fusionspace.co</a></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-tag">FS · SW · TOOL 002</span></td>
-              <td data-label="Tool"><b>Charge</b><div class="fs-small fs-muted">Sizes black-powder ejection charges, every constant shown, with a log of your ground tests. Ground test every charge first.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td data-label="Where"><a class="fs-mono" href="https://charge.fusionspace.co">charge.fusionspace.co</a></td>
+              <td><div class="no"><span class="fs-tag">FS · SW · TOOL 002</span></div><b>Charge</b><div class="fs-small fs-muted">Sizes black-powder ejection charges, every constant shown, with a log of your ground tests. Ground test every charge first.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
+              <td><span class="label" aria-hidden="true">Where</span><a class="fs-mono" href="https://charge.fusionspace.co">charge.fusionspace.co</a></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-tag">FS · SW · TOOL 003</span></td>
-              <td data-label="Tool"><b>Window</b><div class="fs-small fs-muted">Launch weather for U.S. high-power and model rocketry: surface wind, winds aloft, storms, cloud ceiling and a few days ahead.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td data-label="Where"><a class="fs-mono" href="https://window.fusionspace.co">window.fusionspace.co</a></td>
+              <td><div class="no"><span class="fs-tag">FS · SW · TOOL 003</span></div><b>Window</b><div class="fs-small fs-muted">Launch weather for high-power rocketry at any U.S. field: surface wind, winds aloft, storms, cloud ceiling and a few days ahead.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
+              <td><span class="label" aria-hidden="true">Where</span><a class="fs-mono" href="https://window.fusionspace.co">window.fusionspace.co</a></td>
             </tr>
             <tr>
-              <td data-label="No."><span class="fs-tag">FS · SW · TOOL 004</span></td>
-              <td data-label="Tool"><b>Muster</b><div class="fs-small fs-muted">Which reloads, closures and spacers fit each reloadable motor case, and the parts to buy.</div></td>
-              <td data-label="Status"><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td data-label="Where"><a class="fs-mono" href="https://muster.fusionspace.co">muster.fusionspace.co</a></td>
+              <td><div class="no"><span class="fs-tag">FS · SW · TOOL 004</span></div><b>Muster</b><div class="fs-small fs-muted">Which reloads, closures and spacers fit each reloadable motor case, and the parts to buy.</div></td>
+              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
+              <td><span class="label" aria-hidden="true">Where</span><a class="fs-mono" href="https://muster.fusionspace.co">muster.fusionspace.co</a></td>
             </tr>
           </tbody>
         </table>
@@ -219,11 +204,12 @@
         <h2 id="principles-title">Principles</h2>
       </div>
       <div class="fs-sheet-body">
+        <p>The rules every FusionSpace tool is designed to. HPR Sim's docs give each model's equations, its sources and what it was validated against.</p>
         <dl class="principles">
-          <div><dt><h3>Shows its working</h3></dt><dd>Every formula, constant and source is one click away. No black boxes.</dd></div>
-          <div><dt><h3>Says how far to trust it</h3></dt><dd>Estimates are labeled as estimates, with their spread. Never a go/no-go verdict.</dd></div>
-          <div><dt><h3>Works at the field</h3></dt><dd>Readable in sun, with big targets for cold hands. HPR Sim needs no network at all.</dd></div>
-          <div><dt><h3>No accounts, no tracking</h3></dt><dd>This site sets no cookies and loads nothing from anyone else.</dd></div>
+          <div><dt><h3>Show the working</h3></dt><dd>Formulas, constants and sources are there to read, not hidden.</dd></div>
+          <div><dt><h3>Say how far to trust it</h3></dt><dd>Estimates are labeled as estimates, with their spread. Never a go/no-go verdict.</dd></div>
+          <div><dt><h3>Work at the field</h3></dt><dd>Readable in sun, with big targets for cold hands. HPR Sim needs no network at all.</dd></div>
+          <div><dt><h3>No accounts, no tracking</h3></dt><dd>This site sets no cookies and loads nothing from anyone else. It keeps one thing, your theme choice, in your own browser.</dd></div>
         </dl>
       </div>
     </section>

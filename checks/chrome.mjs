@@ -1,6 +1,6 @@
 // A small client for headless Chrome over the DevTools protocol, with no dependencies: Node's
 // own WebSocket (Node 22 and later) and child_process. The checks use it to lay the page out at
-// a given width and colour scheme and to run a script in it.
+// a given width and color scheme and to run a script in it.
 
 import { spawn } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
@@ -71,10 +71,15 @@ export async function launch() {
     throw new Error("Chrome did not open its debugging port within 30 s");
   }
   const socket = new WebSocket(`ws://127.0.0.1:${lines[0]}${lines[1]}`);
-  await new Promise((resolve, reject) => {
-    socket.addEventListener("open", resolve, { once: true });
-    socket.addEventListener("error", () => reject(new Error("could not connect to Chrome")), { once: true });
-  });
+  try {
+    await new Promise((resolve, reject) => {
+      socket.addEventListener("open", resolve, { once: true });
+      socket.addEventListener("error", () => reject(new Error("could not connect to Chrome")), { once: true });
+    });
+  } catch (error) {
+    child.kill();
+    throw error;
+  }
   return new Browser(child, socket, profile);
 }
 
@@ -86,12 +91,21 @@ class Browser {
     this.nextId = 1;
     this.pending = new Map();
     this.listeners = new Set();
+    // If Chrome goes away, every command still waiting fails at once instead of hanging.
+    const lost = () => {
+      for (const waiter of this.pending.values()) waiter.reject(new Error(`${waiter.method}: Chrome closed its connection`));
+      this.pending.clear();
+    };
+    socket.addEventListener("close", lost);
+    socket.addEventListener("error", lost);
+    child.on("exit", lost);
     socket.addEventListener("message", (event) => {
       const message = JSON.parse(event.data);
       if (message.id !== undefined) {
         const waiter = this.pending.get(message.id);
         if (!waiter) return;
         this.pending.delete(message.id);
+        clearTimeout(waiter.timer);
         if (message.error) waiter.reject(new Error(`${waiter.method}: ${message.error.message}`));
         else waiter.resolve(message.result);
       } else {
@@ -106,7 +120,18 @@ class Browser {
     const message = { id, method, params };
     if (sessionId) message.sessionId = sessionId;
     return new Promise((resolve, reject) => {
-      this.pending.set(id, { resolve, reject, method });
+      // No command takes a minute; one that does means Chrome is stuck.
+      const timer = setTimeout(() => {
+        this.pending.delete(id);
+        reject(new Error(`${method}: no answer from Chrome in 60 s`));
+      }, 60_000);
+      this.pending.set(id, { resolve, reject, method, timer });
+      if (this.socket.readyState !== WebSocket.OPEN) {
+        clearTimeout(timer);
+        this.pending.delete(id);
+        reject(new Error(`${method}: Chrome closed its connection`));
+        return;
+      }
       this.socket.send(JSON.stringify(message));
     });
   }
@@ -170,6 +195,8 @@ class Page {
       if (message.method === "Log.entryAdded" && message.params.entry.level === "error") {
         const { text, url } = message.params.entry;
         this.errors.push(url ? `${text} (${url})` : text);
+      } else if (message.method === "Runtime.consoleAPICalled" && (message.params.type === "error" || message.params.type === "assert")) {
+        this.errors.push(`console.${message.params.type}: ${message.params.args.map((arg) => arg.value ?? arg.description ?? "").join(" ")}`);
       } else if (message.method === "Runtime.exceptionThrown") {
         const details = message.params.exceptionDetails;
         this.errors.push(details.exception?.description ?? details.text);
@@ -181,7 +208,7 @@ class Page {
     return this.browser.send(method, params, this.sessionId);
   }
 
-  /** Lays the page out `width` CSS pixels wide in the given colour scheme ("light" or "dark"). */
+  /** Lays the page out `width` CSS pixels wide in the given color scheme ("light" or "dark"). */
   async emulate(width, height, scheme) {
     await this.send("Emulation.setDeviceMetricsOverride", {
       width,

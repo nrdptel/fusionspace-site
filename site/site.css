@@ -1,15 +1,16 @@
 /* SPDX-License-Identifier: MIT OR Apache-2.0 */
 /* fusionspace.co's own layout, on the design system's roles and components (fusionspace.css).
-   Only roles (--fs-*) here, never a colour value. */
+   Only roles (--fs-*) here, never a color value. */
 
 html { scroll-padding-top: 16px; }
 
-/* Hidden until focused, then drawn over the strip's corner, inside the page's margin. */
+/* For keyboards: hidden until focused, then drawn inside the page's top-left margin. */
 .skip { position: absolute; left: 16px; top: 8px; z-index: 1; padding: 8px 12px; background: var(--fs-surface);
-  border: 2px solid var(--fs-action); font: 600 14px/20px var(--fs-font-mono); transform: translateY(-200%); }
-.skip:focus { transform: none; }
+  border: 2px solid var(--fs-action); font: 600 14px/20px var(--fs-font-mono); }
+.skip:not(:focus) { width: 1px; height: 1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .fs-logo { gap: 0; }
+.nowrap { white-space: nowrap; }
 .fs-logo img { height: 24px; width: auto; }
 
 .intro { padding: 56px 0 40px; display: grid; gap: 20px; max-width: 760px; }
@@ -23,9 +24,11 @@ html { scroll-padding-top: 16px; }
 .register th { font: var(--fs-type-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--fs-ink-muted); text-align: left;
   padding: 8px 12px 8px 0; border-bottom: 2px solid var(--fs-ink); vertical-align: bottom; }
 .register td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--fs-rule); vertical-align: top; }
-.register td:first-child { width: 1%; }
 .register td > div { margin-top: 4px; }
+.register td > .no { margin: 0 0 6px; }
 .register .fs-tag { white-space: nowrap; }
+/* Each field's name, for the narrow layout below; screen readers have the table's own headers. */
+.register .label { display: none; }
 
 @media (max-width: 719px) {
   .register thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -34,11 +37,8 @@ html { scroll-padding-top: 16px; }
   .register tr { padding: 12px 0; border-bottom: 1px solid var(--fs-rule); display: grid; gap: 8px; }
   .register tbody tr:first-child { border-top: 2px solid var(--fs-ink); }
   .register td { padding: 0; border: 0; }
-  .register td:first-child { width: auto; }
-  .register td::before { content: attr(data-label); display: block; font: var(--fs-type-label); text-transform: uppercase;
-    letter-spacing: 0.06em; color: var(--fs-ink-muted); margin-bottom: 2px; }
-  .register td[data-label="Product"]::before, .register td[data-label="Project"]::before, .register td[data-label="Tool"]::before { content: none; }
-  .register td[data-label="No."] { order: -1; }
+  .register .label { display: block; font: var(--fs-type-label); text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--fs-ink-muted); margin-bottom: 2px; }
 }
 /* A designation is one unit and is never broken; on the narrowest screens it is set smaller so it still fits. */
 @media (max-width: 359px) { .register .fs-tag { font-size: 11px; letter-spacing: 0; padding-inline: 6px; } }

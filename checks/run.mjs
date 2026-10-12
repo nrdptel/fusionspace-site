@@ -3,7 +3,7 @@
 
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { extname, join, normalize, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { launch } from "./chrome.mjs";
@@ -13,8 +13,24 @@ export const ROOT = resolve(here, "..");
 const MEASURE = readFileSync(join(here, "measure.js"), "utf8");
 const CLAIMS = readFileSync(join(here, "claims.js"), "utf8");
 
-/** Every width from 320 to 1,920 px, 40 px apart (41 widths). */
-export const WIDTHS = Array.from({ length: 41 }, (_, i) => 320 + 40 * i);
+/**
+ * Every width from 320 to 1,920 px, 40 px apart (41 widths), and both sides of each breakpoint
+ * the site's stylesheets set (a `min-width: 720px` adds 719 and 720), so each layout is checked
+ * at its narrowest and widest.
+ */
+export const WIDTHS = (() => {
+  const widths = new Set(Array.from({ length: 41 }, (_, i) => 320 + 40 * i));
+  const site = join(ROOT, "site");
+  for (const name of readdirSync(site).filter((n) => n.endsWith(".css"))) {
+    for (const [, kind, value] of readFileSync(join(site, name), "utf8").matchAll(/\((min|max)-width:\s*(\d+(?:\.\d+)?)px\)/g)) {
+      const edge = Math.round(Number(value));
+      for (const width of kind === "min" ? [edge - 1, edge] : [edge, edge + 1]) {
+        if (width >= 320 && width <= 1920) widths.add(width);
+      }
+    }
+  }
+  return [...widths].sort((a, b) => a - b);
+})();
 /**
  * The themes: light and dark as the system asks for them (`prefers-color-scheme`, the switch on
  * Auto), and field, the outdoor theme, chosen on the switch.
@@ -41,7 +57,13 @@ export function serve() {
   const roots = { "/canaries/": join(here, "canaries"), "/": join(ROOT, "site") };
   const headers = siteHeaders();
   const server = createServer(async (request, response) => {
-    const path = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
+    let path;
+    try {
+      path = decodeURIComponent(new URL(request.url, "http://localhost").pathname);
+    } catch {
+      response.writeHead(400).end();
+      return;
+    }
     const [prefix, root] = Object.entries(roots).find(([prefix]) => path.startsWith(prefix));
     let file = normalize(join(root, path.slice(prefix.length)));
     if (!file.startsWith(root + sep) && file !== root) {

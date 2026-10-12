@@ -47,8 +47,11 @@ const json = async (url) => {
   if (!response.ok) throw new Error(`${url}: ${response.status}`);
   return response.json();
 };
-const releases = [...html.matchAll(/data-release="([^"]+)">([^<]+)</g)].map((match) => ({ name: match[1], stated: match[2].trim() }));
+// A stated release is an element whose only text is the version: <span data-release="name">0.1.0</span>.
+const releases = [...html.matchAll(/<[a-z]+\b[^>]*\bdata-release="([^"]+)"[^>]*>([^<]+)</g)].map((match) => ({ name: match[1], stated: match[2].trim() }));
+const marked = [...html.matchAll(/\bdata-release=/g)].length;
 if (!releases.length) failures.push("the site states no release (no data-release element)");
+if (marked !== releases.length) failures.push(`${marked} data-release attributes, but only ${releases.length} read as an element holding just a version`);
 for (const { name, stated } of releases) {
   try {
     const pypi = (await json(`https://pypi.org/pypi/${name}/json`)).info.version;
