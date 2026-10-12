@@ -94,6 +94,14 @@
       bottom: rect.bottom - px(b, rect.height),
     };
   };
+  // The size of the corner a clip-path cuts off an element's top right, when that is the shape
+  // it draws (the design system's designation tag): polygon(0 0, 100% - c 0, 100% c, 100% 100%,
+  // 0 100%). Null for any other shape.
+  const chamfer = (el) => {
+    const shape = style(el).clipPath.match(/^polygon\(0px 0px, calc\(100% - ([\d.]+)px\) 0px, 100% ([\d.]+)px, 100% 100%, 0px 100%\)$/);
+    return shape && shape[1] === shape[2] ? Number(shape[1]) : null;
+  };
+
   // The element whose box an element is positioned against, as far as clipping goes.
   const containingBlock = (el) => {
     const position = style(el).position;
@@ -180,10 +188,10 @@
         problems.push({ kind: "pseudo", what: `${name(el)}${which}`, detail: `draws ${content.slice(0, 40)}, which can't be measured` });
       }
     }
-    // A clip-path is measured as its inset() box. Any other shape could cut inside that box, so
-    // it is refused, but for the design system's designation tag: its polygon cuts one corner
-    // of 4 px from the top right, inside the 10 px of padding before its text.
-    if (s.clipPath !== "none" && !/^inset\(/.test(s.clipPath) && !el.matches(".fs-tag")) {
+    // A clip-path is measured as its inset() box, or as a corner cut off its top right (the
+    // design system's chamfer, measured against each line of text below). Any other shape could
+    // cut inside its box unseen, so it is refused.
+    if (s.clipPath !== "none" && !/^inset\(/.test(s.clipPath) && chamfer(el) === null) {
       problems.push({ kind: "shape", what: name(el), detail: `clip-path ${s.clipPath.slice(0, 40)} can't be measured; use inset() or none` });
     }
     const rect = meet(el.getBoundingClientRect(), clipOf(el));
@@ -257,6 +265,14 @@
       const rect = meet(raw, cut);
       const lost = Math.max(rect.left - raw.left, raw.right - rect.right, rect.top - raw.top, raw.bottom - rect.bottom);
       if (lost > 1) problems.push({ kind: "box", what: words, detail: `${lost.toFixed(1)} px of it cut off by a box around it` });
+      // A cut corner takes the triangle right of the line from (right - c, top) to (right, top + c).
+      for (let node = parent; node && !page(node); node = node.parentElement) {
+        const c = chamfer(node);
+        if (c === null) continue;
+        const box = node.getBoundingClientRect();
+        const into = raw.right - (box.right - c) - (raw.top - box.top);
+        if (into > 1) problems.push({ kind: "box", what: words, detail: `its corner is cut ${into.toFixed(1)} px deep by ${name(node)}'s chamfer` });
+      }
       if (rect.right - rect.left <= SLACK_PX || rect.bottom - rect.top <= SLACK_PX) continue;
       edge(words, rect, parent);
       lines.push({ node: index, text: node.data.trim(), left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom });

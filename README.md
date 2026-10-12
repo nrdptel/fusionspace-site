@@ -45,15 +45,18 @@ node checks/links.mjs                 # links and release numbers (needs a netwo
   - text or a box reaches past the window's left, right or top edge (or its bottom, when fixed to
     the window), or a box reaches past its parent's content, into the page's margin;
   - two pieces of text overlap, or something else, or nothing, is drawn at a control's centre;
-  - CSS draws text, or a clip-path takes a shape other than `inset()`: neither can be measured;
+  - CSS draws text, or a clip-path takes a shape other than `inset()` or a corner cut off the top
+    right (the designation tag's, measured against each line of text): neither can be measured;
   - a font doesn't load, or the browser reports an error, such as a request the security policy
     refused.
-- **No claim without a comparison.** A comparative word or phrase ("better", "faster", "most
-  accurate", "smaller error than", "more reliable than" and the like) passes only in the same
-  block of text as a link to one of the comparisons in `comparisons.json`, each committed with
-  its inputs and the tools' versions. In text that can't carry a link (the title, the description
-  and social-card tags, and attributes such as `alt` and `aria-label`) it always fails. Plain
-  comparisons are caught too ("wider than the window"), and are worded another way.
+- **No claim without a comparison.** Anything that compares is a claim: any "than" ("smaller
+  error than", "more reliable than"), any multiple ("twice as accurate as"), and words such as
+  "better", "fastest", "most accurate" or "outperforms". A claim passes only in the same block of
+  text as a link to one of the comparisons in `comparisons.json`, each committed with its inputs
+  and the tools' versions. In text that can't carry a link (the title, the description and
+  social-card tags, and attributes such as `alt` and `aria-label`) it always fails. Plain
+  comparisons are caught too ("wider than the window") and are worded another way; only "rather
+  than" and "other than" pass.
 - **Nothing from elsewhere.** Every file the page loads comes from the site itself.
 - **The checks can fail.** All but two of the pages in `checks/canaries/` are built to fail one
   way, and the tests require the check to find exactly that problem there. The other two, a clean

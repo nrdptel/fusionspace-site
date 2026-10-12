@@ -8,19 +8,21 @@
 // title, the description and social-card tags, and attributes a reader is shown or read, such as
 // alt, title, aria-label and placeholder) fails on any claim. `COMPARISONS` is set by the caller.
 ((comparisons) => {
-  // Comparative and superlative words, and comparisons by "than" ("smaller error than", "more
-  // reliable than", "fewer steps than"): each says one tool does a thing better than another
-  // (ADR-209 §2: a higher error, fewer features or more steps are what "worse" means).
+  // One rule: a claim is anything that compares. Any "than" ("smaller error than", "more reliable
+  // than", "closer than"), any multiple ("twice as accurate as"), and the words that compare
+  // without either ("better", "fastest", "most accurate", "outperforms", "lower error"). It errs
+  // strict: a plain comparison ("wider than the window") fails too and is worded another way.
+  // "Rather than" and "other than" compare nothing and pass.
   const CLAIM = new RegExp(
     [
+      "\\b(?<!\\b(?:rather|other) )than\\b",
+      "\\b(twice|thrice|half|\\w+ times) as \\w+ as\\b",
       "\\b(better|best|faster|fastest|quicker|quickest|superior|leading|unmatched|unrivall?ed|unbeaten|second to none)\\b",
-      "\\b(outperforms?|outperformed|beats?|surpass(es)?|exceeds?)\\b",
-      "\\bworld[- ]class\\b|\\bstate[- ]of[- ]the[- ]art\\b",
+      "\\b(closest|tightest|smallest|lowest|highest|largest|greatest|finest|strongest|easiest|simplest|cheapest|lightest|truest)\\b",
+      "\\b(outperforms?|outperformed|outdoes|beats?|surpass(es)?|exceeds?|trumps?)\\b",
+      "\\bworld[- ]class\\b|\\bstate[- ]of[- ]the[- ]art\\b|\\bbest[- ]in[- ]class\\b",
       "\\b(the )?(most|least|more|less) (accurate|precise|complete|reliable|capable|advanced|powerful|trusted|realistic|detailed|faithful|efficient)\\b",
-      // Not "rather than", "other than", "later than" and the like, which compare nothing.
-      "\\b(?!(?:rather|other|later|earlier|sooner|never|whether|either|neither|under|over|after) than)\\w{3,}er than\\b",
-      "\\b(more|less|fewer)\\b[^.;:!?]{0,40}?\\bthan\\b",
-      "\\b(smaller|lower|larger|higher|greater) (error|errors|miss|misses|spread|bias)\\b",
+      "\\b(smaller|lower|larger|higher|greater|fewer|tighter|closer) (error|errors|miss|misses|spread|bias|steps)\\b",
     ].join("|"),
     "gi",
   );
