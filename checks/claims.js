@@ -16,7 +16,12 @@
   const CLAIM = new RegExp(
     [
       "\\b(?<!\\b(?:rather|other) )than\\b",
-      "(\\b(twice|thrice|half|double|triple|\\w+ times)|\\b\\d+(\\.\\d+)? ?[x×]) (as|the|more|less|fewer)\\b",
+      // A multiple counts wherever it stands ("doubles the accuracy", "ten times smaller", "10× lower",
+      // "one third the error"); a plain one ("half the flights") is worded another way.
+      "\\b(twice|thrice|half|halves|halved|halving|doubl\\w*|tripl\\w*|quadrupl\\w*|tenfold|\\w+fold)\\b",
+      "\\b(two|three|four|five|six|seven|eight|nine|ten|twenty|fifty|a hundred|hundreds of|many|several|\\d+(\\.\\d+)?) times\\b",
+      "(\\b\\d+(\\.\\d+)? ?[x×]|×)(?=\\s|$)",
+      "\\bone (third|quarter|fifth|tenth|hundredth)\\b",
       "\\b(better|best|faster|fastest|quicker|quickest|superior|leading|unmatched|unrivall?ed|unbeaten|second to none)\\b",
       "\\b(closest|tightest|smallest|lowest|highest|largest|greatest|finest|strongest|easiest|simplest|cheapest|lightest|truest)\\b",
       "\\b(outperforms?|outperformed|outdoes|beats?|surpass(es)?|exceeds?|trumps?)\\b",

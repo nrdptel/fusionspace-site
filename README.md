@@ -50,12 +50,14 @@ node checks/links.mjs                 # links and release numbers (needs a netwo
   - a font doesn't load, or the browser reports an error, such as a request the security policy
     refused.
 - **No claim without a comparison.** Anything that compares is a claim: any "than" ("smaller
-  error than", "more reliable than"), any multiple ("twice as accurate as"), and words such as
-  "better", "fastest", "most accurate" or "outperforms". A claim passes only in the same block of
+  error than", "more reliable than"), any multiple wherever it stands ("twice", "doubles", "ten
+  times", "10×", "one third"), and words such as "better", "fastest", "most accurate" or
+  "outperforms". A claim passes only in the same block of
   text as a link to one of the comparisons in `comparisons.json`, each committed with its inputs
   and the tools' versions. In text that can't carry a link (the title, the description and
   social-card tags, and attributes such as `alt` and `aria-label`) it always fails. Plain
-  comparisons are caught too ("wider than the window") and are worded another way; only "rather
+  comparisons and multiples are caught too ("wider than the window", "half the flights") and are
+  worded another way; only "rather
   than" and "other than" pass.
 - **Nothing from elsewhere.** Every file the page loads comes from the site itself.
 - **The checks can fail.** All but two of the pages in `checks/canaries/` are built to fail one
