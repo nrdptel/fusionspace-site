@@ -8,15 +8,15 @@
 // title, the description and social-card tags, and attributes a reader is shown or read, such as
 // alt, title, aria-label and placeholder) fails on any claim. `COMPARISONS` is set by the caller.
 ((comparisons) => {
-  // One rule: a claim is anything that compares. Any "than" ("smaller error than", "more reliable
-  // than", "closer than"), any multiple ("twice as accurate as"), and the words that compare
-  // without either ("better", "fastest", "most accurate", "outperforms", "lower error"). It errs
-  // strict: a plain comparison ("wider than the window") fails too and is worded another way.
-  // "Rather than" and "other than" compare nothing and pass.
+  // One rule: a claim is anything that compares. Any "than" ("smaller error than", "more
+  // reliable than", "closer than"), any multiple ("twice as accurate as", "three times the
+  // accuracy"), and the words that compare without either ("better", "fastest", "most accurate",
+  // "outperforms", "lower error"). It errs strict: a plain comparison ("wider than the window")
+  // fails too and is worded another way. "Rather than" and "other than" compare nothing and pass.
   const CLAIM = new RegExp(
     [
       "\\b(?<!\\b(?:rather|other) )than\\b",
-      "\\b(twice|thrice|half|\\w+ times) (as \\w+ as|the \\w+ of)\\b",
+      "\\b(twice|thrice|half|double|triple|\\w+ times|\\d+(\\.\\d+)?x) (as \\w+ as|the \\w+)\\b",
       "\\b(better|best|faster|fastest|quicker|quickest|superior|leading|unmatched|unrivall?ed|unbeaten|second to none)\\b",
       "\\b(closest|tightest|smallest|lowest|highest|largest|greatest|finest|strongest|easiest|simplest|cheapest|lightest|truest)\\b",
       "\\b(outperforms?|outperformed|outdoes|beats?|surpass(es)?|exceeds?|trumps?)\\b",
@@ -53,8 +53,8 @@
   }
 
   // Each block's text is read whole, with its whitespace (newlines, runs of spaces, no-break
-  // spaces) made single spaces, so a phrase split across lines or inline elements still reads as
-  // one: <b>most</b> accurate is "most accurate".
+  // spaces) made single spaces, so a phrase split across lines, inline elements or line breaks
+  // still reads as one.
   const groups = new Map();
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
@@ -66,8 +66,11 @@
     groups.get(container).text.push(node.data);
   }
   for (const [container, { block, text }] of groups) {
-    const flat = words(text.join(""));
-    const claims = [...flat.matchAll(CLAIM)];
+    // Joined both ways: as one run (a word split by inline markup, "<b>most</b> accurate") and with
+    // a space between nodes (words a <br> or a nested box separates, "most<br>accurate"). A claim
+    // in either reading counts.
+    const flat = words(text.join(" "));
+    const claims = [...flat.matchAll(CLAIM), ...words(text.join("")).matchAll(CLAIM)];
     if (!claims.length) continue;
     // A link backs the claim only from inside the same block (a link in another paragraph of the
     // same section doesn't), or when the block is itself the link.
