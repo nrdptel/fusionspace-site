@@ -16,13 +16,13 @@
   const CLAIM = new RegExp(
     [
       "\\b(?<!\\b(?:rather|other) )than\\b",
-      "\\b(twice|thrice|half|\\w+ times) as \\w+ as\\b",
+      "\\b(twice|thrice|half|\\w+ times) (as \\w+ as|the \\w+ of)\\b",
       "\\b(better|best|faster|fastest|quicker|quickest|superior|leading|unmatched|unrivall?ed|unbeaten|second to none)\\b",
       "\\b(closest|tightest|smallest|lowest|highest|largest|greatest|finest|strongest|easiest|simplest|cheapest|lightest|truest)\\b",
       "\\b(outperforms?|outperformed|outdoes|beats?|surpass(es)?|exceeds?|trumps?)\\b",
       "\\bworld[- ]class\\b|\\bstate[- ]of[- ]the[- ]art\\b|\\bbest[- ]in[- ]class\\b",
       "\\b(the )?(most|least|more|less) (accurate|precise|complete|reliable|capable|advanced|powerful|trusted|realistic|detailed|faithful|efficient)\\b",
-      "\\b(smaller|lower|larger|higher|greater|fewer|tighter|closer) (error|errors|miss|misses|spread|bias|steps)\\b",
+      "\\b(smaller|lower|larger|higher|greater|fewer|tighter|closer) (\\S+ ){0,3}(error|errors|miss|misses|spread|bias|bounds|steps)\\b",
     ].join("|"),
     "gi",
   );
@@ -47,27 +47,37 @@
     }
   }
   for (const [what, text] of unlinkable) {
-    for (const match of text.matchAll(CLAIM)) {
+    for (const match of words(text).matchAll(CLAIM)) {
       problems.push({ kind: "claim", what, detail: `"${match[0]}" where no comparison can be linked: ${words(text).slice(0, 80)}` });
     }
   }
 
+  // Each block's text is read whole, with its whitespace (newlines, runs of spaces, no-break
+  // spaces) made single spaces, so a phrase split across lines or inline elements still reads as
+  // one: <b>most</b> accurate is "most accurate".
+  const groups = new Map();
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     const parent = node.parentElement;
     if (!parent || parent.closest("script, style, template")) continue;
-    const claims = [...node.data.matchAll(CLAIM)];
-    if (!claims.length) continue;
-    // The block the claim sits in; a link backs it only from inside that same block (a link in
-    // another paragraph of the same section doesn't).
     const block = parent.closest(BLOCK);
     const container = block ?? parent;
-    const links = [...container.querySelectorAll("a[href]"), ...(parent.closest("a[href]") ? [parent.closest("a[href]")] : [])];
-    const backed = links.filter((link) => link === parent.closest("a[href]") || link.closest(BLOCK) === block)
+    if (!groups.has(container)) groups.set(container, { block, text: [] });
+    groups.get(container).text.push(node.data);
+  }
+  for (const [container, { block, text }] of groups) {
+    const flat = words(text.join(""));
+    const claims = [...flat.matchAll(CLAIM)];
+    if (!claims.length) continue;
+    // A link backs the claim only from inside the same block (a link in another paragraph of the
+    // same section doesn't), or when the block is itself the link.
+    const links = [...container.querySelectorAll("a[href]"), ...(container.closest("a[href]") ? [container.closest("a[href]")] : [])];
+    const backed = links
+      .filter((link) => link === container.closest("a[href]") || link.closest(BLOCK) === block)
       .some((link) => listed.has(link.href.replace(/#.*$/, "")));
     if (!backed) {
       for (const match of claims) {
-        problems.push({ kind: "claim", what: container.tagName.toLowerCase(), detail: `"${match[0]}" with no committed comparison linked beside it: ${words(container.textContent).slice(0, 80)}` });
+        problems.push({ kind: "claim", what: container.tagName.toLowerCase(), detail: `"${match[0]}" with no committed comparison linked beside it: ${flat.slice(0, 80)}` });
       }
     }
   }
