@@ -38,7 +38,7 @@ test("each canary fails exactly the way it is built to, and the clean one passes
 
 test("every detector has a canary", () => {
   const kinds = new Set(pages.flatMap((name) => [...expected(name)]));
-  for (const kind of ["page", "box", "edge", "spill", "overlap", "covered", "pseudo", "font", "console", "claim", "origin"]) {
+  for (const kind of ["page", "box", "edge", "spill", "overlap", "covered", "shape", "pseudo", "font", "console", "claim", "origin"]) {
     assert.ok(kinds.has(kind), `no canary expects ${kind}`);
   }
 });

@@ -36,21 +36,28 @@ node checks/links.mjs                 # links and release numbers (needs a netwo
 
 - **Nothing clipped.** `check.mjs` serves `site/` locally, with the headers in `site/_headers`, and
   lays every page out at each width from 320 to 1,920 px, 40 px apart, and on both sides of each
-  breakpoint in the stylesheets, in the light and dark
-  themes (as the system asks for them) and the field theme (as a reader picks it). It fails when
-  the page is wider than the window, when a box cuts off or scrolls its content (an ellipsis, a
-  table that scrolls sideways, too much text for a fixed height), when text or a box reaches past
-  the window's edge, when two pieces of text overlap, when something is drawn over a control, when
-  a font doesn't load, when CSS draws text (which can't be measured), or when the browser reports
-  an error, such as a request the security policy refused.
-- **No claim without a comparison.** A comparative word ("better", "faster", "most accurate" and
-  the like) passes only in a block of text that links to one of the comparisons in
-  `comparisons.json`, each committed with its inputs and the tools' versions. In the page's title
-  or description, which can't carry a link, it always fails.
+  breakpoint in the stylesheets, in the light and dark themes (as the system asks for them) and the
+  field theme (as a reader picks it). It fails when:
+  - the page is wider than the window;
+  - a box cuts off or scrolls its content (an ellipsis, a table that scrolls sideways, too much
+    text for a fixed height), or a box around text cuts it (overflow, a clip-path, paint
+    containment);
+  - text or a box reaches past the window's left, right or top edge (or its bottom, when fixed to
+    the window), or a box reaches past its parent's content, into the page's margin;
+  - two pieces of text overlap, or something else, or nothing, is drawn at a control's centre;
+  - CSS draws text, or a clip-path takes a shape other than `inset()`: neither can be measured;
+  - a font doesn't load, or the browser reports an error, such as a request the security policy
+    refused.
+- **No claim without a comparison.** A comparative word or phrase ("better", "faster", "most
+  accurate", "smaller error than", "more reliable than" and the like) passes only in the same
+  block of text as a link to one of the comparisons in `comparisons.json`, each committed with
+  its inputs and the tools' versions. In text that can't carry a link (the title, the description
+  and social-card tags, and attributes such as `alt` and `aria-label`) it always fails. Plain
+  comparisons are caught too ("wider than the window"), and are worded another way.
 - **Nothing from elsewhere.** Every file the page loads comes from the site itself.
-- **The checks can fail.** Each page in `checks/canaries/` is built to fail one way, and the tests
-  require the check to find exactly that problem there, and nothing on the clean canary and the
-  site.
+- **The checks can fail.** All but two of the pages in `checks/canaries/` are built to fail one
+  way, and the tests require the check to find exactly that problem there. The other two, a clean
+  page and a claim beside its comparison, must pass, and so must the site.
 - **Links and releases.** `links.mjs` fails on a link out of the site that doesn't answer, and when
   a release number the page states isn't the latest on PyPI and crates.io.
 

@@ -5,14 +5,15 @@
 // site. `--widths 320,1280` checks only those widths (for a quick look while editing).
 
 import { readdirSync } from "node:fs";
-import { join } from "node:path";
+import { join, sep } from "node:path";
 import { ROOT, WIDTHS, check, report, serve } from "./run.mjs";
 
-// Every page of the site, so a new one can't be left out of the check.
-const PAGES = readdirSync(join(ROOT, "site"))
+// Every page of the site, in every folder, so a new one can't be left out of the check.
+const PAGES = readdirSync(join(ROOT, "site"), { recursive: true })
+  .map((name) => name.split(sep).join("/"))
   .filter((name) => name.endsWith(".html"))
   .sort()
-  .map((name) => (name === "index.html" ? "/" : `/${name}`));
+  .map((name) => (name === "index.html" ? "/" : `/${name.replace(/(^|\/)index\.html$/, "$1")}`));
 
 let widths = WIDTHS;
 const flag = process.argv.indexOf("--widths");

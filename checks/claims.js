@@ -8,7 +8,22 @@
 // title, the description and social-card tags, and attributes a reader is shown or read, such as
 // alt, title, aria-label and placeholder) fails on any claim. `COMPARISONS` is set by the caller.
 ((comparisons) => {
-  const CLAIM = /\b(better|best|faster|fastest|quicker|more accurate|most accurate|more precise|outperforms?|beats?|superior|leading|unmatched|unrivall?ed|world[- ]class|state[- ]of[- ]the[- ]art|second to none)\b/gi;
+  // Comparative and superlative words, and comparisons by "than" ("smaller error than", "more
+  // reliable than", "fewer steps than"): each says one tool does a thing better than another
+  // (ADR-209 §2: a higher error, fewer features or more steps are what "worse" means).
+  const CLAIM = new RegExp(
+    [
+      "\\b(better|best|faster|fastest|quicker|quickest|superior|leading|unmatched|unrivall?ed|unbeaten|second to none)\\b",
+      "\\b(outperforms?|outperformed|beats?|surpass(es)?|exceeds?)\\b",
+      "\\bworld[- ]class\\b|\\bstate[- ]of[- ]the[- ]art\\b",
+      "\\b(the )?(most|least|more|less) (accurate|precise|complete|reliable|capable|advanced|powerful|trusted|realistic|detailed|faithful|efficient)\\b",
+      // Not "rather than", "other than", "later than" and the like, which compare nothing.
+      "\\b(?!(?:rather|other|later|earlier|sooner|never|whether|either|neither|under|over|after) than)\\w{3,}er than\\b",
+      "\\b(more|less|fewer)\\b[^.;:!?]{0,40}?\\bthan\\b",
+      "\\b(smaller|lower|larger|higher|greater) (error|errors|miss|misses|spread|bias)\\b",
+    ].join("|"),
+    "gi",
+  );
   const BLOCK = "p, li, td, th, dd, dt, caption, figcaption, h1, h2, h3, h4, h5, h6, blockquote, summary, label, legend";
   const listed = new Set(comparisons.map((url) => url.replace(/#.*$/, "")));
   const problems = [];
@@ -41,8 +56,12 @@
     if (!parent || parent.closest("script, style, template")) continue;
     const claims = [...node.data.matchAll(CLAIM)];
     if (!claims.length) continue;
-    const container = parent.closest(BLOCK) ?? parent;
-    const backed = [...container.querySelectorAll("a[href]"), ...(container.matches("a[href]") ? [container] : []), ...(parent.closest("a[href]") ? [parent.closest("a[href]")] : [])]
+    // The block the claim sits in; a link backs it only from inside that same block (a link in
+    // another paragraph of the same section doesn't).
+    const block = parent.closest(BLOCK);
+    const container = block ?? parent;
+    const links = [...container.querySelectorAll("a[href]"), ...(parent.closest("a[href]") ? [parent.closest("a[href]")] : [])];
+    const backed = links.filter((link) => link === parent.closest("a[href]") || link.closest(BLOCK) === block)
       .some((link) => listed.has(link.href.replace(/#.*$/, "")));
     if (!backed) {
       for (const match of claims) {

@@ -57,7 +57,13 @@ export async function launch() {
   let lines = null;
   for (let waited = 0; waited < 30_000; waited += 100) {
     if (existsSync(portFile)) {
-      const text = readFileSync(portFile, "utf8").trim().split(/\r?\n/);
+      let text = [];
+      try {
+        text = readFileSync(portFile, "utf8").trim().split(/\r?\n/);
+      } catch (error) {
+        // Windows refuses the read (EBUSY, EPERM) while Chrome is still writing the file.
+        if (error.code !== "EBUSY" && error.code !== "EPERM" && error.code !== "EACCES") throw error;
+      }
       if (text.length >= 2) {
         lines = text;
         break;

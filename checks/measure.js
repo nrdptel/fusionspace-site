@@ -7,12 +7,14 @@
 //              content than room (an ellipsis, a table that scrolls sideways, a fixed height),
 //              text is cut by a clipping ancestor (overflow, clip-path, paint containment), or
 //              SVG text runs past its drawing;
-//   - edge:    an element or a line of text reaches past the window's left, right or top edge;
+//   - edge:    an element or a line of text reaches past the window's left, right or top edge
+//              (or its bottom, inside something fixed to the window);
 //   - spill:   an element reaches past its parent's content box (into the page's margin, out of
 //              a table cell), so it crowds an edge even inside the window;
 //   - overlap: two pieces of text are drawn over each other;
 //   - covered: a control (link, button, field) has something else, or nothing, at its centre,
 //              so a tap there doesn't reach it;
+//   - shape:   a clip-path shape other than inset(), which can't be measured;
 //   - pseudo:  text drawn by CSS (::before or ::after), which can't be measured; it belongs in
 //              the page;
 //   - font:    a font failed to load, so the text was measured in a fallback it won't keep.
@@ -128,10 +130,16 @@
     return box;
   };
 
-  const edge = (what, rect) => {
+  // Inside something fixed to the window, which doesn't scroll, so the window's bottom is an edge too.
+  const fixed = (el) => {
+    for (let node = el; node && node !== root; node = node.parentElement) if (style(node).position === "fixed") return true;
+    return false;
+  };
+  const edge = (what, rect, el) => {
     const top = rect.top + window.scrollY;
-    if (rect.right > view + SLACK_PX || rect.left < -SLACK_PX || top < -SLACK_PX) {
-      problems.push({ kind: "edge", what, detail: `spans ${rect.left.toFixed(1)} to ${rect.right.toFixed(1)} px across and starts at ${top.toFixed(1)} px down, in a ${view} px window` });
+    const below = el && fixed(el) && rect.bottom > window.innerHeight + SLACK_PX;
+    if (rect.right > view + SLACK_PX || rect.left < -SLACK_PX || top < -SLACK_PX || below) {
+      problems.push({ kind: "edge", what, detail: `spans ${rect.left.toFixed(1)} to ${rect.right.toFixed(1)} px across and ${top.toFixed(1)} to ${(rect.bottom + window.scrollY).toFixed(1)} px down, in a ${view} by ${window.innerHeight} px window${below ? ", fixed past its bottom" : ""}` });
       return true;
     }
     return false;
@@ -147,6 +155,14 @@
 
   // Boxes: those that cut off or scroll their content, those past an edge, text drawn by CSS.
   const elements = [...document.body.querySelectorAll("*")].filter(shown);
+  for (const el of [root, document.body]) {
+    for (const which of ["::before", "::after"]) {
+      const content = getComputedStyle(el, which).content;
+      if (content && content !== "none" && content !== "normal" && !/^(""|'')$/.test(content)) {
+        problems.push({ kind: "pseudo", what: `${el.tagName.toLowerCase()}${which}`, detail: `draws ${content.slice(0, 40)}, which can't be measured` });
+      }
+    }
+  }
   const reported = new Set();
   for (const el of elements) {
     const s = style(el);
@@ -164,6 +180,12 @@
         problems.push({ kind: "pseudo", what: `${name(el)}${which}`, detail: `draws ${content.slice(0, 40)}, which can't be measured` });
       }
     }
+    // A clip-path is measured as its inset() box. Any other shape could cut inside that box, so
+    // it is refused, but for the design system's designation tag: its polygon cuts one corner
+    // of 4 px from the top right, inside the 10 px of padding before its text.
+    if (s.clipPath !== "none" && !/^inset\(/.test(s.clipPath) && !el.matches(".fs-tag")) {
+      problems.push({ kind: "shape", what: name(el), detail: `clip-path ${s.clipPath.slice(0, 40)} can't be measured; use inset() or none` });
+    }
     const rect = meet(el.getBoundingClientRect(), clipOf(el));
     if (rect.right - rect.left <= SLACK_PX || rect.bottom - rect.top <= SLACK_PX) continue;
     // Report only the outermost element of a chain that sticks out.
@@ -173,7 +195,7 @@
       reported.add(el);
       continue;
     }
-    if (edge(name(el), rect)) {
+    if (edge(name(el), rect, el)) {
       reported.add(el);
       continue;
     }
@@ -236,7 +258,7 @@
       const lost = Math.max(rect.left - raw.left, raw.right - rect.right, rect.top - raw.top, raw.bottom - rect.bottom);
       if (lost > 1) problems.push({ kind: "box", what: words, detail: `${lost.toFixed(1)} px of it cut off by a box around it` });
       if (rect.right - rect.left <= SLACK_PX || rect.bottom - rect.top <= SLACK_PX) continue;
-      edge(words, rect);
+      edge(words, rect, parent);
       lines.push({ node: index, text: node.data.trim(), left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom });
     }
   }
