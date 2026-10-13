@@ -1,22 +1,23 @@
-// Tests of the checks themselves: `node --test checks/checks.test.mjs`. Each page in canaries/
-// is built to fail one way and names it (<meta name="expect">); the check must find exactly that
-// kind of problem there, so a detector that stops firing, or starts firing on the wrong thing,
-// fails here. The clean canary and the site itself must pass.
+// Tests of the checks themselves: `node --test checks/checks.test.mjs`, in Chrome, or in WebKit
+// with CHECK_BROWSER=webkit. Each page in canaries/ is built to fail one way and names it
+// (<meta name="expect">); the check must find exactly that kind of problem there, so a detector
+// that stops firing, or starts firing on the wrong thing, fails here. A canary built on one
+// engine's layout names what the other finds (<meta name="expect-chrome">). The clean canary and
+// the site itself must pass.
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { check, report, serve } from "./run.mjs";
-import { launch } from "./chrome.mjs";
+import { browserName, check, launch, report, serve } from "./run.mjs";
 
 const canaries = fileURLToPath(new URL("canaries/", import.meta.url));
 const pages = readdirSync(canaries).filter((name) => name.endsWith(".html")).sort();
 
 const expected = (name) => {
   const html = readFileSync(join(canaries, name), "utf8");
-  const content = html.match(/<meta name="expect" content="([^"]*)">/);
+  const content = html.match(new RegExp(`<meta name="expect-${browserName()}" content="([^"]*)">`)) ?? html.match(/<meta name="expect" content="([^"]*)">/);
   assert.ok(content, `${name} names what it expects in <meta name="expect">`);
   return new Set(content[1].split(/\s+/).filter(Boolean));
 };

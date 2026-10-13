@@ -13,6 +13,12 @@ html { scroll-padding-top: 16px; }
 .nowrap { white-space: nowrap; }
 .fs-logo img { height: 24px; width: auto; }
 
+/* An icon in a status chip, button, note or error keeps its set size. fusionspace.css gives every
+   svg max-width: 100%, and WebKit (Safari) counts an icon that may shrink like that as no width
+   at all when it sizes a table column, so the column, and the chip in it, came out the icon's
+   14 px narrower than the chip's words, which ran through its padding and over its border. */
+.fs-status svg, .fs-btn svg, .fs-error svg, .fs-note > .fs-note-head svg { max-width: none; }
+
 .intro { padding: 56px 0 40px; display: grid; gap: 20px; max-width: 760px; }
 .intro h1 { font: var(--fs-type-display); }
 @media (max-width: 479px) { .intro { padding: 40px 0 32px; } .intro h1 { font: var(--fs-type-title); } }

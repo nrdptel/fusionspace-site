@@ -6,7 +6,8 @@ import { readFile, stat } from "node:fs/promises";
 import { readFileSync, readdirSync } from "node:fs";
 import { extname, join, normalize, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
-import { launch } from "./chrome.mjs";
+import * as chrome from "./chrome.mjs";
+import * as webkit from "./webkit.mjs";
 
 const here = fileURLToPath(new URL(".", import.meta.url));
 export const ROOT = resolve(here, "..");
@@ -36,6 +37,22 @@ export const WIDTHS = (() => {
  * Auto), and field, the outdoor theme, chosen on the switch.
  */
 export const THEMES = ["light", "dark", "field"];
+
+/**
+ * The engines the page is checked in: Chrome (Blink), and WebKit, which Safari is built on. Each
+ * lays some boxes out differently, so a page that fits in one can be clipped in the other.
+ * `CHECK_BROWSER` picks one; Chrome is the default, since it needs nothing installed beyond itself.
+ */
+export const BROWSERS = { chrome, webkit };
+export function browserName() {
+  const name = process.env.CHECK_BROWSER || "chrome";
+  if (!Object.hasOwn(BROWSERS, name)) throw new Error(`CHECK_BROWSER is "${name}"; it takes ${Object.keys(BROWSERS).join(" or ")}`);
+  return name;
+}
+/** Starts the browser `CHECK_BROWSER` names (Chrome unless it says otherwise). */
+export function launch(name = browserName()) {
+  return BROWSERS[name].launch();
+}
 const HEIGHT_PX = 900;
 
 const TYPES = {
@@ -137,11 +154,12 @@ async function layout(page, url, width, theme) {
 }
 
 /**
- * Runs every check on each path under `base` and returns a list of
+ * Runs every check on each path under `base`, in the browser named (Chrome unless
+ * `CHECK_BROWSER` says otherwise), and returns a list of
  * { path, width, theme, kind, what, detail } problems; an empty list is a pass.
  */
-export async function check(base, paths, { widths = WIDTHS, themes = THEMES } = {}) {
-  const browser = await launch();
+export async function check(base, paths, { widths = WIDTHS, themes = THEMES, browser: name = browserName() } = {}) {
+  const browser = await launch(name);
   const found = [];
   try {
     const page = await browser.newPage();

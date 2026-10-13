@@ -1,0 +1,9 @@
+{
+  "name": "fusionspace-site-checks",
+  "private": true,
+  "description": "The site's checks. Chrome's need nothing installed; the WebKit pass needs Playwright's WebKit build (README, Checks).",
+  "license": "MIT OR Apache-2.0",
+  "devDependencies": {
+    "playwright-core": "1.63.0"
+  }
+}
