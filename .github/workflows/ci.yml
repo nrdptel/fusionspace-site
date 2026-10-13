@@ -46,3 +46,60 @@ jobs:
           node-version: "24"
       - name: Links and releases
         run: node checks/links.mjs
+
+  deploy:
+    # Publishes site/ to Cloudflare Pages (Direct Upload) once every check above has passed on main.
+    # Until the two secrets exist it warns and succeeds, so main stays green.
+    name: deploy
+    needs: [page, links]
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    concurrency:
+      group: deploy
+      cancel-in-progress: false
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      PROJECT: fusionspace-site
+      WRANGLER: wrangler@4.142.0
+    steps:
+      - name: Secrets present
+        id: secrets
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::warning title=The site is not deployed::Add the CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID repository secrets (README, Publishing it at fusionspace.co), then run CI on main again."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.secrets.outputs.ready == 'true'
+        uses: actions/checkout@v4
+      - if: steps.secrets.outputs.ready == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Pages project
+        # Creates the project only when Cloudflare answers that it doesn't exist (404 with its
+        # "project not found" code, 8000007); any other answer fails the job.
+        if: steps.secrets.outputs.ready == 'true'
+        run: |
+          status=$(curl -sS -o project.json -w '%{http_code}' \
+            -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/pages/projects/$PROJECT")
+          case "$status" in
+            200) echo "Project $PROJECT exists." ;;
+            404)
+              if ! grep -Eq '"code": *8000007' project.json; then
+                echo "::error::Looking up the Pages project answered 404 without the project-not-found code"
+                cat project.json; exit 1
+              fi
+              npx --yes "$WRANGLER" pages project create "$PROJECT" --production-branch=main ;;
+            *) echo "::error::Looking up the Pages project answered HTTP $status"; cat project.json; exit 1 ;;
+          esac
+          rm -f project.json
+      - name: Deploy
+        if: steps.secrets.outputs.ready == 'true'
+        run: npx --yes "$WRANGLER" pages deploy site --project-name="$PROJECT" --branch=main

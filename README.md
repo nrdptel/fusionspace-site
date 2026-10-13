@@ -19,6 +19,7 @@ no build step: `site/` is what the host serves.
 | `site/theme.js` | The theme switch: Auto, Light, Dark, Field |
 | `site/sw.js` | Removes the service worker the previous site installed |
 | `site/_headers`, `site/_redirects` | Response headers (a strict content security policy) and redirects from the previous site's pages, for Cloudflare Pages |
+| `.github/workflows/ci.yml` | The checks, and the deploy to Cloudflare Pages once they pass on `main` |
 | `site/brand/` | The FusionSpace lockup, mark and icons (not openly licensed; see [notices](THIRD-PARTY-NOTICES.md)) |
 | `comparisons.json` | The committed comparisons a claim such as "faster" may link to |
 | `checks/` | The checks below, with no dependencies beyond Node and Chrome |
@@ -67,49 +68,61 @@ node checks/links.mjs                 # links and release numbers (needs a netwo
   a release number the page states isn't the latest on PyPI and crates.io.
 
 CI runs the page check and the tests on Linux, macOS and Windows, and the link check on Linux.
+On `main`, once they pass, it deploys the site (see below).
 
 ## Publishing it at fusionspace.co
 
-The site is served by Cloudflare Pages, like the site before it, straight from this repository's
-`main` branch. Moving the domain takes these steps in the Cloudflare dashboard. Its menus move
-from time to time, so a label may differ; Cloudflare's guide to
-[Git integration](https://developers.cloudflare.com/pages/configuration/git-integration/) and to
-[custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/) has the
+The site is served by Cloudflare Pages, like the site before it. CI's `deploy` job uploads `site/`
+with [wrangler](https://developers.cloudflare.com/workers/wrangler/) (Pages' Direct Upload) after
+every check has passed on `main`; until the two secrets below exist, it warns and does nothing.
+This way, rather than Cloudflare's Git integration, a deploy only follows green checks; a project
+made with the Git integration can never be switched to Direct Upload later; and no Cloudflare app
+needs access to the GitHub account. Setting it up and moving the domain takes these steps.
+Cloudflare's menus move from time to time, so a label may differ; its guides to
+[API tokens](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/),
+[Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/) and
+[custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/) have the
 current ones.
 
-1. **Create the project.** *Workers & Pages* → *Create* → *Pages* → *Connect to Git*. If
-   Cloudflare's GitHub app can't see `nrdptel/fusionspace-site` yet, give it access to that
-   repository when it asks. Choose the repository and name the project `fusionspace-site` (its
-   address becomes `fusionspace-site.pages.dev`). Production branch `main`; framework preset
-   *None*; build command empty; build output directory `site`. *Save and Deploy*.
-2. **Look it over at `fusionspace-site.pages.dev`.** Leave the project's Web Analytics off, and
-   the zone's Rocket Loader and other injected scripts off: the page allows only its own scripts,
-   so an injected one would be refused (and would load something from another site).
-3. **Note how `www` reaches the site today.** `https://www.fusionspace.co` answers with a redirect
+1. **Create an API token.** In the Cloudflare dashboard, *My Profile* → *API Tokens* → *Create
+   Token* → *Custom token*. Permission: *Account* · *Cloudflare Pages* · *Edit*. Account
+   resources: the maintainer's account only. *Continue to summary* → *Create Token*, and copy the
+   token: it is shown once.
+2. **Add the repository's secrets.** Run `gh secret set CLOUDFLARE_API_TOKEN -R
+   nrdptel/fusionspace-site` and paste the token, then `gh secret set CLOUDFLARE_ACCOUNT_ID -R
+   nrdptel/fusionspace-site` and paste the account ID (the long hex string in the dashboard's
+   address, or on the *Workers & Pages* overview).
+3. **Run CI on `main` again** (*Actions* → *CI* → *Run workflow*, or `gh workflow run ci.yml -R
+   nrdptel/fusionspace-site --ref main`). The `deploy` job creates the `fusionspace-site` project
+   (production branch `main`) and deploys. Look it over at `fusionspace-site.pages.dev`. Leave the
+   project's Web Analytics off, and the zone's Rocket Loader and other injected scripts off: the
+   page allows only its own scripts, so an injected one would be refused (and would load
+   something from another site).
+4. **Note how `www` reaches the site today.** `https://www.fusionspace.co` answers with a redirect
    to `https://fusionspace.co`. See whether that is a rule in the zone (*Rules* → *Redirect
    Rules*, or *Bulk Redirects*) or the old Pages project's own `www` domain; you'll need it in
-   step 5.
-4. **Move the domain, in one sitting.** Between these two the domain serves nothing, and a new
+   step 6.
+5. **Move the domain, in one sitting.** Between these two the domain serves nothing, and a new
    certificate takes a few minutes:
    - In the old project (`fusionspace-landing`) → *Custom domains*, remove `fusionspace.co` and
      `www.fusionspace.co`.
    - In the new project → *Custom domains* → *Set up a custom domain* → `fusionspace.co`. Then, in
      the zone's *DNS* → *Records*, confirm the `fusionspace.co` record points at
      `fusionspace-site.pages.dev`.
-5. **Keep `www` redirecting.** If the redirect was a zone rule, nothing more is needed. If it came
+6. **Keep `www` redirecting.** If the redirect was a zone rule, nothing more is needed. If it came
    from the old project, add `www.fusionspace.co` to the new project's custom domains and add a
    Redirect Rule from `www.fusionspace.co/*` to `https://fusionspace.co/${1}` (301).
-6. **Check it, in a private window** (a browser that visited the old site may show its cached
+7. **Check it, in a private window** (a browser that visited the old site may show its cached
    copy once, until `site/sw.js` removes the old service worker): <https://fusionspace.co> shows
    `FS · SITE 001` at the top; <https://www.fusionspace.co> leads there;
    <https://fusionspace.co/projects/charge> leads to Charge; the browser's console shows no
    errors.
-7. **Retire the previous site,** in this order: on GitHub, delete `fusionspace-landing`'s
+8. **Retire the previous site,** in this order: on GitHub, delete `fusionspace-landing`'s
    `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets and archive the repository
    (*Settings* → *Archive this repository*), so its deploy workflow can't recreate a project;
    then delete its Cloudflare Pages project, or keep it a while as a fallback.
 
-To go back before step 7, reverse step 4: the old project keeps its deployments until it's
+To go back before step 8, reverse step 5: the old project keeps its deployments until it's
 deleted.
 
 ## License
