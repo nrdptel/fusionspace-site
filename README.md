@@ -22,7 +22,8 @@ no build step: `site/` is what the host serves.
 | `.github/workflows/ci.yml` | The checks, and the deploy to Cloudflare Pages once they pass on `main` |
 | `site/brand/` | The FusionSpace lockup, mark and icons (not openly licensed; see [notices](THIRD-PARTY-NOTICES.md)) |
 | `comparisons.json` | The committed comparisons a claim such as "faster" may link to |
-| `checks/` | The checks below, with no dependencies beyond Node and Chrome |
+| `checks/` | The checks below, needing Node and Chrome, and Playwright's WebKit for the WebKit pass |
+| `package.json`, `package-lock.json` | The checks' one dependency, Playwright, pinned, for the WebKit pass |
 
 ## Checks
 
@@ -35,6 +36,15 @@ node --test checks/checks.test.mjs    # the checks' own tests
 node checks/links.mjs                 # links and release numbers (needs a network)
 ```
 
+The page check and the tests also run in WebKit, the engine Safari is built on, which sizes some
+boxes differently from Chrome. That needs Playwright's WebKit build, once:
+
+```sh
+npm ci && npx playwright-core install webkit   # add --with-deps on Linux
+node checks/check.mjs --browser webkit
+CHECK_BROWSER=webkit node --test checks/checks.test.mjs
+```
+
 - **Nothing clipped.** `check.mjs` serves `site/` locally, with the headers in `site/_headers`, and
   lays every page out at each width from 320 to 1,920 px, 40 px apart, and on both sides of each
   breakpoint in the stylesheets, in the light and dark themes (as the system asks for them) and the
@@ -44,7 +54,8 @@ node checks/links.mjs                 # links and release numbers (needs a netwo
     text for a fixed height), or a box around text cuts it (overflow, a clip-path, paint
     containment);
   - text or a box reaches past the window's left, right or top edge (or its bottom, when fixed to
-    the window), or a box reaches past its parent's content, into the page's margin;
+    the window), a box reaches past its parent's content, into the page's margin, or a line of
+    text reaches past the content of the box it is set in (out of a chip, over its border);
   - two pieces of text overlap, or something else, or nothing, is drawn at a control's centre;
   - CSS draws text, or a clip-path takes a shape other than `inset()` or a corner cut off the top
     right (the designation tag's, measured against each line of text): neither can be measured;
@@ -63,11 +74,14 @@ node checks/links.mjs                 # links and release numbers (needs a netwo
 - **Nothing from elsewhere.** Every file the page loads comes from the site itself.
 - **The checks can fail.** All but two of the pages in `checks/canaries/` are built to fail one
   way, and the tests require the check to find exactly that problem there. The other two, a clean
-  page and a claim beside its comparison, must pass, and so must the site.
+  page and a claim beside its comparison, must pass, and so must the site. A canary built on one
+  engine's layout says what the other finds: `chip-icon.html`, a status chip whose icon WebKit
+  sized as nothing, fails in WebKit and passes in Chrome, which lays it out right.
 - **Links and releases.** `links.mjs` fails on a link out of the site that doesn't answer, and when
   a release number the page states isn't the latest on PyPI and crates.io.
 
-CI runs the page check and the tests on Linux, macOS and Windows, and the link check on Linux.
+CI runs the page check and the tests in Chrome on Linux, macOS and Windows and in WebKit on Linux
+and macOS, and the link check on Linux.
 On `main`, once they pass, it deploys the site (see below).
 
 ## Publishing it at fusionspace.co

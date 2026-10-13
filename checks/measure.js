@@ -10,7 +10,9 @@
 //   - edge:    an element or a line of text reaches past the window's left, right or top edge
 //              (or its bottom, inside something fixed to the window);
 //   - spill:   an element reaches past its parent's content box (into the page's margin, out of
-//              a table cell), so it crowds an edge even inside the window;
+//              a table cell), or a line of text past the content box of the box it is set in
+//              (out of a chip, through its padding and over its border), so it crowds an edge
+//              even inside the window;
 //   - overlap: two pieces of text are drawn over each other;
 //   - covered: a control (link, button, field) has something else, or nothing, at its centre,
 //              so a tap there doesn't reach it;
@@ -236,7 +238,28 @@
     }
   }
 
-  // Lines of text: cut by a box, past an edge, or drawn over other text.
+  // A line of text must stay inside the content box of the box it is set in: the nearest
+  // ancestor that isn't inline (a chip, a cell, a paragraph). Text that runs on through the
+  // padding and over the border draws outside the box around it even though nothing clips it,
+  // as when a browser sizes the box narrower than its text.
+  const spilled = new Set();
+  const spillText = (words, rect, parent) => {
+    let box = parent;
+    while (box && !page(box) && /^(inline|contents)$/.test(style(box).display)) box = box.parentElement;
+    if (!box || page(box) || spilled.has(box)) return;
+    const s = style(box);
+    if (s.overflowX !== "visible") return;
+    const inner = padding(box);
+    const left = inner.left + parseFloat(s.paddingLeft);
+    const right = inner.right - parseFloat(s.paddingRight);
+    const past = Math.max(left - rect.left, rect.right - right);
+    if (past > SPILL_PX) {
+      problems.push({ kind: "spill", what: words, detail: `reaches ${past.toFixed(1)} px past the content of ${name(box)}` });
+      spilled.add(box);
+    }
+  };
+
+  // Lines of text: cut by a box, past an edge, past the content of its box, or drawn over other text.
   const lines = [];
   const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   const range = document.createRange();
@@ -274,7 +297,7 @@
         if (into > 1) problems.push({ kind: "box", what: words, detail: `its corner is cut ${into.toFixed(1)} px deep by ${name(node)}'s chamfer` });
       }
       if (rect.right - rect.left <= SLACK_PX || rect.bottom - rect.top <= SLACK_PX) continue;
-      edge(words, rect, parent);
+      if (!edge(words, rect, parent)) spillText(words, rect, parent);
       lines.push({ node: index, text: node.data.trim(), left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom });
     }
   }

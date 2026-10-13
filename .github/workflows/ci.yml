@@ -15,8 +15,8 @@ permissions:
 jobs:
   page:
     if: github.event_name != 'schedule'
-    # The page laid out at every width from 320 to 1,920 px in each theme, with nothing clipped,
-    # and the checks' own tests, on each system a reader might use.
+    # The page laid out in Chrome at every width from 320 to 1,920 px in each theme, with nothing
+    # clipped, and the checks' own tests, on each system a reader might use.
     name: page (${{ matrix.os }})
     strategy:
       fail-fast: false
@@ -29,6 +29,34 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
+      - name: Layout, claims and origins
+        run: node checks/check.mjs
+      - name: Tests of the checks
+        run: node --test checks/checks.test.mjs
+
+  page-webkit:
+    if: github.event_name != 'schedule'
+    # The same checks in WebKit, the engine Safari is built on, which sizes some boxes differently
+    # from Chrome: on macOS, nearest to Safari itself, and on Linux. Playwright's WebKit build is
+    # pinned in package-lock.json.
+    name: page in WebKit (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      CHECK_BROWSER: webkit
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Playwright's WebKit
+        run: |
+          npm ci --no-audit --no-fund
+          npx playwright-core install ${{ runner.os == 'Linux' && '--with-deps' || '' }} webkit
       - name: Layout, claims and origins
         run: node checks/check.mjs
       - name: Tests of the checks
@@ -51,7 +79,7 @@ jobs:
     # Publishes site/ to Cloudflare Pages (Direct Upload) once every check above has passed on main.
     # Until the two secrets exist it warns and succeeds, so main stays green.
     name: deploy
-    needs: [page, links]
+    needs: [page, page-webkit, links]
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
     timeout-minutes: 10
