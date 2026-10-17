@@ -1,3 +1,9 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/brand/readme-banner-dark@2x.png">
+  <source media="(prefers-color-scheme: light)" srcset=".github/brand/readme-banner-light@2x.png">
+  <img alt="fusionspace.co · FS · SITE 001" src=".github/brand/readme-banner-dark@2x.png" width="100%">
+</picture>
+
 # fusionspace.co
 
 FusionSpace's front page, `FS · SITE 001`: what FusionSpace makes, each project and product with
@@ -20,7 +26,7 @@ no build step: `site/` is what the host serves.
 | `site/sw.js` | Removes the service worker the previous site installed |
 | `site/_headers`, `site/_redirects` | Response headers (a strict content security policy) and redirects from the previous site's pages, for Cloudflare Pages |
 | `.github/workflows/ci.yml` | The checks, and the deploy to Cloudflare Pages once they pass on `main` |
-| `site/brand/` | The FusionSpace lockup, mark and icons (not openly licensed; see [notices](THIRD-PARTY-NOTICES.md)) |
+| `site/brand/` | The FusionSpace lockup, mark, icons and link preview (not openly licensed; see [notices](THIRD-PARTY-NOTICES.md)) |
 | `comparisons.json` | The committed comparisons a claim such as "faster" may link to |
 | `checks/` | The checks below, needing Node and Chrome, and Playwright's WebKit for the WebKit pass |
 | `package.json`, `package-lock.json` | The checks' one dependency, Playwright, pinned, for the WebKit pass |
