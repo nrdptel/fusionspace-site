@@ -136,8 +136,8 @@ current ones.
    (*Settings* → *Archive this repository*), so its deploy workflow can't recreate a project;
    then delete its Cloudflare Pages project, or keep it a while as a fallback.
 
-To go back before step 8, reverse step 5: the old project keeps its deployments until it's
-deleted.
+All eight steps are done: on October 17, 2026, `fusionspace-landing` was archived, its secrets and
+Cloudflare API token removed, and its Pages project deleted, so there is no old site to go back to.
 
 ## License
 
