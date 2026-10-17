@@ -17,4 +17,6 @@ is under the repository's MIT or Apache-2.0 license.
   `kit/web/` and `product/icons/` of fusionspace-design at `f45454f`, unchanged. They are the
   project owner's, Neer Patel's, under fusionspace-design's `LICENSE` and `TRADEMARKS.md`: all
   rights reserved, and **not** covered by this repository's MIT or Apache-2.0 license. A copy of
-  this site that isn't FusionSpace's removes them and draws its own.
+  this site that isn't FusionSpace's removes them and draws its own. The link preview,
+  `site/brand/og-image.png`, and the README's banners in `.github/brand/` are
+  `kit/projects/fusionspace-co/` of fusionspace-design at `075d567`, unchanged, on the same terms.
