@@ -1,6 +1,6 @@
 # Redirects on Cloudflare Pages (https://developers.cloudflare.com/pages/configuration/redirects/).
 # The site before this one had a page per project at /projects/<id>; each now leads to the tool
-# itself, or to this page's register for the projects that were withdrawn.
+# itself, or to this page's register for the two that were never released (Loft, Debrief).
 /projects/motor-finder  https://motor.fusionspace.co  301
 /projects/charge        https://charge.fusionspace.co 301
 /projects/window        https://window.fusionspace.co 301
