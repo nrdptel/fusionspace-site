@@ -20,3 +20,5 @@ is under the repository's MIT or Apache-2.0 license.
   this site that isn't FusionSpace's removes them and draws its own. The link preview,
   `site/brand/og-image.png`, and the README's banners in `.github/brand/` are
   `kit/projects/fusionspace-co/` of fusionspace-design at `075d567`, unchanged, on the same terms.
+  So is `site/brand/logo-on-white@2x.png`, `kit/web/site/public/brand/` at `075d567`: the email
+  signature in `kit/documents/email-signature/` loads its logo from this address.
