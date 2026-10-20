@@ -115,14 +115,14 @@ number the page states isn't the latest on PyPI and crates.io.
 
 Cloudflare Pages serves the site, as it did the site before it. CI's `deploy` job uploads `site/`
 with [wrangler](https://developers.cloudflare.com/workers/wrangler/) (Pages' Direct Upload) once
-every check has passed on `main`. Until the two secrets below exist, it warns and does nothing.
+every check has passed on `main`. Without the two secrets below, it warns and does nothing.
 
 Deploying this way, rather than through Cloudflare's Git integration, means a deploy only follows
 green checks. A project made with the Git integration can never be switched to Direct Upload later.
 And no Cloudflare app needs access to the GitHub account.
 
-Setting it up and moving the domain takes the eight steps below, and all eight are done. On October
-17, 2026, `fusionspace-landing` was archived, its secrets and Cloudflare API token removed, and its
+Setting it up and moving the domain takes the eight steps below. All eight are done, and they stay
+here for a rebuild. On October 17, 2026, `fusionspace-landing` was archived, its secrets and Cloudflare API token removed, and its
 Pages project deleted, so there's no old site to go back to. Cloudflare's menus move from time to
 time, so a label may differ. Its guides to
 [API tokens](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/),
@@ -132,7 +132,7 @@ current ones.
 
 1. Create an API token. In the Cloudflare dashboard, go to *My Profile* → *API Tokens* → *Create
    Token* → *Custom token*. Set the permission to *Account* · *Cloudflare Pages* · *Edit*, and the
-   account resources to my account only. Then *Continue to summary* → *Create Token*, and copy the
+   account resources to the account that owns the site only. Then *Continue to summary* → *Create Token*, and copy the
    token, since it's shown once.
 2. Add the repository's secrets. Run `gh secret set CLOUDFLARE_API_TOKEN -R
    nrdptel/fusionspace-site` and paste the token. Then run `gh secret set CLOUDFLARE_ACCOUNT_ID -R
