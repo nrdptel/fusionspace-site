@@ -163,9 +163,9 @@ current ones.
    <https://fusionspace.co/projects/charge> leads to Charge, and the browser's console shows no
    errors.
 8. Retire the previous site, in this order. First, on GitHub, delete `fusionspace-landing`'s
-   `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets. Archive the repository (*Settings* →
-   *Archive this repository*), so its deploy workflow can't recreate a project. Then delete its
-   Cloudflare Pages project, or keep it a while as a fallback.
+   `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets and archive the repository
+   (*Settings* → *Archive this repository*). Without them, its deploy workflow can't recreate a
+   project. Then delete its Cloudflare Pages project, or keep it a while as a fallback.
 
 ## License
 
