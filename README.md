@@ -6,11 +6,13 @@
 
 # fusionspace.co
 
-FusionSpace's front page, `FS · SITE 001`: what FusionSpace makes, each project and product with
-its status, guide, docs and latest release, and the four older web tools until their rebuilds in
-FusionSpace HPR ship. It is one static page, plain HTML and CSS with one small script for the
-theme switch, built on the
-[FusionSpace design system](https://github.com/nrdptel/fusionspace-design)'s web rules. There is
+This is the source of fusionspace.co, FusionSpace's front page (`FS · SITE 001`). The page shows
+what I make under the name FusionSpace. It lists each project and product with its status, guide,
+docs and latest release. The four older web tools stay on it until their rebuilds in FusionSpace
+HPR ship.
+
+It's one static page: plain HTML and CSS, with one small script for the theme switch. It's built on
+the [FusionSpace design system](https://github.com/nrdptel/fusionspace-design)'s web rules. There's
 no build step: `site/` is what the host serves.
 
 ## What's here
@@ -51,99 +53,119 @@ node checks/check.mjs --browser webkit
 CHECK_BROWSER=webkit node --test checks/checks.test.mjs
 ```
 
-- **Nothing clipped.** `check.mjs` serves `site/` locally, with the headers in `site/_headers`, and
-  lays every page out at each width from 320 to 1,920 px, 40 px apart, and on both sides of each
-  breakpoint in the stylesheets, in the light and dark themes (as the system asks for them) and the
-  field theme (as a reader picks it). It fails when:
-  - the page is wider than the window;
-  - a box cuts off or scrolls its content (an ellipsis, a table that scrolls sideways, too much
-    text for a fixed height), or a box around text cuts it (overflow, a clip-path, paint
-    containment);
-  - text or a box reaches past the window's left, right or top edge (or its bottom, when fixed to
-    the window), a box reaches past its parent's content, into the page's margin, or a line of
-    text reaches past the content of the box it is set in (out of a chip, over its border);
-  - two pieces of text overlap, or something else, or nothing, is drawn at a control's centre;
-  - CSS draws text, or a clip-path takes a shape other than `inset()` or a corner cut off the top
-    right (the designation tag's, measured against each line of text): neither can be measured;
-  - a font doesn't load, or the browser reports an error, such as a request the security policy
-    refused.
-- **No claim without a comparison.** Anything that compares is a claim: any "than" ("smaller
-  error than", "more reliable than"), any multiple wherever it stands ("twice", "doubles", "ten
-  times", "10×", "one third"), and words such as "better", "fastest", "most accurate" or
-  "outperforms". A claim passes only in the same block of
-  text as a link to one of the comparisons in `comparisons.json`, each committed with its inputs
-  and the tools' versions. In text that can't carry a link (the title, the description and
-  social-card tags, and attributes such as `alt` and `aria-label`) it always fails. Plain
-  comparisons and multiples are caught too ("wider than the window", "half the flights") and are
-  worded another way; only "rather
-  than" and "other than" pass.
-- **Nothing from elsewhere.** Every file the page loads comes from the site itself.
-- **The checks can fail.** All but two of the pages in `checks/canaries/` are built to fail one
-  way, and the tests require the check to find exactly that problem there. The other two, a clean
-  page and a claim beside its comparison, must pass, and so must the site. A canary built on one
-  engine's layout says what the other finds: `chip-icon.html`, a status chip whose icon WebKit
-  sized as nothing, fails in WebKit and passes in Chrome, which lays it out right.
-- **Links and releases.** `links.mjs` fails on a link out of the site that doesn't answer, and when
-  a release number the page states isn't the latest on PyPI and crates.io.
+CI runs the page check and the tests in Chrome on Linux, macOS and Windows, and in WebKit on Linux
+and macOS. It runs the link check on Linux. On `main`, once they pass, it deploys the site (see
+below).
 
-CI runs the page check and the tests in Chrome on Linux, macOS and Windows and in WebKit on Linux
-and macOS, and the link check on Linux.
-On `main`, once they pass, it deploys the site (see below).
+### Nothing clipped
+
+`check.mjs` serves `site/` locally, with the headers in `site/_headers`. It lays every page out at
+each width from 320 to 1,920 px, 40 px apart, and on both sides of each breakpoint in the
+stylesheets. It does that in the light and dark themes, as the system asks for them, and in the
+field theme, as a reader picks it. It fails when:
+
+- the page is wider than the window;
+- a box cuts off or scrolls its content: an ellipsis, a table that scrolls sideways, too much text
+  for a fixed height;
+- a box around text cuts it, by overflow, a clip-path or paint containment;
+- text or a box reaches past the window's left, right or top edge, or past its bottom when it's
+  fixed to the window;
+- a box reaches past its parent's content, into the page's margin;
+- a line of text reaches past the content of the box it's set in, out of a chip or over its border;
+- two pieces of text overlap, or something else, or nothing, is drawn at a control's centre;
+- CSS draws text, or a clip-path takes a shape other than `inset()` or a corner cut off the top
+  right, since neither can be measured. The corner cut is the designation tag's, and it's measured
+  against each line of text;
+- a font doesn't load, or the browser reports an error, such as a request the security policy
+  refused.
+
+### No claim without a comparison
+
+Anything that compares is a claim. That's any "than" ("smaller error than", "more reliable than")
+and any multiple, wherever it stands ("twice", "doubles", "ten times", "10×", "one third"). Words
+such as "better", "fastest", "most accurate" or "outperforms" are claims too. A claim passes only
+in the same block of text as a link to one of the comparisons in `comparisons.json`. Each of those
+is committed with its inputs and the tools' versions.
+
+Some text can't carry a link: the title, the description and social-card tags, and attributes such
+as `alt` and `aria-label`. A claim there always fails. Plain comparisons and multiples are caught
+too ("wider than the window", "half the flights"), so I word them another way. Only "rather than"
+and "other than" pass.
+
+### Nothing from elsewhere
+
+Every file the page loads comes from the site itself.
+
+### The checks can fail
+
+All but two of the pages in `checks/canaries/` are built to fail one way. The tests require the
+check to find exactly that problem there. The other two, a clean page and a claim beside its
+comparison, must pass, and so must the site.
+
+A canary built on one engine's layout says what the other finds. `chip-icon.html` is a status chip
+whose icon WebKit sized as nothing. It fails in WebKit and passes in Chrome, which lays it out
+right.
+
+### Links and releases
+
+`links.mjs` fails on a link out of the site that doesn't answer. It also fails when a release
+number the page states isn't the latest on PyPI and crates.io.
 
 ## Publishing it at fusionspace.co
 
-The site is served by Cloudflare Pages, like the site before it. CI's `deploy` job uploads `site/`
-with [wrangler](https://developers.cloudflare.com/workers/wrangler/) (Pages' Direct Upload) after
-every check has passed on `main`; until the two secrets below exist, it warns and does nothing.
-This way, rather than Cloudflare's Git integration, a deploy only follows green checks; a project
-made with the Git integration can never be switched to Direct Upload later; and no Cloudflare app
-needs access to the GitHub account. Setting it up and moving the domain takes these steps.
-Cloudflare's menus move from time to time, so a label may differ; its guides to
+Cloudflare Pages serves the site, as it did the site before it. CI's `deploy` job uploads `site/`
+with [wrangler](https://developers.cloudflare.com/workers/wrangler/) (Pages' Direct Upload) once
+every check has passed on `main`. Without the two secrets below, it warns and does nothing.
+
+Deploying this way, rather than through Cloudflare's Git integration, means a deploy only follows
+green checks. A project made with the Git integration can never be switched to Direct Upload later.
+And no Cloudflare app needs access to the GitHub account.
+
+Setting it up and moving the domain takes the eight steps below. All eight are done, and they stay
+here for a rebuild. On October 17, 2026, `fusionspace-landing` was archived, its secrets and Cloudflare API token removed, and its
+Pages project deleted, so there's no old site to go back to. Cloudflare's menus move from time to
+time, so a label may differ. Its guides to
 [API tokens](https://developers.cloudflare.com/fundamentals/api/get-started/create-token/),
 [Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/) and
 [custom domains](https://developers.cloudflare.com/pages/configuration/custom-domains/) have the
 current ones.
 
-1. **Create an API token.** In the Cloudflare dashboard, *My Profile* → *API Tokens* → *Create
-   Token* → *Custom token*. Permission: *Account* · *Cloudflare Pages* · *Edit*. Account
-   resources: the maintainer's account only. *Continue to summary* → *Create Token*, and copy the
-   token: it is shown once.
-2. **Add the repository's secrets.** Run `gh secret set CLOUDFLARE_API_TOKEN -R
-   nrdptel/fusionspace-site` and paste the token, then `gh secret set CLOUDFLARE_ACCOUNT_ID -R
-   nrdptel/fusionspace-site` and paste the account ID (the long hex string in the dashboard's
-   address, or on the *Workers & Pages* overview).
-3. **Run CI on `main` again** (*Actions* → *CI* → *Run workflow*, or `gh workflow run ci.yml -R
+1. Create an API token. In the Cloudflare dashboard, go to *My Profile* → *API Tokens* → *Create
+   Token* → *Custom token*. Set the permission to *Account* · *Cloudflare Pages* · *Edit*, and the
+   account resources to the account that owns the site only. Then *Continue to summary* → *Create Token*, and copy the
+   token, since it's shown once.
+2. Add the repository's secrets. Run `gh secret set CLOUDFLARE_API_TOKEN -R
+   nrdptel/fusionspace-site` and paste the token. Then run `gh secret set CLOUDFLARE_ACCOUNT_ID -R
+   nrdptel/fusionspace-site` and paste the account ID. That's the long hex string in the
+   dashboard's address, or on the *Workers & Pages* overview.
+3. Run CI on `main` again (*Actions* → *CI* → *Run workflow*, or `gh workflow run ci.yml -R
    nrdptel/fusionspace-site --ref main`). The `deploy` job creates the `fusionspace-site` project
    (production branch `main`) and deploys. Look it over at `fusionspace-site.pages.dev`. Leave the
-   project's Web Analytics off, and the zone's Rocket Loader and other injected scripts off: the
-   page allows only its own scripts, so an injected one would be refused (and would load
-   something from another site).
-4. **Note how `www` reaches the site today.** `https://www.fusionspace.co` answers with a redirect
-   to `https://fusionspace.co`. See whether that is a rule in the zone (*Rules* → *Redirect
-   Rules*, or *Bulk Redirects*) or the old Pages project's own `www` domain; you'll need it in
-   step 6.
-5. **Move the domain, in one sitting.** Between these two the domain serves nothing, and a new
+   project's Web Analytics off, and leave the zone's Rocket Loader and other injected scripts off
+   too. The page allows only its own scripts, so an injected one would be refused, and it would
+   load something from another site.
+4. Note how `www` reaches the site today. `https://www.fusionspace.co` answers with a redirect to
+   `https://fusionspace.co`. See whether that's a rule in the zone (*Rules* → *Redirect Rules*, or
+   *Bulk Redirects*) or the old Pages project's own `www` domain. You'll need it in step 6.
+5. Move the domain, in one sitting. Between these two the domain serves nothing, and a new
    certificate takes a few minutes:
    - In the old project (`fusionspace-landing`) → *Custom domains*, remove `fusionspace.co` and
      `www.fusionspace.co`.
    - In the new project → *Custom domains* → *Set up a custom domain* → `fusionspace.co`. Then, in
      the zone's *DNS* → *Records*, confirm the `fusionspace.co` record points at
      `fusionspace-site.pages.dev`.
-6. **Keep `www` redirecting.** If the redirect was a zone rule, nothing more is needed. If it came
-   from the old project, add `www.fusionspace.co` to the new project's custom domains and add a
+6. Keep `www` redirecting. If the redirect was a zone rule, nothing more is needed. If it came from
+   the old project, add `www.fusionspace.co` to the new project's custom domains. Then add a
    Redirect Rule from `www.fusionspace.co/*` to `https://fusionspace.co/${1}` (301).
-7. **Check it, in a private window** (a browser that visited the old site may show its cached
-   copy once, until `site/sw.js` removes the old service worker): <https://fusionspace.co> shows
-   `FS · SITE 001` at the top; <https://www.fusionspace.co> leads there;
-   <https://fusionspace.co/projects/charge> leads to Charge; the browser's console shows no
+7. Check it in a private window. A browser that visited the old site may show its cached copy
+   once, until `site/sw.js` removes the old service worker. <https://fusionspace.co> shows
+   `FS · SITE 001` at the top, and <https://www.fusionspace.co> leads there.
+   <https://fusionspace.co/projects/charge> leads to Charge, and the browser's console shows no
    errors.
-8. **Retire the previous site,** in this order: on GitHub, delete `fusionspace-landing`'s
+8. Retire the previous site, in this order. First, on GitHub, delete `fusionspace-landing`'s
    `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets and archive the repository
-   (*Settings* → *Archive this repository*), so its deploy workflow can't recreate a project;
-   then delete its Cloudflare Pages project, or keep it a while as a fallback.
-
-All eight steps are done: on October 17, 2026, `fusionspace-landing` was archived, its secrets and
-Cloudflare API token removed, and its Pages project deleted, so there is no old site to go back to.
+   (*Settings* → *Archive this repository*). Without them, its deploy workflow can't recreate a
+   project. Then delete its Cloudflare Pages project, or keep it a while as a fallback.
 
 ## License
 
