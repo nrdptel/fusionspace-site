@@ -8,18 +8,7 @@
   --fs-font-display: 'Cascadia Mono', ui-monospace, Menlo, monospace;
   --fs-font-text: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --fs-font-mono: 'Cascadia Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-  --fs-type-label: 400 12px/16px var(--fs-font-mono);  /* + uppercase, 0.06em tracking */
-  --fs-type-small: 400 14px/20px var(--fs-font-text);
-  --fs-type-body: 400 16px/24px var(--fs-font-text);
-  --fs-type-lead: 400 20px/28px var(--fs-font-text);
-  --fs-type-subtitle: 600 20px/24px var(--fs-font-display);
-  --fs-type-heading: 600 14px/20px var(--fs-font-display);  /* + uppercase, 0.04em tracking */
-  --fs-type-title: 600 28px/32px var(--fs-font-display);
-  --fs-type-display: 600 40px/44px var(--fs-font-display);
-  --fs-type-hero: 600 56px/60px var(--fs-font-display);
-  --fs-type-readout: 400 28px/32px var(--fs-font-mono);
-  --fs-type-readout-l: 400 40px/44px var(--fs-font-mono);
-  --fs-type-code: 400 14px/20px var(--fs-font-mono);
+  --fs-text: 1rem;
   --fs-space-2: 2px;
   --fs-space-4: 4px;
   --fs-space-8: 8px;
@@ -45,9 +34,27 @@
   --fs-target-field: 96px;
   --fs-target-glove: 128px;
   --fs-target-field-pointer: 64px;
-  --fs-measure: 68ch;
+  --fs-content: 1120px;
   --fs-gradient: linear-gradient(90deg,#DA7C30 0%,#D07D7A 35%,#A188CB 65%,#768DF5 100%);
   --fs-hatch: repeating-linear-gradient(-45deg, var(--fs-ink-faint) 0 1px, transparent 1px 6px);
+}
+
+/* A reading page (documentation, a report, an article): the type scale grows with the window, x1 up to 1024 px
+   and x1.125 from 1600 px (body 16 to 18 px). Apps, tools and device screens keep the root's sizes. */
+.fs-read { --fs-text: clamp(1rem, 0.777778rem + 0.347222vw, 1.125rem); }
+:root, .fs-read {
+  --fs-type-label: 400 calc(var(--fs-text) * 0.75)/var(--fs-text) var(--fs-font-mono);  /* + uppercase, 0.06em tracking */
+  --fs-type-small: 400 calc(var(--fs-text) * 0.875)/calc(var(--fs-text) * 1.25) var(--fs-font-text);
+  --fs-type-body: 400 var(--fs-text)/calc(var(--fs-text) * 1.5) var(--fs-font-text);
+  --fs-type-lead: 400 calc(var(--fs-text) * 1.25)/calc(var(--fs-text) * 1.75) var(--fs-font-text);
+  --fs-type-subtitle: 600 calc(var(--fs-text) * 1.25)/calc(var(--fs-text) * 1.5) var(--fs-font-display);
+  --fs-type-heading: 600 calc(var(--fs-text) * 0.875)/calc(var(--fs-text) * 1.25) var(--fs-font-display);  /* + uppercase, 0.04em tracking */
+  --fs-type-title: 600 calc(var(--fs-text) * 1.75)/calc(var(--fs-text) * 2) var(--fs-font-display);
+  --fs-type-display: 600 calc(var(--fs-text) * 2.5)/calc(var(--fs-text) * 2.75) var(--fs-font-display);
+  --fs-type-hero: 600 calc(var(--fs-text) * 3.5)/calc(var(--fs-text) * 3.75) var(--fs-font-display);
+  --fs-type-readout: 400 calc(var(--fs-text) * 1.75)/calc(var(--fs-text) * 2) var(--fs-font-mono);
+  --fs-type-readout-l: 400 calc(var(--fs-text) * 2.5)/calc(var(--fs-text) * 2.75) var(--fs-font-mono);
+  --fs-type-code: 400 calc(var(--fs-text) * 0.875)/calc(var(--fs-text) * 1.25) var(--fs-font-mono);
 }
 
 :root, :root[data-theme="light"] {
@@ -206,10 +213,21 @@ body {
 }
 :where(h1, h2, h3, h4, p, ul, ol, dl, figure, blockquote, table) { margin: 0; }
 :where(h1, h2, h3) { font-family: var(--fs-font-display); font-weight: 600; text-wrap: balance; }
-h1 { font: var(--fs-type-title); letter-spacing: -0.005em; }
-h2 { font: var(--fs-type-subtitle); }
-h3 { font: var(--fs-type-heading); text-transform: uppercase; letter-spacing: 0.04em; }
-p, li { max-width: var(--fs-measure); text-wrap: pretty; }
+h1 { font: var(--fs-type-title); font-stretch: var(--fs-head-stretch); letter-spacing: var(--fs-head-track, -0.005em); }
+h2 { font: var(--fs-type-subtitle); font-stretch: var(--fs-head-stretch); letter-spacing: var(--fs-head-track, 0); }
+h3 { font: var(--fs-type-heading); text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.04em); }
+p, li { text-wrap: pretty; }
+/* Equations (foundations.md, Type, Math): MathML in the math face, a display equation centered with a line's space
+   around it, aligned rows with MathML Core's cell padding. */
+math { font-family: 'NewCM Math Subset', math; font-size: 1.1em; }
+.fs-equation { margin: 1em 0; text-align: center; }
+.fs-equation > math[display="block"] { margin: 0; }
+mtd { padding: 0.5ex 0.4em; }
+mtr > mtd:first-child { padding-inline-start: 0; }
+mtr > mtd:last-child { padding-inline-end: 0; }
+/* A formula in a table's head keeps its letters' case, and the body's math size, so its scripts stay at 12 px or
+   more (1.1 times the body text, `--fs-text`); `mi` keeps MathML's own italic, which it sets for itself. */
+th math { font-size: calc(var(--fs-text) * 1.1); text-transform: none; letter-spacing: normal; }
 a { color: var(--fs-action); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
 :focus-visible { outline: 2px solid var(--fs-focus); outline-offset: 2px; }
@@ -222,12 +240,36 @@ img, svg, video { max-width: 100%; }
 .fs-num, .fs-mono { font-family: var(--fs-font-mono); font-variant-numeric: tabular-nums slashed-zero; }
 .fs-muted { color: var(--fs-ink-muted); }
 .fs-small { font: var(--fs-type-small); }
-.fs-label { font: var(--fs-type-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--fs-ink-muted); }
+.fs-label { font: var(--fs-type-label); text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); color: var(--fs-ink-muted); }
 .fs-lead { font: var(--fs-type-lead); color: var(--fs-ink-muted); }
 .fs-label .u, .fs-table th .u, .fs-field > label .u, .fs-status .u, .fs-titleblock .k .u { text-transform: none; letter-spacing: 0; }
 .fs-scroll-hint { display: none; font: var(--fs-type-small); color: var(--fs-ink-muted); }
 @media (max-width: 640px) { .fs-scroll-hint { display: block; } }
 .fs-visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ------------------------------------------------------------------ levels (principles.md, Three levels)
+   A record wears the whole drawing, and is what a page is without `data-level`. A tool (`data-level="tool"`) and a front
+   page (`data-level="front"`) set headings in Archivo's wide cut, and labels, controls and chips in Archivo, sentence
+   case. Numbers, units and code stay in Cascadia Mono. The attribute works on <html> or on any element inside. */
+:root, [data-level="record"] {
+  --fs-head-stretch: normal; --fs-case: uppercase; --fs-font-ui: var(--fs-font-mono); --fs-ui-size: 14px; --fs-chip-size: 12px;
+  --fs-font-chart: var(--fs-font-mono);
+}
+:is([data-level="front"], [data-level="tool"]), :is([data-level="front"], [data-level="tool"]) .fs-read {
+  --fs-font-display: var(--fs-font-text);
+  --fs-head-stretch: 118%; --fs-head-track: -0.012em;
+  --fs-case: none; --fs-case-track: 0; --fs-signal-track: 0.04em;
+  --fs-font-ui: var(--fs-font-text); --fs-ui-size: 15px; --fs-chip-size: 13px;
+  --fs-font-chart: var(--fs-font-text);
+  --fs-type-label: 600 calc(var(--fs-text) * 0.8125)/calc(var(--fs-text) * 1.125) var(--fs-font-text);
+  --fs-type-heading: 600 var(--fs-text)/calc(var(--fs-text) * 1.5) var(--fs-font-text);
+  --fs-type-subtitle: 600 clamp(1.5625rem, 1.25rem + 1vw, 1.9375rem)/1.15 var(--fs-font-text);
+  --fs-type-title: 600 clamp(2rem, 1.6rem + 1.4vw, 2.4375rem)/1.1 var(--fs-font-text);
+  --fs-type-display: 600 clamp(2.25rem, 1.6rem + 2.2vw, 3.0625rem)/1.04 var(--fs-font-text);
+}
+:is([data-level="front"], [data-level="tool"]) .fs-header { border-bottom: 0; }
+:is([data-level="front"], [data-level="tool"]) .fs-note > .fs-note-head { font-size: 14px; line-height: 20px; }
+:is([data-level="front"], [data-level="tool"]) .fs-note:is([data-kind="caution"], [data-kind="warning"], [data-kind="danger"], [data-kind="notice"]) > .fs-note-head { font-size: 13px; line-height: 16px; }
 
 /* ------------------------------------------------------------------ page frame: strip, header, sheets, title block */
 .fs-strip { height: 4px; background: var(--fs-gradient); }
@@ -242,7 +284,7 @@ img, svg, video { max-width: 100%; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme]) .fs-logo .on-dark { display: block; } :root:not([data-theme]) .fs-logo .on-light { display: none; } }
 :root[data-theme="dark"] .fs-logo .on-dark { display: block; }
 :root[data-theme="dark"] .fs-logo .on-light { display: none; }
-.fs-nav { display: flex; gap: 4px 20px; flex-wrap: wrap; font: 400 14px/20px var(--fs-font-mono); }
+.fs-nav { display: flex; gap: 4px 20px; flex-wrap: wrap; font: 400 var(--fs-ui-size)/20px var(--fs-font-ui); }
 .fs-nav a { color: var(--fs-ink-muted); text-decoration: none; padding: 2px 0; min-height: 24px; }
 .fs-nav a:hover, .fs-nav a[aria-current="page"] { color: var(--fs-ink); box-shadow: inset 0 -2px 0 var(--fs-ink); }
 
@@ -269,6 +311,22 @@ img, svg, video { max-width: 100%; }
 .fs-titleblock .wide { grid-column: span 2; }
 .fs-titleblock .mark svg { height: 20px; width: auto; }
 
+/* A tool's name beside the lockup, after a 1 px rule. */
+.fs-toolname { display: flex; align-items: center; gap: 14px; color: var(--fs-ink); text-decoration: none;
+  font: 600 17px/24px var(--fs-font-text); font-stretch: var(--fs-head-stretch); }
+.fs-toolname::before { content: ""; width: 1px; height: 22px; background: var(--fs-rule-strong); }
+.fs-brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+/* A tool's part: the sheet's 2 px rule and its name, without the rail. Numbered (.fs-step) only when the parts are steps. */
+.fs-part { border-top: 2px solid var(--fs-ink); padding: 20px 0 56px; display: grid; gap: 24px; min-width: 0; }
+.fs-part > h2 { display: flex; gap: 12px; align-items: baseline; }
+.fs-step { font: 600 var(--fs-text)/1 var(--fs-font-text); font-stretch: normal; color: var(--fs-ink-muted); font-variant-numeric: tabular-nums; }
+/* A tool's footer: one line holding what a record's title block holds. */
+.fs-foot { border-top: 1px solid var(--fs-rule); margin-top: 8px; padding: 18px 0 8px; display: flex; flex-wrap: wrap; gap: 8px 28px;
+  align-items: center; font: var(--fs-type-small); color: var(--fs-ink-muted); }
+.fs-foot .fs-foot-name { display: flex; gap: 8px; align-items: center; color: var(--fs-ink); font-weight: 600; }
+.fs-foot .fs-foot-name svg { height: 20px; width: auto; }
+.fs-foot .fs-push { margin-left: auto; }
+
 /* Designation tag: FS · SW · TOOL 002. The one chamfered corner points where the mark points (up and right, 45 degrees). */
 .fs-tag { --c: var(--fs-chamfer-s); display: inline-flex; width: fit-content; white-space: nowrap; align-items: center; gap: 6px; padding: 2px 10px 2px 8px; min-height: 24px;
   font: 400 12px/16px var(--fs-font-mono); letter-spacing: 0.04em; color: var(--fs-ink); border: 1px solid var(--fs-rule-strong);
@@ -279,7 +337,7 @@ img, svg, video { max-width: 100%; }
 
 /* ------------------------------------------------------------------ controls */
 .fs-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px;
-  font: 600 14px/20px var(--fs-font-mono); letter-spacing: 0; text-decoration: none; cursor: pointer; white-space: nowrap;
+  font: 600 var(--fs-ui-size)/20px var(--fs-font-ui); letter-spacing: 0; text-decoration: none; cursor: pointer; white-space: nowrap;
   color: var(--fs-canvas); background: var(--fs-ink); border: 2px solid var(--fs-ink); border-radius: 0;
   transition: background-color var(--fs-dur-quick) var(--fs-ease-standard), border-color var(--fs-dur-quick) var(--fs-ease-standard); }
 .fs-btn:hover { background: var(--fs-action); border-color: var(--fs-action); color: var(--fs-on-action); }
@@ -297,7 +355,7 @@ img, svg, video { max-width: 100%; }
 @media (pointer: coarse) { .fs-btn[data-size="field"] { min-height: var(--fs-target-field); } }
 
 .fs-field { display: grid; gap: 6px; align-content: start; }
-.fs-field > label, .fs-field > .fs-field-label { font: var(--fs-type-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--fs-ink-muted); }
+.fs-field > label, .fs-field > .fs-field-label { font: var(--fs-type-label); text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); color: var(--fs-ink-muted); }
 .fs-input, .fs-select { width: 100%; min-height: 44px; padding: 0 12px; font: 400 16px/24px var(--fs-font-text); color: var(--fs-ink);
   background: var(--fs-surface); border: 1px solid var(--fs-rule-strong); border-radius: 0; appearance: none; }
 .fs-input[inputmode="decimal"], .fs-input[inputmode="numeric"], .fs-input.fs-num { font-family: var(--fs-font-mono); font-variant-numeric: tabular-nums slashed-zero; }
@@ -320,13 +378,13 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--fs-ink); width
 
 /* Segmented control: one choice of a few (units, theme, flight). */
 .fs-seg { display: inline-flex; border: 1px solid var(--fs-rule-strong); }
-.fs-seg button { min-height: 44px; padding: 0 12px; font: 400 14px/20px var(--fs-font-mono); color: var(--fs-ink-muted); background: transparent;
+.fs-seg button { min-height: 44px; padding: 0 12px; font: 400 var(--fs-ui-size)/20px var(--fs-font-ui); color: var(--fs-ink-muted); background: transparent;
   border: 0; border-left: 1px solid var(--fs-rule); cursor: pointer; }
 .fs-seg button:first-child { border-left: 0; }
 .fs-seg button[aria-pressed="true"], .fs-seg button[aria-selected="true"] { background: var(--fs-ink); color: var(--fs-canvas); }
 
 .fs-tabs { display: flex; gap: 24px; border-bottom: 1px solid var(--fs-rule); overflow-x: auto; }
-.fs-tabs [role="tab"] { padding: 10px 0; font: 400 14px/20px var(--fs-font-mono); color: var(--fs-ink-muted); background: none; border: 0;
+.fs-tabs [role="tab"] { padding: 10px 0; font: 400 var(--fs-ui-size)/20px var(--fs-font-ui); color: var(--fs-ink-muted); background: none; border: 0;
   border-bottom: 2px solid transparent; margin-bottom: -1px; cursor: pointer; white-space: nowrap; }
 .fs-tabs [role="tab"][aria-selected="true"] { color: var(--fs-ink); border-bottom-color: var(--fs-ink); }
 
@@ -347,13 +405,31 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--fs-ink); width
 .fs-table { width: 100%; border-collapse: collapse; font: var(--fs-type-body); }
 .fs-table caption { text-align: left; caption-side: top; padding-bottom: 8px; font: var(--fs-type-small); color: var(--fs-ink-muted);
   position: sticky; left: 0; max-width: min(100%, calc(100vw - 32px)); }
-.fs-table th { font: var(--fs-type-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--fs-ink-muted); text-align: left;
+.fs-table th { font: var(--fs-type-label); text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); color: var(--fs-ink-muted); text-align: left;
   padding: 8px 12px 8px 0; border-bottom: 2px solid var(--fs-ink); vertical-align: bottom; }
 .fs-table td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--fs-rule); vertical-align: top; }
 .fs-table td.fs-mono { white-space: nowrap; }
 .fs-table .n { text-align: right; font-family: var(--fs-font-mono); font-variant-numeric: tabular-nums slashed-zero; white-space: nowrap; }
 .fs-table th.n { font: var(--fs-type-label); }
 .fs-table tbody tr:hover { background: color-mix(in oklab, var(--fs-action) 6%, transparent); }
+
+/* A table that becomes one block per row on a phone, each cell with its column's name (an .fs-cell-label in the cell),
+   instead of a table to scroll sideways. */
+.fs-table .fs-cell-label { display: none; }
+@media (max-width: 599px) {
+  .fs-table-wrap:has(> .fs-table[data-stack]) { overflow: visible; }
+  .fs-table-wrap:has(> .fs-table[data-stack]) + .fs-scroll-hint, .fs-scroll-hint:has(+ .fs-table-wrap > .fs-table[data-stack]) { display: none; }
+  .fs-table[data-stack] thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .fs-table[data-stack], .fs-table[data-stack] tbody { display: block; }
+  .fs-table[data-stack] caption { display: block; width: 100%; max-width: none; position: static; }
+  .fs-table[data-stack] tr { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 16px; padding: 14px 0; border-bottom: 1px solid var(--fs-rule); }
+  .fs-table[data-stack] td { display: grid; gap: 2px; align-content: start; padding: 0; border: 0; text-align: left; white-space: normal; }
+  .fs-table[data-stack] td:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .fs-table[data-stack] .fs-cell-label { display: block; font: var(--fs-type-label); text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); color: var(--fs-ink-muted); }
+  .fs-table[data-stack] .fs-status { justify-self: start; }
+}
+/* Working shown in a narrow panel ("Show the math") wraps inside its box instead of scrolling it. */
+pre.fs-wrap { white-space: break-spaces; overflow-wrap: anywhere; overflow: visible; }
 
 .fs-balloon { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 1px solid currentColor; border-radius: 50%;
   font: 400 12px/1 var(--fs-font-mono); flex: none; }
@@ -362,8 +438,10 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--fs-ink); width
 .fs-dim::before, .fs-dim::after { content: ""; flex: 1; border-top: 1px solid currentColor; }
 
 /* ------------------------------------------------------------------ status: word + shape + color, never color alone */
-.fs-status { display: inline-flex; align-items: center; gap: 6px; min-height: 24px; padding: 2px 8px; font: 600 12px/16px var(--fs-font-mono);
-  text-transform: uppercase; letter-spacing: 0.06em; border: 1px solid transparent; white-space: nowrap; }
+.fs-status { display: inline-flex; align-items: center; gap: 6px; min-height: 24px; padding: 2px 8px; font: 600 var(--fs-chip-size)/16px var(--fs-font-ui);
+  text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); border: 1px solid transparent; white-space: nowrap; }
+/* A single-word state (ARMED, SAFE) keeps its capitals at every level. */
+.fs-status[data-caps] { text-transform: uppercase; letter-spacing: 0.06em; }
 .fs-status svg { width: 14px; height: 14px; flex: none; }
 .fs-status[data-state="danger"]  { background: var(--fs-danger-fill);  color: var(--fs-on-danger-fill); }
 .fs-status[data-state="caution"] { background: var(--fs-caution-fill); color: var(--fs-on-caution-fill); }
@@ -377,8 +455,11 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--fs-ink); width
 
 /* Notes follow the safety-label layout: the signal word in its own panel above the message (ANSI Z535.4). */
 .fs-note { border: 1px solid var(--fs-rule-strong); background: var(--fs-surface); }
-.fs-note > .fs-note-head { display: flex; align-items: center; gap: 8px; padding: 4px 12px; font: 600 12px/16px var(--fs-font-mono);
-  text-transform: uppercase; letter-spacing: 0.08em; border-bottom: 1px solid var(--fs-rule-strong); color: var(--fs-ink-muted); }
+.fs-note > .fs-note-head { display: flex; align-items: center; gap: 8px; padding: 4px 12px; font: 600 var(--fs-chip-size)/16px var(--fs-font-ui);
+  text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.08em); border-bottom: 1px solid var(--fs-rule-strong); color: var(--fs-ink-muted); }
+/* Signal words keep the safety-label capitals at every level (ANSI Z535); on front pages and tools, in the wide cut. */
+.fs-note:is([data-kind="caution"], [data-kind="warning"], [data-kind="danger"], [data-kind="notice"]) > .fs-note-head {
+  text-transform: uppercase; letter-spacing: var(--fs-signal-track, 0.08em); font-stretch: var(--fs-head-stretch); }
 .fs-note > .fs-note-head svg { width: 14px; height: 14px; }
 .fs-note > .fs-note-body { padding: 12px; display: grid; gap: 8px; }
 .fs-note[data-kind="caution"] { border-color: var(--fs-caution-fill); }
@@ -412,7 +493,7 @@ dialog.fs-dialog > footer { padding: 12px 16px; border-top: 1px solid var(--fs-r
 .fs-icon { width: 20px; height: 20px; vertical-align: -4px; }
 
 /* Charts drawn inline: see product/data.md. Classes the chart SVGs use, so they follow the theme. */
-.fs-chart { width: 100%; height: auto; overflow: visible; font-family: var(--fs-font-mono); }
+.fs-chart { width: 100%; height: auto; overflow: visible; font-family: var(--fs-font-chart); font-variant-numeric: tabular-nums; }
 .fs-chart text { fill: var(--fs-ink-muted); font-size: 12px; }
 .fs-chart .t-ink { fill: var(--fs-ink); paint-order: stroke; stroke: var(--fs-canvas); stroke-width: 4px; stroke-linejoin: round; }
 .fs-chart .grid { stroke: var(--fs-rule); stroke-width: 1; }

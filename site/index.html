@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-US">
+<html lang="en-US" data-level="front">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F3F4F7">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B0F1C">
 <link rel="preload" href="/fonts/Archivo-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/CascadiaMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Archivo-WideSemiBold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="/fusionspace.css">
 <link rel="stylesheet" href="/site.css">
@@ -28,19 +28,22 @@
 <link rel="icon" href="/brand/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/brand/apple-touch-icon.png">
 <script src="/theme.js"></script>
+<script src="/flight.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the content</a>
 <div class="fs-strip"></div>
-<div class="fs-page">
+<div class="fs-page" id="top">
   <header class="fs-header">
     <a class="fs-logo" href="/">
       <img class="on-light" src="/brand/fusion-space-horizontal-void.svg" alt="FusionSpace" width="142" height="24">
       <img class="on-dark" src="/brand/fusion-space-horizontal-white.svg" alt="FusionSpace" width="142" height="24">
     </a>
     <nav class="fs-nav" aria-label="Sections">
-      <a href="#hpr">FusionSpace HPR</a>
-      <a href="#projects">Other projects</a>
+      <a href="#sim">HPR Sim</a>
+      <a href="#accuracy">Accuracy</a>
+      <a href="#hpr">Roadmap</a>
+      <a href="#projects">Projects</a>
       <a href="#tools">Web tools</a>
     </nav>
     <div class="fs-seg fs-noprint" role="group" aria-label="Theme">
@@ -50,181 +53,174 @@
       <button type="button" data-set-theme="field" aria-pressed="false">Field</button>
     </div>
   </header>
-
-  <main id="main">
-    <section class="intro" aria-labelledby="title">
-      <span class="fs-tag">FS · SITE 001</span>
-      <h1 id="title">Open-source software for hobby and <span class="nowrap">high-power</span> rockets.</h1>
-      <p class="fs-lead">I make free software for rocketry under the name FusionSpace: HPR Sim, a flight simulator, and the suite I'm building around it.</p>
-      <div class="fs-row">
-        <a class="fs-btn" href="https://hpr.fusionspace.co/the-simulator.html">Start with HPR Sim</a>
-        <a class="fs-btn" data-variant="secondary" href="https://github.com/nrdptel">Source on GitHub
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M18.5 13 L18.5 20 L4 20 L4 5.5 L11 5.5"/><path d="M14 3.5 L20.5 3.5 L20.5 10"/><path d="M20.5 3.5 L11.5 12.5"/></svg>
-        </a>
-      </div>
-    </section>
-
-    <section class="fs-sheet" id="hpr" aria-labelledby="hpr-title">
-      <div class="fs-sheet-rail">
-        <span class="fs-sheet-no">SHEET 1 / 4</span>
-        <h2 id="hpr-title">FusionSpace HPR</h2>
-      </div>
-      <div class="fs-sheet-body">
-        <p>It's one suite for hobby and high-power rockets, written in Rust. The flight simulator comes first, then a flight analyzer, a competition kit and an app. Every product's source and releases live in one repository, <a href="https://github.com/nrdptel/fusionspace-eridanus">nrdptel/fusionspace-eridanus</a>, under the MIT or Apache-2.0 license.</p>
-        <p>Only HPR Sim is released so far. Before you rely on a number from it, read <a href="https://hpr.fusionspace.co/trusting-a-simulation.html">how far to trust a simulation</a>: what it was checked against, and where it hasn't been.</p>
-        <table class="register">
-          <caption>Once a product ships, it gets a number, like a part on a drawing. Released means it's published and maintained. In preparation means it isn't published yet.</caption>
-          <thead>
-            <tr><th scope="col">Product</th><th scope="col">Status</th><th scope="col">Guide, docs and release</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><div class="no"><span class="fs-tag">FS-ACHERNAR · SW · TOOL 001</span></div><b>FusionSpace HPR · Sim</b><div class="fs-small fs-muted">A flight simulator for hobby and high-power rockets: a Rust library, the <code>hpr</code> command and a Python package.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span><div class="fs-small fs-muted"><span class="fs-mono" data-release="fusionspace-hpr">0.1.0</span> · 2026-10-08</div></td>
-              <td><span class="label" aria-hidden="true">Guide, docs and release</span>
-                <ul class="links">
-                  <li><a href="https://hpr.fusionspace.co/the-simulator.html">Guide</a></li>
-                  <li><a href="https://hpr.fusionspace.co/simulator-tour.html">A tour</a></li>
-                  <li><a href="https://hpr.fusionspace.co/">Docs</a></li>
-                  <li><a href="https://github.com/nrdptel/fusionspace-eridanus/releases/tag/v0.1.0">Release 0.1.0</a></li>
-                  <li><a href="https://pypi.org/project/fusionspace-hpr/">PyPI</a></li>
-                  <li><a href="https://crates.io/crates/fusionspace-hpr">crates.io</a></li>
-                </ul>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Analyzer</b><div class="fs-small fs-muted">Reads a flight computer's log and sets the flight beside its simulation.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">Planned for release 0.2</div></td>
-              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Competition Kit</b><div class="fs-small fs-muted">Challenge rules, presets and submission packs for student rocketry competitions.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">Planned for release 0.4</div></td>
-              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR</b> (the app)<div class="fs-small fs-muted">Design, simulation and flight replay on the desktop, the web and phones.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">A preview in release 0.5, then 1.0</div></td>
-              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Motor Designer</b><div class="fs-small fs-muted">Design of experimental solid motors.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">After release 1.0</div></td>
-              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Recovery Designer</b><div class="fs-small fs-muted">Parachute gores and opening loads.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">After release 1.0</div></td>
-              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-muted fs-small">Numbered when it ships</span></div><b>FusionSpace HPR · Avionics</b><div class="fs-small fs-muted">Flight computer logic and a ground station.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="info"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4 20 L4 16 L15 5 L19 9 L8 20 Z"/><path d="M12.5 7.5 L16.5 11.5"/></svg>In preparation</span><div class="fs-small fs-muted">After release 1.0</div></td>
-              <td><span class="label" aria-hidden="true">Guide, docs and release</span><span class="fs-muted fs-small">None yet</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="fs-sheet" id="projects" aria-labelledby="projects-title">
-      <div class="fs-sheet-rail">
-        <span class="fs-sheet-no">SHEET 2 / 4</span>
-        <h2 id="projects-title">Other projects</h2>
-      </div>
-      <div class="fs-sheet-body">
-        <p>Every FusionSpace tool follows one brand system, and the system has two tools of its own.</p>
-        <table class="register">
-          <caption>All three are released and maintained.</caption>
-          <thead>
-            <tr><th scope="col">Project</th><th scope="col">Status</th><th scope="col">Where</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><div class="no"><span class="fs-tag">FS-ARA</span></div><b>FusionSpace brand system</b><div class="fs-small fs-muted">The name, the mark and the product rules: how every FusionSpace site, tool and app is designed.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span><div class="fs-small fs-muted">Rev C</div></td>
-              <td><span class="label" aria-hidden="true">Where</span><a href="https://github.com/nrdptel/fusionspace-design">nrdptel/fusionspace-design</a></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-tag">FS-CERVANTES · SW · TOOL 001</span></div><b>Callsign</b><div class="fs-small fs-muted">The star-name tool: each project takes a constellation, each product one of its stars.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td><span class="label" aria-hidden="true">Where</span><a href="https://github.com/nrdptel/fusionspace-design/tree/main/tools/callsign">In the brand system</a></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-tag">FS-INQUILL · SW · TOOL 001</span></div><b>Mark Tuner</b><div class="fs-small fs-muted">Tunes the mark and both lockups in the browser and exports them as SVG.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td><span class="label" aria-hidden="true">Where</span><a href="https://github.com/nrdptel/fusionspace-design/tree/main/tools/mark-tuner">In the brand system</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="fs-sheet" id="tools" aria-labelledby="tools-title">
-      <div class="fs-sheet-rail">
-        <span class="fs-sheet-no">SHEET 3 / 4</span>
-        <h2 id="tools-title">Web tools</h2>
-      </div>
-      <div class="fs-sheet-body">
-        <p>These four browser tools came before FusionSpace HPR. I'll rebuild each one inside it, and until its rebuild ships, the tool keeps working at its own address.</p>
-        <table class="register">
-          <caption>All four are released and maintained.</caption>
-          <thead>
-            <tr><th scope="col">Tool</th><th scope="col">Status</th><th scope="col">Where</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><div class="no"><span class="fs-tag">FS · SW · TOOL 001</span></div><b>HPR Motor Finder</b><div class="fs-small fs-muted">AeroTech, Cesaroni and Loki motor stock and prices across U.S. vendors, matched to ThrustCurve.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td><span class="label" aria-hidden="true">Where</span><a class="fs-mono" href="https://motor.fusionspace.co">motor.fusionspace.co</a></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-tag">FS · SW · TOOL 002</span></div><b>Charge</b><div class="fs-small fs-muted">Sizes black-powder ejection charges, every constant shown, with a log of your ground tests. Ground test every charge first.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td><span class="label" aria-hidden="true">Where</span><a class="fs-mono" href="https://charge.fusionspace.co">charge.fusionspace.co</a></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-tag">FS · SW · TOOL 003</span></div><b>Window</b><div class="fs-small fs-muted">Launch weather for high-power rocketry at any U.S. field: surface wind, winds aloft, storms, cloud ceiling and a few days ahead.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td><span class="label" aria-hidden="true">Where</span><a class="fs-mono" href="https://window.fusionspace.co">window.fusionspace.co</a></td>
-            </tr>
-            <tr>
-              <td><div class="no"><span class="fs-tag">FS · SW · TOOL 004</span></div><b>Muster</b><div class="fs-small fs-muted">Which reloads, closures and spacers fit each reloadable motor case, and the parts to buy.</div></td>
-              <td><span class="label" aria-hidden="true">Status</span><span class="fs-status" data-state="ok"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter" stroke-miterlimit="4" aria-hidden="true" focusable="false"><path d="M4.5 12.5 L9.5 17.5 L19.5 7.5"/></svg>Released</span></td>
-              <td><span class="label" aria-hidden="true">Where</span><a class="fs-mono" href="https://muster.fusionspace.co">muster.fusionspace.co</a></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="fs-sheet" id="principles" aria-labelledby="principles-title">
-      <div class="fs-sheet-rail">
-        <span class="fs-sheet-no">SHEET 4 / 4</span>
-        <h2 id="principles-title">Principles</h2>
-      </div>
-      <div class="fs-sheet-body">
-        <p>I design every FusionSpace tool to these rules. HPR Sim's docs give each model's equations, its sources and what it was validated against.</p>
-        <dl class="principles">
-          <div><dt><h3>Show the working</h3></dt><dd>Formulas, constants and sources are there to read, not hidden.</dd></div>
-          <div><dt><h3>Say how far to trust it</h3></dt><dd>An estimate says it's an estimate and shows its spread. You never get a go/no-go verdict.</dd></div>
-          <div><dt><h3>Work at the field</h3></dt><dd>Readable in sun, with big targets for cold hands. HPR Sim's core needs no network.</dd></div>
-          <div><dt><h3>No accounts, no tracking</h3></dt><dd>This site sets no cookies and loads nothing from anyone else. It keeps one thing, your theme choice, in your own browser.</dd></div>
-        </dl>
-      </div>
-    </section>
-  </main>
-
-  <footer class="fs-titleblock" aria-label="Title block">
-    <div class="mark wide"><span class="k">Owner</span><span class="v"><img src="/brand/fusion-space-mark-color.svg" alt="" width="24" height="24"> FusionSpace</span></div>
-    <div><span class="k">Title</span><span class="v">FusionSpace</span></div>
-    <div><span class="k">Designation</span><span class="v">FS · SITE 001</span></div>
-    <div><span class="k">Rev</span><span class="v">C</span></div>
-    <div><span class="k">Date</span><span class="v">2026-10-19</span></div>
-    <div class="wide"><span class="k">Data</span><span class="v">Releases as of 2026-10-12</span></div>
-    <div><span class="k">Status</span><span class="v">Released</span></div>
-    <div class="wide"><span class="k">Source</span><span class="v"><a href="https://github.com/nrdptel/fusionspace-site">nrdptel/fusionspace-site</a></span></div>
-  </footer>
 </div>
+
+<main id="main">
+<div class="wrap">
+<section class="hero" id="sim" aria-labelledby="title">
+  <div class="hero-copy">
+    <h1 id="title">Fly your rocket before launch day.</h1>
+    <p class="lead"><b>HPR Sim</b> is a free, open-source flight simulator for hobby and <span class="nowrap">high-power</span> rockets. Give it your OpenRocket file: it flies the design, then tells you how far to trust each number.</p>
+    <div class="fs-row">
+      <a class="fs-btn" href="https://hpr.fusionspace.co/the-simulator.html">Start with HPR Sim</a>
+      <a class="fs-btn" data-variant="secondary" href="https://hpr.fusionspace.co/simulator-tour.html">Take the tour</a>
+    </div>
+  </div>
+  <figure class="flight">
+    <div class="plot" role="slider" tabindex="0" aria-label="Time into the flight" aria-valuemin="0" aria-valuemax="53.94" aria-valuenow="9.12" aria-valuetext="9.1 seconds: 1,063 feet, 0 feet per second. Apogee: the drogue fires." aria-describedby="flight-cap"><svg viewBox="0 0 936 440" width="936" height="440" aria-hidden="true" focusable="false">
+<defs><linearGradient id="fl-g" gradientUnits="userSpaceOnUse" x1="66" y1="0" x2="911.4" y2="0"><stop offset="0" stop-color="#DA7C30"></stop><stop offset=".35" stop-color="#D07D7A"></stop><stop offset=".65" stop-color="#A188CB"></stop><stop offset="1" stop-color="#768DF5"></stop></linearGradient>
+<linearGradient id="fl-f" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".26"></stop><stop offset="1" stop-color="#fff" stop-opacity="0"></stop></linearGradient>
+<mask id="fl-m"><rect x="0" y="30" width="936" height="376" fill="url(#fl-f)"></rect></mask>
+</defs>
+<line class="tick" x1="60" x2="66" y1="406" y2="406"></line><text x="56" y="410.5" text-anchor="end">0</text><line class="tick" x1="60" x2="66" y1="249.33333333333331" y2="249.33333333333331"></line><text x="56" y="253.83333333333331" text-anchor="end">500</text><line class="tick" x1="60" x2="66" y1="92.66666666666666" y2="92.66666666666666"></line><text x="56" y="97.16666666666666" text-anchor="end">1,000 ft</text>
+<line class="axis" x1="66" x2="928" y1="406" y2="406"></line>
+<text x="66" y="428" text-anchor="start">0</text><text x="222.72727272727272" y="428" text-anchor="middle">10</text><text x="379.45454545454544" y="428" text-anchor="middle">20</text><text x="536.1818181818181" y="428" text-anchor="middle">30</text><text x="692.9090909090909" y="428" text-anchor="middle">40</text><text x="849.6363636363636" y="428" text-anchor="middle">50 s</text>
+<g class="rv"><path d="M66.0 405.4 L67.6 405.1 L69.1 404.4 L70.7 403.5 L72.3 401.9 L73.8 400.4 L75.4 398.2 L77.0 395.7 L78.5 392.8 L80.1 389.7 L81.7 386.3 L83.2 382.5 L84.8 378.4 L86.4 374.0 L87.9 369.3 L89.5 364.3 L91.1 359.3 L92.6 354.0 L94.2 348.3 L95.8 342.4 L97.3 336.4 L98.9 330.2 L100.5 323.9 L102.0 317.3 L103.6 310.7 L105.2 304.2 L106.7 297.6 L108.3 290.7 L109.9 284.1 L111.5 277.2 L113.0 270.6 L114.6 263.7 L116.2 257.5 L117.7 250.9 L119.3 244.6 L120.9 238.4 L122.4 232.4 L124.0 226.5 L125.6 220.5 L127.1 214.9 L128.7 209.2 L130.3 203.9 L131.8 198.6 L133.4 193.2 L135.0 188.2 L136.5 183.2 L138.1 178.5 L139.7 173.8 L141.2 169.1 L142.8 164.4 L144.4 160.0 L145.9 156.0 L147.5 151.9 L149.1 147.8 L150.6 143.7 L152.2 140.0 L153.8 136.2 L155.3 132.8 L156.9 129.0 L158.5 125.9 L160.0 122.4 L161.6 119.3 L163.2 116.2 L164.7 113.3 L166.3 110.5 L167.9 107.7 L169.4 105.2 L171.0 102.7 L172.6 100.2 L174.1 98.0 L175.7 95.8 L177.3 93.6 L178.8 91.4 L180.4 89.5 L182.0 88.0 L183.5 86.1 L185.1 84.5 L186.7 83.0 L188.2 81.7 L189.8 80.4 L191.4 79.2 L192.9 78.3 L194.5 77.3 L196.1 76.4 L197.7 75.4 L199.2 74.8 L200.8 74.2 L202.4 73.9 L203.9 73.6 L205.5 73.2 L207.1 72.9 L208.9 72.9 L210.2 72.9 L211.8 72.9 L213.3 73.2 L214.9 73.6 L216.5 74.2 L218.0 74.5 L219.6 75.1 L221.2 75.7 L222.7 76.7 L224.3 77.3 L225.9 78.3 L227.4 79.2 L229.0 80.1 L230.6 81.4 L232.1 82.3 L233.7 83.6 L235.3 84.8 L236.8 86.1 L238.4 87.3 L240.0 88.6 L241.5 89.8 L243.1 91.1 L244.7 92.4 L246.2 93.6 L247.8 95.2 L249.4 96.4 L250.9 98.0 L252.5 99.2 L254.1 100.8 L255.6 102.1 L257.2 103.6 L258.8 104.9 L260.3 106.5 L261.9 107.7 L263.5 109.3 L265.0 110.5 L266.6 112.1 L268.2 113.7 L269.7 114.9 L271.3 116.5 L272.9 117.7 L274.4 119.3 L276.0 120.9 L277.6 122.1 L279.1 123.7 L280.7 125.3 L282.3 126.5 L283.9 128.1 L285.4 129.6 L287.0 130.9 L288.6 132.5 L290.1 133.7 L291.7 135.3 L293.3 136.8 L294.8 138.1 L296.4 139.7 L298.0 141.2 L299.5 142.5 L301.1 144.1 L302.7 145.6 L304.2 146.9 L305.8 148.4 L307.4 150.0 L308.9 151.3 L310.5 152.8 L312.1 154.4 L313.6 155.6 L315.2 157.2 L316.8 158.5 L318.3 160.0 L319.9 161.6 L321.5 162.9 L323.0 164.4 L324.6 166.0 L326.2 167.2 L327.7 168.8 L329.3 170.4 L330.9 171.6 L332.4 173.2 L334.0 174.8 L335.6 176.0 L337.1 177.6 L338.7 179.1 L340.3 180.4 L341.8 182.0 L343.4 183.2 L345.0 184.8 L346.5 186.4 L348.1 187.6 L349.7 189.2 L351.2 190.7 L352.8 192.0 L354.4 193.6 L355.9 195.1 L357.5 196.4 L359.1 197.9 L360.6 199.5 L362.2 200.8 L363.8 202.3 L365.3 203.6 L366.9 205.2 L368.5 206.7 L370.1 208.0 L371.6 209.5 L373.2 211.1 L374.8 212.4 L376.3 213.9 L377.9 215.5 L379.5 216.7 L381.0 218.3 L382.6 219.6 L384.2 221.1 L385.7 222.7 L387.3 224.0 L388.9 225.5 L390.4 227.1 L392.0 228.3 L393.6 229.9 L395.1 231.5 L396.7 232.7 L398.3 234.3 L399.8 235.5 L401.4 237.1 L403.0 238.7 L404.5 239.9 L406.1 241.5 L407.7 243.1 L409.2 244.3 L410.8 245.9 L412.4 247.5 L413.9 248.7 L415.5 250.3 L417.2 251.8 L418.6 252.8 L420.2 253.7 L421.8 254.3 L423.3 255.0 L424.9 255.6 L426.5 256.2 L428.0 256.9 L429.6 257.2 L431.2 257.8 L432.7 258.1 L434.3 258.7 L435.9 259.0 L437.4 259.7 L439.0 260.3 L440.6 260.6 L442.1 261.2 L443.7 261.6 L445.3 262.2 L446.8 262.5 L448.4 263.1 L450.0 263.4 L451.5 264.1 L453.1 264.7 L454.7 265.0 L456.3 265.6 L457.8 265.9 L459.4 266.6 L461.0 266.9 L462.5 267.5 L464.1 267.8 L465.7 268.4 L467.2 268.8 L468.8 269.4 L470.4 270.0 L471.9 270.3 L473.5 271.0 L475.1 271.3 L476.6 271.9 L478.2 272.2 L479.8 272.8 L481.3 273.1 L482.9 273.8 L484.5 274.1 L486.0 274.7 L487.6 275.3 L489.2 275.7 L490.7 276.3 L492.3 276.6 L493.9 277.2 L495.4 277.5 L497.0 278.2 L498.6 278.5 L500.1 279.1 L501.7 279.7 L503.3 280.0 L504.8 280.7 L506.4 281.0 L508.0 281.6 L509.5 281.9 L511.1 282.5 L512.7 282.9 L514.2 283.5 L515.8 283.8 L517.4 284.4 L518.9 285.1 L520.5 285.4 L522.1 286.0 L523.6 286.3 L525.2 286.9 L526.8 287.2 L528.3 287.9 L529.9 288.2 L531.5 288.8 L533.0 289.1 L534.6 289.8 L536.2 290.4 L537.7 290.7 L539.3 291.3 L540.9 291.6 L542.5 292.3 L544.0 292.6 L545.6 293.2 L547.2 293.5 L548.7 294.1 L550.3 294.5 L551.9 295.1 L553.4 295.7 L555.0 296.0 L556.6 296.6 L558.1 297.0 L559.7 297.6 L561.3 297.9 L562.8 298.5 L564.4 298.8 L566.0 299.5 L567.5 300.1 L569.1 300.4 L570.7 301.0 L572.2 301.3 L573.8 302.0 L575.4 302.3 L576.9 302.9 L578.5 303.2 L580.1 303.9 L581.6 304.2 L583.2 304.8 L584.8 305.4 L586.3 305.7 L587.9 306.4 L589.5 306.7 L591.0 307.3 L592.6 307.6 L594.2 308.2 L595.7 308.6 L597.3 309.2 L598.9 309.5 L600.4 310.1 L602.0 310.7 L603.6 311.1 L605.1 311.7 L606.7 312.0 L608.3 312.6 L609.8 312.9 L611.4 313.6 L613.0 313.9 L614.5 314.5 L616.1 314.8 L617.7 315.4 L619.2 316.1 L620.8 316.4 L622.4 317.0 L623.9 317.3 L625.5 318.0 L627.1 318.3 L628.7 318.9 L630.2 319.2 L631.8 319.8 L633.4 320.1 L634.9 320.8 L636.5 321.4 L638.1 321.7 L639.6 322.3 L641.2 322.7 L642.8 323.3 L644.3 323.6 L645.9 324.2 L647.5 324.5 L649.0 325.2 L650.6 325.5 L652.2 326.1 L653.7 326.7 L655.3 327.0 L656.9 327.7 L658.4 328.0 L660.0 328.6 L661.6 328.9 L663.1 329.5 L664.7 329.9 L666.3 330.5 L667.8 330.8 L669.4 331.4 L671.0 331.7 L672.5 332.4 L674.1 333.0 L675.7 333.3 L677.2 333.9 L678.8 334.2 L680.4 334.9 L681.9 335.2 L683.5 335.8 L685.1 336.1 L686.6 336.8 L688.2 337.1 L689.8 337.7 L691.3 338.3 L692.9 338.6 L694.5 339.3 L696.0 339.6 L697.6 340.2 L699.2 340.5 L700.7 341.1 L702.3 341.5 L703.9 342.1 L705.4 342.4 L707.0 343.0 L708.6 343.6 L710.1 344.0 L711.7 344.6 L713.3 344.9 L714.9 345.5 L716.4 345.8 L718.0 346.5 L719.6 346.8 L721.1 347.4 L722.7 347.7 L724.3 348.3 L725.8 349.0 L727.4 349.3 L729.0 349.9 L730.5 350.2 L732.1 350.9 L733.7 351.2 L735.2 351.8 L736.8 352.1 L738.4 352.7 L739.9 353.0 L741.5 353.7 L743.1 354.0 L744.6 354.6 L746.2 355.2 L747.8 355.6 L749.3 356.2 L750.9 356.5 L752.5 357.1 L754.0 357.4 L755.6 358.1 L757.2 358.4 L758.7 359.0 L760.3 359.3 L761.9 359.9 L763.4 360.6 L765.0 360.9 L766.6 361.5 L768.1 361.8 L769.7 362.4 L771.3 362.8 L772.8 363.4 L774.4 363.7 L776.0 364.3 L777.5 364.6 L779.1 365.3 L780.7 365.9 L782.2 366.2 L783.8 366.8 L785.4 367.1 L786.9 367.8 L788.5 368.1 L790.1 368.7 L791.6 369.0 L793.2 369.7 L794.8 370.0 L796.3 370.6 L797.9 370.9 L799.5 371.5 L801.1 372.2 L802.6 372.5 L804.2 373.1 L805.8 373.4 L807.3 374.0 L808.9 374.4 L810.5 375.0 L812.0 375.3 L813.6 375.9 L815.2 376.2 L816.7 376.9 L818.3 377.2 L819.9 377.8 L821.4 378.4 L823.0 378.7 L824.6 379.4 L826.1 379.7 L827.7 380.3 L829.3 380.6 L830.8 381.2 L832.4 381.6 L834.0 382.2 L835.5 382.5 L837.1 383.1 L838.7 383.8 L840.2 384.1 L841.8 384.7 L843.4 385.0 L844.9 385.6 L846.5 385.9 L848.1 386.6 L849.6 386.9 L851.2 387.5 L852.8 387.8 L854.3 388.5 L855.9 388.8 L857.5 389.4 L859.0 390.0 L860.6 390.3 L862.2 391.0 L863.7 391.3 L865.3 391.9 L866.9 392.2 L868.4 392.8 L870.0 393.2 L871.6 393.8 L873.1 394.1 L874.7 394.7 L876.3 395.0 L877.8 395.7 L879.4 396.3 L881.0 396.6 L882.5 397.2 L884.1 397.5 L885.7 398.2 L887.3 398.5 L888.8 399.1 L890.4 399.4 L892.0 400.0 L893.5 400.4 L895.1 401.0 L896.7 401.3 L898.2 401.9 L899.8 402.6 L901.4 402.9 L902.9 403.5 L904.5 403.8 L906.1 404.4 L907.6 404.7 L909.2 405.4 L910.8 405.7 L911.4 406.0 L911.4 406.0 L911.4 406 L66 406 Z" fill="url(#fl-g)" mask="url(#fl-m)"></path><path class="under" d="M66.0 405.4 L67.6 405.1 L69.1 404.4 L70.7 403.5 L72.3 401.9 L73.8 400.4 L75.4 398.2 L77.0 395.7 L78.5 392.8 L80.1 389.7 L81.7 386.3 L83.2 382.5 L84.8 378.4 L86.4 374.0 L87.9 369.3 L89.5 364.3 L91.1 359.3 L92.6 354.0 L94.2 348.3 L95.8 342.4 L97.3 336.4 L98.9 330.2 L100.5 323.9 L102.0 317.3 L103.6 310.7 L105.2 304.2 L106.7 297.6 L108.3 290.7 L109.9 284.1 L111.5 277.2 L113.0 270.6 L114.6 263.7 L116.2 257.5 L117.7 250.9 L119.3 244.6 L120.9 238.4 L122.4 232.4 L124.0 226.5 L125.6 220.5 L127.1 214.9 L128.7 209.2 L130.3 203.9 L131.8 198.6 L133.4 193.2 L135.0 188.2 L136.5 183.2 L138.1 178.5 L139.7 173.8 L141.2 169.1 L142.8 164.4 L144.4 160.0 L145.9 156.0 L147.5 151.9 L149.1 147.8 L150.6 143.7 L152.2 140.0 L153.8 136.2 L155.3 132.8 L156.9 129.0 L158.5 125.9 L160.0 122.4 L161.6 119.3 L163.2 116.2 L164.7 113.3 L166.3 110.5 L167.9 107.7 L169.4 105.2 L171.0 102.7 L172.6 100.2 L174.1 98.0 L175.7 95.8 L177.3 93.6 L178.8 91.4 L180.4 89.5 L182.0 88.0 L183.5 86.1 L185.1 84.5 L186.7 83.0 L188.2 81.7 L189.8 80.4 L191.4 79.2 L192.9 78.3 L194.5 77.3 L196.1 76.4 L197.7 75.4 L199.2 74.8 L200.8 74.2 L202.4 73.9 L203.9 73.6 L205.5 73.2 L207.1 72.9 L208.9 72.9 L210.2 72.9 L211.8 72.9 L213.3 73.2 L214.9 73.6 L216.5 74.2 L218.0 74.5 L219.6 75.1 L221.2 75.7 L222.7 76.7 L224.3 77.3 L225.9 78.3 L227.4 79.2 L229.0 80.1 L230.6 81.4 L232.1 82.3 L233.7 83.6 L235.3 84.8 L236.8 86.1 L238.4 87.3 L240.0 88.6 L241.5 89.8 L243.1 91.1 L244.7 92.4 L246.2 93.6 L247.8 95.2 L249.4 96.4 L250.9 98.0 L252.5 99.2 L254.1 100.8 L255.6 102.1 L257.2 103.6 L258.8 104.9 L260.3 106.5 L261.9 107.7 L263.5 109.3 L265.0 110.5 L266.6 112.1 L268.2 113.7 L269.7 114.9 L271.3 116.5 L272.9 117.7 L274.4 119.3 L276.0 120.9 L277.6 122.1 L279.1 123.7 L280.7 125.3 L282.3 126.5 L283.9 128.1 L285.4 129.6 L287.0 130.9 L288.6 132.5 L290.1 133.7 L291.7 135.3 L293.3 136.8 L294.8 138.1 L296.4 139.7 L298.0 141.2 L299.5 142.5 L301.1 144.1 L302.7 145.6 L304.2 146.9 L305.8 148.4 L307.4 150.0 L308.9 151.3 L310.5 152.8 L312.1 154.4 L313.6 155.6 L315.2 157.2 L316.8 158.5 L318.3 160.0 L319.9 161.6 L321.5 162.9 L323.0 164.4 L324.6 166.0 L326.2 167.2 L327.7 168.8 L329.3 170.4 L330.9 171.6 L332.4 173.2 L334.0 174.8 L335.6 176.0 L337.1 177.6 L338.7 179.1 L340.3 180.4 L341.8 182.0 L343.4 183.2 L345.0 184.8 L346.5 186.4 L348.1 187.6 L349.7 189.2 L351.2 190.7 L352.8 192.0 L354.4 193.6 L355.9 195.1 L357.5 196.4 L359.1 197.9 L360.6 199.5 L362.2 200.8 L363.8 202.3 L365.3 203.6 L366.9 205.2 L368.5 206.7 L370.1 208.0 L371.6 209.5 L373.2 211.1 L374.8 212.4 L376.3 213.9 L377.9 215.5 L379.5 216.7 L381.0 218.3 L382.6 219.6 L384.2 221.1 L385.7 222.7 L387.3 224.0 L388.9 225.5 L390.4 227.1 L392.0 228.3 L393.6 229.9 L395.1 231.5 L396.7 232.7 L398.3 234.3 L399.8 235.5 L401.4 237.1 L403.0 238.7 L404.5 239.9 L406.1 241.5 L407.7 243.1 L409.2 244.3 L410.8 245.9 L412.4 247.5 L413.9 248.7 L415.5 250.3 L417.2 251.8 L418.6 252.8 L420.2 253.7 L421.8 254.3 L423.3 255.0 L424.9 255.6 L426.5 256.2 L428.0 256.9 L429.6 257.2 L431.2 257.8 L432.7 258.1 L434.3 258.7 L435.9 259.0 L437.4 259.7 L439.0 260.3 L440.6 260.6 L442.1 261.2 L443.7 261.6 L445.3 262.2 L446.8 262.5 L448.4 263.1 L450.0 263.4 L451.5 264.1 L453.1 264.7 L454.7 265.0 L456.3 265.6 L457.8 265.9 L459.4 266.6 L461.0 266.9 L462.5 267.5 L464.1 267.8 L465.7 268.4 L467.2 268.8 L468.8 269.4 L470.4 270.0 L471.9 270.3 L473.5 271.0 L475.1 271.3 L476.6 271.9 L478.2 272.2 L479.8 272.8 L481.3 273.1 L482.9 273.8 L484.5 274.1 L486.0 274.7 L487.6 275.3 L489.2 275.7 L490.7 276.3 L492.3 276.6 L493.9 277.2 L495.4 277.5 L497.0 278.2 L498.6 278.5 L500.1 279.1 L501.7 279.7 L503.3 280.0 L504.8 280.7 L506.4 281.0 L508.0 281.6 L509.5 281.9 L511.1 282.5 L512.7 282.9 L514.2 283.5 L515.8 283.8 L517.4 284.4 L518.9 285.1 L520.5 285.4 L522.1 286.0 L523.6 286.3 L525.2 286.9 L526.8 287.2 L528.3 287.9 L529.9 288.2 L531.5 288.8 L533.0 289.1 L534.6 289.8 L536.2 290.4 L537.7 290.7 L539.3 291.3 L540.9 291.6 L542.5 292.3 L544.0 292.6 L545.6 293.2 L547.2 293.5 L548.7 294.1 L550.3 294.5 L551.9 295.1 L553.4 295.7 L555.0 296.0 L556.6 296.6 L558.1 297.0 L559.7 297.6 L561.3 297.9 L562.8 298.5 L564.4 298.8 L566.0 299.5 L567.5 300.1 L569.1 300.4 L570.7 301.0 L572.2 301.3 L573.8 302.0 L575.4 302.3 L576.9 302.9 L578.5 303.2 L580.1 303.9 L581.6 304.2 L583.2 304.8 L584.8 305.4 L586.3 305.7 L587.9 306.4 L589.5 306.7 L591.0 307.3 L592.6 307.6 L594.2 308.2 L595.7 308.6 L597.3 309.2 L598.9 309.5 L600.4 310.1 L602.0 310.7 L603.6 311.1 L605.1 311.7 L606.7 312.0 L608.3 312.6 L609.8 312.9 L611.4 313.6 L613.0 313.9 L614.5 314.5 L616.1 314.8 L617.7 315.4 L619.2 316.1 L620.8 316.4 L622.4 317.0 L623.9 317.3 L625.5 318.0 L627.1 318.3 L628.7 318.9 L630.2 319.2 L631.8 319.8 L633.4 320.1 L634.9 320.8 L636.5 321.4 L638.1 321.7 L639.6 322.3 L641.2 322.7 L642.8 323.3 L644.3 323.6 L645.9 324.2 L647.5 324.5 L649.0 325.2 L650.6 325.5 L652.2 326.1 L653.7 326.7 L655.3 327.0 L656.9 327.7 L658.4 328.0 L660.0 328.6 L661.6 328.9 L663.1 329.5 L664.7 329.9 L666.3 330.5 L667.8 330.8 L669.4 331.4 L671.0 331.7 L672.5 332.4 L674.1 333.0 L675.7 333.3 L677.2 333.9 L678.8 334.2 L680.4 334.9 L681.9 335.2 L683.5 335.8 L685.1 336.1 L686.6 336.8 L688.2 337.1 L689.8 337.7 L691.3 338.3 L692.9 338.6 L694.5 339.3 L696.0 339.6 L697.6 340.2 L699.2 340.5 L700.7 341.1 L702.3 341.5 L703.9 342.1 L705.4 342.4 L707.0 343.0 L708.6 343.6 L710.1 344.0 L711.7 344.6 L713.3 344.9 L714.9 345.5 L716.4 345.8 L718.0 346.5 L719.6 346.8 L721.1 347.4 L722.7 347.7 L724.3 348.3 L725.8 349.0 L727.4 349.3 L729.0 349.9 L730.5 350.2 L732.1 350.9 L733.7 351.2 L735.2 351.8 L736.8 352.1 L738.4 352.7 L739.9 353.0 L741.5 353.7 L743.1 354.0 L744.6 354.6 L746.2 355.2 L747.8 355.6 L749.3 356.2 L750.9 356.5 L752.5 357.1 L754.0 357.4 L755.6 358.1 L757.2 358.4 L758.7 359.0 L760.3 359.3 L761.9 359.9 L763.4 360.6 L765.0 360.9 L766.6 361.5 L768.1 361.8 L769.7 362.4 L771.3 362.8 L772.8 363.4 L774.4 363.7 L776.0 364.3 L777.5 364.6 L779.1 365.3 L780.7 365.9 L782.2 366.2 L783.8 366.8 L785.4 367.1 L786.9 367.8 L788.5 368.1 L790.1 368.7 L791.6 369.0 L793.2 369.7 L794.8 370.0 L796.3 370.6 L797.9 370.9 L799.5 371.5 L801.1 372.2 L802.6 372.5 L804.2 373.1 L805.8 373.4 L807.3 374.0 L808.9 374.4 L810.5 375.0 L812.0 375.3 L813.6 375.9 L815.2 376.2 L816.7 376.9 L818.3 377.2 L819.9 377.8 L821.4 378.4 L823.0 378.7 L824.6 379.4 L826.1 379.7 L827.7 380.3 L829.3 380.6 L830.8 381.2 L832.4 381.6 L834.0 382.2 L835.5 382.5 L837.1 383.1 L838.7 383.8 L840.2 384.1 L841.8 384.7 L843.4 385.0 L844.9 385.6 L846.5 385.9 L848.1 386.6 L849.6 386.9 L851.2 387.5 L852.8 387.8 L854.3 388.5 L855.9 388.8 L857.5 389.4 L859.0 390.0 L860.6 390.3 L862.2 391.0 L863.7 391.3 L865.3 391.9 L866.9 392.2 L868.4 392.8 L870.0 393.2 L871.6 393.8 L873.1 394.1 L874.7 394.7 L876.3 395.0 L877.8 395.7 L879.4 396.3 L881.0 396.6 L882.5 397.2 L884.1 397.5 L885.7 398.2 L887.3 398.5 L888.8 399.1 L890.4 399.4 L892.0 400.0 L893.5 400.4 L895.1 401.0 L896.7 401.3 L898.2 401.9 L899.8 402.6 L901.4 402.9 L902.9 403.5 L904.5 403.8 L906.1 404.4 L907.6 404.7 L909.2 405.4 L910.8 405.7 L911.4 406.0 L911.4 406.0"></path>
+<path d="M66.0 405.4 L67.6 405.1 L69.1 404.4 L70.7 403.5 L72.3 401.9 L73.8 400.4 L75.4 398.2 L77.0 395.7 L78.5 392.8 L80.1 389.7 L81.7 386.3 L83.2 382.5 L84.8 378.4 L86.4 374.0 L87.9 369.3 L89.5 364.3 L91.1 359.3 L92.6 354.0 L94.2 348.3 L95.8 342.4 L97.3 336.4 L98.9 330.2 L100.5 323.9 L102.0 317.3 L103.6 310.7 L105.2 304.2 L106.7 297.6 L108.3 290.7 L109.9 284.1 L111.5 277.2 L113.0 270.6 L114.6 263.7 L116.2 257.5 L117.7 250.9 L119.3 244.6 L120.9 238.4 L122.4 232.4 L124.0 226.5 L125.6 220.5 L127.1 214.9 L128.7 209.2 L130.3 203.9 L131.8 198.6 L133.4 193.2 L135.0 188.2 L136.5 183.2 L138.1 178.5 L139.7 173.8 L141.2 169.1 L142.8 164.4 L144.4 160.0 L145.9 156.0 L147.5 151.9 L149.1 147.8 L150.6 143.7 L152.2 140.0 L153.8 136.2 L155.3 132.8 L156.9 129.0 L158.5 125.9 L160.0 122.4 L161.6 119.3 L163.2 116.2 L164.7 113.3 L166.3 110.5 L167.9 107.7 L169.4 105.2 L171.0 102.7 L172.6 100.2 L174.1 98.0 L175.7 95.8 L177.3 93.6 L178.8 91.4 L180.4 89.5 L182.0 88.0 L183.5 86.1 L185.1 84.5 L186.7 83.0 L188.2 81.7 L189.8 80.4 L191.4 79.2 L192.9 78.3 L194.5 77.3 L196.1 76.4 L197.7 75.4 L199.2 74.8 L200.8 74.2 L202.4 73.9 L203.9 73.6 L205.5 73.2 L207.1 72.9 L208.9 72.9 L210.2 72.9 L211.8 72.9 L213.3 73.2 L214.9 73.6 L216.5 74.2 L218.0 74.5 L219.6 75.1 L221.2 75.7 L222.7 76.7 L224.3 77.3 L225.9 78.3 L227.4 79.2 L229.0 80.1 L230.6 81.4 L232.1 82.3 L233.7 83.6 L235.3 84.8 L236.8 86.1 L238.4 87.3 L240.0 88.6 L241.5 89.8 L243.1 91.1 L244.7 92.4 L246.2 93.6 L247.8 95.2 L249.4 96.4 L250.9 98.0 L252.5 99.2 L254.1 100.8 L255.6 102.1 L257.2 103.6 L258.8 104.9 L260.3 106.5 L261.9 107.7 L263.5 109.3 L265.0 110.5 L266.6 112.1 L268.2 113.7 L269.7 114.9 L271.3 116.5 L272.9 117.7 L274.4 119.3 L276.0 120.9 L277.6 122.1 L279.1 123.7 L280.7 125.3 L282.3 126.5 L283.9 128.1 L285.4 129.6 L287.0 130.9 L288.6 132.5 L290.1 133.7 L291.7 135.3 L293.3 136.8 L294.8 138.1 L296.4 139.7 L298.0 141.2 L299.5 142.5 L301.1 144.1 L302.7 145.6 L304.2 146.9 L305.8 148.4 L307.4 150.0 L308.9 151.3 L310.5 152.8 L312.1 154.4 L313.6 155.6 L315.2 157.2 L316.8 158.5 L318.3 160.0 L319.9 161.6 L321.5 162.9 L323.0 164.4 L324.6 166.0 L326.2 167.2 L327.7 168.8 L329.3 170.4 L330.9 171.6 L332.4 173.2 L334.0 174.8 L335.6 176.0 L337.1 177.6 L338.7 179.1 L340.3 180.4 L341.8 182.0 L343.4 183.2 L345.0 184.8 L346.5 186.4 L348.1 187.6 L349.7 189.2 L351.2 190.7 L352.8 192.0 L354.4 193.6 L355.9 195.1 L357.5 196.4 L359.1 197.9 L360.6 199.5 L362.2 200.8 L363.8 202.3 L365.3 203.6 L366.9 205.2 L368.5 206.7 L370.1 208.0 L371.6 209.5 L373.2 211.1 L374.8 212.4 L376.3 213.9 L377.9 215.5 L379.5 216.7 L381.0 218.3 L382.6 219.6 L384.2 221.1 L385.7 222.7 L387.3 224.0 L388.9 225.5 L390.4 227.1 L392.0 228.3 L393.6 229.9 L395.1 231.5 L396.7 232.7 L398.3 234.3 L399.8 235.5 L401.4 237.1 L403.0 238.7 L404.5 239.9 L406.1 241.5 L407.7 243.1 L409.2 244.3 L410.8 245.9 L412.4 247.5 L413.9 248.7 L415.5 250.3 L417.2 251.8 L418.6 252.8 L420.2 253.7 L421.8 254.3 L423.3 255.0 L424.9 255.6 L426.5 256.2 L428.0 256.9 L429.6 257.2 L431.2 257.8 L432.7 258.1 L434.3 258.7 L435.9 259.0 L437.4 259.7 L439.0 260.3 L440.6 260.6 L442.1 261.2 L443.7 261.6 L445.3 262.2 L446.8 262.5 L448.4 263.1 L450.0 263.4 L451.5 264.1 L453.1 264.7 L454.7 265.0 L456.3 265.6 L457.8 265.9 L459.4 266.6 L461.0 266.9 L462.5 267.5 L464.1 267.8 L465.7 268.4 L467.2 268.8 L468.8 269.4 L470.4 270.0 L471.9 270.3 L473.5 271.0 L475.1 271.3 L476.6 271.9 L478.2 272.2 L479.8 272.8 L481.3 273.1 L482.9 273.8 L484.5 274.1 L486.0 274.7 L487.6 275.3 L489.2 275.7 L490.7 276.3 L492.3 276.6 L493.9 277.2 L495.4 277.5 L497.0 278.2 L498.6 278.5 L500.1 279.1 L501.7 279.7 L503.3 280.0 L504.8 280.7 L506.4 281.0 L508.0 281.6 L509.5 281.9 L511.1 282.5 L512.7 282.9 L514.2 283.5 L515.8 283.8 L517.4 284.4 L518.9 285.1 L520.5 285.4 L522.1 286.0 L523.6 286.3 L525.2 286.9 L526.8 287.2 L528.3 287.9 L529.9 288.2 L531.5 288.8 L533.0 289.1 L534.6 289.8 L536.2 290.4 L537.7 290.7 L539.3 291.3 L540.9 291.6 L542.5 292.3 L544.0 292.6 L545.6 293.2 L547.2 293.5 L548.7 294.1 L550.3 294.5 L551.9 295.1 L553.4 295.7 L555.0 296.0 L556.6 296.6 L558.1 297.0 L559.7 297.6 L561.3 297.9 L562.8 298.5 L564.4 298.8 L566.0 299.5 L567.5 300.1 L569.1 300.4 L570.7 301.0 L572.2 301.3 L573.8 302.0 L575.4 302.3 L576.9 302.9 L578.5 303.2 L580.1 303.9 L581.6 304.2 L583.2 304.8 L584.8 305.4 L586.3 305.7 L587.9 306.4 L589.5 306.7 L591.0 307.3 L592.6 307.6 L594.2 308.2 L595.7 308.6 L597.3 309.2 L598.9 309.5 L600.4 310.1 L602.0 310.7 L603.6 311.1 L605.1 311.7 L606.7 312.0 L608.3 312.6 L609.8 312.9 L611.4 313.6 L613.0 313.9 L614.5 314.5 L616.1 314.8 L617.7 315.4 L619.2 316.1 L620.8 316.4 L622.4 317.0 L623.9 317.3 L625.5 318.0 L627.1 318.3 L628.7 318.9 L630.2 319.2 L631.8 319.8 L633.4 320.1 L634.9 320.8 L636.5 321.4 L638.1 321.7 L639.6 322.3 L641.2 322.7 L642.8 323.3 L644.3 323.6 L645.9 324.2 L647.5 324.5 L649.0 325.2 L650.6 325.5 L652.2 326.1 L653.7 326.7 L655.3 327.0 L656.9 327.7 L658.4 328.0 L660.0 328.6 L661.6 328.9 L663.1 329.5 L664.7 329.9 L666.3 330.5 L667.8 330.8 L669.4 331.4 L671.0 331.7 L672.5 332.4 L674.1 333.0 L675.7 333.3 L677.2 333.9 L678.8 334.2 L680.4 334.9 L681.9 335.2 L683.5 335.8 L685.1 336.1 L686.6 336.8 L688.2 337.1 L689.8 337.7 L691.3 338.3 L692.9 338.6 L694.5 339.3 L696.0 339.6 L697.6 340.2 L699.2 340.5 L700.7 341.1 L702.3 341.5 L703.9 342.1 L705.4 342.4 L707.0 343.0 L708.6 343.6 L710.1 344.0 L711.7 344.6 L713.3 344.9 L714.9 345.5 L716.4 345.8 L718.0 346.5 L719.6 346.8 L721.1 347.4 L722.7 347.7 L724.3 348.3 L725.8 349.0 L727.4 349.3 L729.0 349.9 L730.5 350.2 L732.1 350.9 L733.7 351.2 L735.2 351.8 L736.8 352.1 L738.4 352.7 L739.9 353.0 L741.5 353.7 L743.1 354.0 L744.6 354.6 L746.2 355.2 L747.8 355.6 L749.3 356.2 L750.9 356.5 L752.5 357.1 L754.0 357.4 L755.6 358.1 L757.2 358.4 L758.7 359.0 L760.3 359.3 L761.9 359.9 L763.4 360.6 L765.0 360.9 L766.6 361.5 L768.1 361.8 L769.7 362.4 L771.3 362.8 L772.8 363.4 L774.4 363.7 L776.0 364.3 L777.5 364.6 L779.1 365.3 L780.7 365.9 L782.2 366.2 L783.8 366.8 L785.4 367.1 L786.9 367.8 L788.5 368.1 L790.1 368.7 L791.6 369.0 L793.2 369.7 L794.8 370.0 L796.3 370.6 L797.9 370.9 L799.5 371.5 L801.1 372.2 L802.6 372.5 L804.2 373.1 L805.8 373.4 L807.3 374.0 L808.9 374.4 L810.5 375.0 L812.0 375.3 L813.6 375.9 L815.2 376.2 L816.7 376.9 L818.3 377.2 L819.9 377.8 L821.4 378.4 L823.0 378.7 L824.6 379.4 L826.1 379.7 L827.7 380.3 L829.3 380.6 L830.8 381.2 L832.4 381.6 L834.0 382.2 L835.5 382.5 L837.1 383.1 L838.7 383.8 L840.2 384.1 L841.8 384.7 L843.4 385.0 L844.9 385.6 L846.5 385.9 L848.1 386.6 L849.6 386.9 L851.2 387.5 L852.8 387.8 L854.3 388.5 L855.9 388.8 L857.5 389.4 L859.0 390.0 L860.6 390.3 L862.2 391.0 L863.7 391.3 L865.3 391.9 L866.9 392.2 L868.4 392.8 L870.0 393.2 L871.6 393.8 L873.1 394.1 L874.7 394.7 L876.3 395.0 L877.8 395.7 L879.4 396.3 L881.0 396.6 L882.5 397.2 L884.1 397.5 L885.7 398.2 L887.3 398.5 L888.8 399.1 L890.4 399.4 L892.0 400.0 L893.5 400.4 L895.1 401.0 L896.7 401.3 L898.2 401.9 L899.8 402.6 L901.4 402.9 L902.9 403.5 L904.5 403.8 L906.1 404.4 L907.6 404.7 L909.2 405.4 L910.8 405.7 L911.4 406.0 L911.4 406.0" fill="none" stroke="url(#fl-g)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"></path></g>
+<g class="late" data-t="3.5"><circle class="ev-dot" cx="120.9" cy="238.4" r="4.5"></circle><text class="ev" x="132.9" y="243.4" text-anchor="start">Burnout <tspan class="ev-v">535 ft</tspan></text></g><g class="late" data-t="9.12"><circle class="ev-dot" cx="208.9" cy="72.9" r="4.5"></circle><text class="ev" x="202.9" y="58.9" text-anchor="start">Apogee <tspan class="ev-v">1,063 ft at 9.1 s</tspan></text></g><g class="late" data-t="22.41"><circle class="ev-dot" cx="417.2" cy="251.8" r="4.5"></circle><text class="ev" x="405.2" y="273.8" text-anchor="end">Main opens <tspan class="ev-v">492 ft</tspan></text></g>
+<line class="scrub-line" x1="208.93527272727272" x2="208.93527272727272" y1="406" y2="72.92666666666665"></line><circle class="scrub-dot" r="5" cx="208.93527272727272" cy="72.92666666666665"></circle>
+</svg></div>
+    <dl class="readout" aria-hidden="true">
+      <div><dt>Time</dt><dd data-r="t">9.12<small>s</small></dd></div>
+      <div><dt>Height</dt><dd data-r="h">1,063<small>ft</small></dd></div>
+      <div><dt>Speed</dt><dd data-r="v">0<small>ft/s</small></dd></div>
+      <div class="ph"><dt>What's happening</dt><dd class="phase" data-r="p">Apogee: the drogue fires</dd></div>
+    </dl>
+    <figcaption id="flight-cap">Loft Demo 54mm on an H54, dual deploy, as HPR Sim 0.1.0 flies it: burnout at 3.5 s, apogee of 1,063 ft at 9.1 s, main at 492 ft, landing at 53.9 s. Move along the flight, or use the arrow keys, to read any moment.</figcaption>
+  </figure>
+</section>
+
+<section class="section" id="accuracy" aria-labelledby="accuracy-title">
+  <div class="intro">
+    <h2 id="accuracy-title">Checked against 60 real flights</h2>
+    <p>On 60 logged flights of fliers' own designs, flown in each day's weather, HPR Sim's apogee came within 10% on 32. On average it read 7.8% high. It read low on 15, by at most 20%.</p>
+    <p>I write down every gap I know of, with its issue, and the command line warns you when your flight comes near one. Before you rely on a number, read <a href="https://hpr.fusionspace.co/trusting-a-simulation.html">how far to trust a simulation</a>, or every check on <a href="https://hpr.fusionspace.co/accuracy.html">the accuracy page</a>.</p>
+  </div>
+  <figure class="trust-fig">
+    <div class="hist-plot" role="img" aria-label="How far HPR Sim's apogee missed on 60 logged flights, in steps of 5%. 32 were within 10% either way; the misses averaged 7.8% high; the low misses stopped at 20%."><svg class="fs-chart hist" viewBox="0 0 860 340" width="860" height="340" aria-hidden="true" focusable="false">
+<rect class="within" x="324.2857142857143" y="8" width="235.4285714285715" height="280"></rect>
+<text class="t-ink" x="332.2857142857143" y="25">32 within 10%</text>
+<line class="grid" x1="30" x2="854" y1="288" y2="288"></line><text x="22" y="292.5" text-anchor="end">0</text><line class="grid" x1="30" x2="854" y1="208.625" y2="208.625"></line><text x="22" y="213.125" text-anchor="end">5</text><line class="grid" x1="30" x2="854" y1="129.25" y2="129.25"></line><text x="22" y="133.75" text-anchor="end">10</text><line class="grid" x1="30" x2="854" y1="49.875" y2="49.875"></line><text x="22" y="54.375" text-anchor="end">15</text>
+<rect class="bar" x="208.07142857142856" y="272.125" width="55.85714285714289" height="15.875"></rect><rect class="bar" x="266.92857142857144" y="224.5" width="55.85714285714283" height="63.5"></rect><rect class="bar in" x="325.7857142857143" y="192.75" width="55.85714285714283" height="95.25"></rect><rect class="bar in" x="384.6428571428571" y="224.5" width="55.85714285714289" height="63.5"></rect><rect class="bar in" x="443.5" y="129.25" width="55.85714285714283" height="158.75"></rect><rect class="bar in" x="502.35714285714283" y="97.5" width="55.85714285714295" height="190.5"></rect><rect class="bar" x="561.2142857142858" y="129.25" width="55.857142857142776" height="158.75"></rect><rect class="bar" x="620.0714285714286" y="256.25" width="55.85714285714289" height="31.75"></rect><rect class="bar" x="678.9285714285714" y="208.625" width="55.857142857142776" height="79.375"></rect><rect class="bar" x="737.7857142857142" y="224.5" width="55.857142857143" height="63.5"></rect><rect class="bar" x="796.6428571428572" y="256.25" width="55.857142857142776" height="31.75"></rect>
+<line class="axis" x1="30" x2="854" y1="288" y2="288"></line>
+<line class="mean" x1="533.3462857142857" x2="533.3462857142857" y1="36" y2="288"></line>
+<text class="t-ink" x="236" y="266.125" text-anchor="middle">1</text><text class="t-ink" x="294.8571428571429" y="218.5" text-anchor="middle">4</text><text class="t-ink" x="353.7142857142857" y="186.75" text-anchor="middle">6</text><text class="t-ink" x="412.5714285714286" y="218.5" text-anchor="middle">4</text><text class="t-ink" x="471.4285714285714" y="123.25" text-anchor="middle">10</text><text class="t-ink" x="530.2857142857142" y="91.5" text-anchor="middle">12</text><text class="t-ink" x="589.1428571428572" y="123.25" text-anchor="middle">10</text><text class="t-ink" x="648" y="250.25" text-anchor="middle">2</text><text class="t-ink" x="706.8571428571428" y="202.625" text-anchor="middle">5</text><text class="t-ink" x="765.7142857142858" y="218.5" text-anchor="middle">4</text><text class="t-ink" x="824.5714285714286" y="250.25" text-anchor="middle">2</text>
+<text class="t-mean" x="539.3462857142857" y="46" text-anchor="start">average +7.8%</text>
+<text x="88.85714285714286" y="308" text-anchor="middle">−30%</text><text x="206.57142857142856" y="308" text-anchor="middle">−20%</text><text x="324.2857142857143" y="308" text-anchor="middle">−10%</text><text x="442" y="308" text-anchor="middle">0%</text><text x="559.7142857142858" y="308" text-anchor="middle">+10%</text><text x="677.4285714285714" y="308" text-anchor="middle">+20%</text><text x="795.1428571428572" y="308" text-anchor="middle">+30%</text>
+<text x="30" y="330">read low</text><text x="854" y="330" text-anchor="end">read high</text>
+</svg></div>
+    <figcaption>Each bar counts flights by how far the simulated apogee missed the altimeter's. The end bars hold every flight past 30%.</figcaption>
+  </figure>
+</section>
+</div>
+
+<section class="ink-band" aria-labelledby="cli-title">
+  <div class="wrap section">
+    <div class="intro">
+      <h2 id="cli-title">Read the flight in your terminal</h2>
+      <p>One command flies the design file and prints what you need on the pad: stability, apogee, rail exit speed and descent rate, in metric with feet beside.</p>
+    </div>
+    <div class="listing" role="group" aria-label="What hpr sim prints for the Level 1 guide rocket, shortened">
+      <code class="l first"><span class="p">$</span> hpr sim level-1.ork</code>
+      <span aria-hidden="true"></span>
+      <code class="l"><span class="h">Level 1 guide rocket</span> (level-1.ork)</code>
+      <span aria-hidden="true"></span>
+      <code class="l">configuration 1 of 2: [H170M-10]</code>
+      <span aria-hidden="true"></span>
+      <code class="l">a simulated flight, not a measurement</code>
+      <p class="note">Every result says it is a simulation, and so does every file it exports.</p>
+      <code class="l kv"><span>static margin</span><span>1.70 calibers off the rail</span></code>
+      <span aria-hidden="true"></span>
+      <code class="l kv"><span>apogee</span><span>1065.1 m (3494 ft) above the site at 11.62 s</span></code>
+      <span aria-hidden="true"></span>
+      <code class="l kv"><span>rail exit speed</span><span>26.3 m/s (86 ft/s)</span></code>
+      <span aria-hidden="true"></span>
+      <code class="l kv"><span>descent</span><span>4.4 m/s (15 ft/s) at landing under `Parachute`</span></code>
+      <span aria-hidden="true"></span>
+      <code class="l"><span class="p">[…]</span></code>
+      <span aria-hidden="true"></span>
+      <code class="l last"><span class="w">warning:</span> drag: issue #67: a cone-like nose's or shoulder's pressure drag reads high from Mach 0.8 <span class="p">[…]</span> This flight reaches Mach 0.84 at 1.7 s</code>
+      <p class="note">Near a known gap in the physics, it names the issue and says which way the numbers lean.</p>
+    </div>
+    <div class="ways">
+      <p><b>The <code>hpr</code> command</b>Point it at a design file and read the flight. <a href="https://hpr.fusionspace.co/cli.html">The command line</a></p>
+      <p><b>A Python package</b><code>pip install fusionspace-hpr</code>, for notebooks, sweeps and your own plots. <a href="https://pypi.org/project/fusionspace-hpr/">PyPI</a></p>
+      <p><b>A Rust library</b>The simulator itself, to build on, under the MIT or Apache-2.0 license. <a href="https://crates.io/crates/fusionspace-hpr">crates.io</a></p>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+<section class="section" id="hpr" aria-labelledby="hpr-title">
+  <div class="intro">
+    <h2 id="hpr-title">What comes next</h2>
+    <p>HPR Sim is the first part of FusionSpace HPR, one suite for hobby and high-power rockets, written in Rust. Every product's source and releases live in one repository, <a href="https://github.com/nrdptel/fusionspace-eridanus">nrdptel/fusionspace-eridanus</a>. Only HPR Sim is released so far.</p>
+  </div>
+  <ol class="road">
+    <li class="now"><span class="v">0.1, out now</span><b>HPR Sim</b><span class="d">Released October 8, 2026.</span>
+      <ul class="links">
+        <li><a href="https://hpr.fusionspace.co/the-simulator.html">Guide</a></li>
+        <li><a href="https://hpr.fusionspace.co/">Docs</a></li>
+        <li><a href="https://github.com/nrdptel/fusionspace-eridanus/releases/tag/v0.1.0">Release <span data-release="fusionspace-hpr">0.1.0</span></a></li>
+      </ul></li>
+    <li><span class="v">0.2</span><b>Analyzer</b><span class="d">Reads a flight computer's log and sets the flight beside its simulation.</span></li>
+    <li><span class="v">0.4</span><b>Competition Kit</b><span class="d">Challenge rules, presets and submission packs for student rocketry competitions.</span></li>
+    <li><span class="v">0.5, then 1.0</span><b>The app</b><span class="d">Design, simulation and flight replay on the desktop, the web and phones. A preview comes first.</span></li>
+    <li><span class="v">After 1.0</span><b>Designers</b>
+      <ul class="more">
+        <li><b>Motor Designer:</b> experimental solid motors.</li>
+        <li><b>Recovery Designer:</b> parachute gores and opening loads.</li>
+        <li><b>Avionics:</b> flight computer logic and a ground station.</li>
+      </ul></li>
+  </ol>
+</section>
+
+<section class="section" id="projects" aria-labelledby="projects-title">
+  <div class="intro">
+    <h2 id="projects-title">The brand system and its tools</h2>
+    <p>Every FusionSpace tool follows one brand system, and the system has two tools of its own. All three are released and maintained.</p>
+  </div>
+  <ul class="tools">
+    <li><a href="https://github.com/nrdptel/fusionspace-design"><b>FusionSpace brand system</b><span class="d">The name, the mark and the product rules: how every FusionSpace site, tool and app is designed.</span><span class="addr">nrdptel/fusionspace-design</span></a></li>
+    <li><a href="https://github.com/nrdptel/fusionspace-design/tree/main/tools/callsign"><b>Callsign</b><span class="d">The star-name tool: each project takes a constellation, each product one of its stars.</span><span class="addr">fusionspace-design/tools/callsign</span></a></li>
+    <li><a href="https://github.com/nrdptel/fusionspace-design/tree/main/tools/mark-tuner"><b>Mark Tuner</b><span class="d">Tunes the mark and both lockups in the browser and exports them as SVG.</span><span class="addr">fusionspace-design/tools/mark-tuner</span></a></li>
+  </ul>
+</section>
+
+<section class="section" id="tools" aria-labelledby="tools-title">
+  <div class="intro">
+    <h2 id="tools-title">Web tools for the field</h2>
+    <p>I built these four before FusionSpace HPR. I'll rebuild each one inside it, and until its rebuild ships, the tool keeps working at its own address. All four are released and maintained.</p>
+  </div>
+  <ul class="tools">
+    <li><a href="https://motor.fusionspace.co"><b>HPR Motor Finder</b><span class="d">AeroTech, Cesaroni and Loki motor stock and prices across U.S. vendors, matched to ThrustCurve.</span><span class="addr">motor.fusionspace.co</span></a></li>
+    <li><a href="https://charge.fusionspace.co"><b>Charge</b><span class="d">Sizes black-powder ejection charges, every constant shown, with a log of your ground tests. Ground test every charge first.</span><span class="addr">charge.fusionspace.co</span></a></li>
+    <li><a href="https://window.fusionspace.co"><b>Window</b><span class="d">Launch weather for high-power rocketry at any U.S. field: surface wind, winds aloft, storms, cloud ceiling and a few days ahead.</span><span class="addr">window.fusionspace.co</span></a></li>
+    <li><a href="https://muster.fusionspace.co"><b>Muster</b><span class="d">Which reloads, closures and spacers fit each reloadable motor case, and the parts to buy.</span><span class="addr">muster.fusionspace.co</span></a></li>
+  </ul>
+</section>
+
+<section class="section" id="principles" aria-labelledby="principles-title">
+  <div class="intro">
+    <h2 id="principles-title">How I build them</h2>
+    <p>I design every FusionSpace tool to these rules. HPR Sim's docs give each model's equations, its sources and what it was validated against.</p>
+  </div>
+  <dl class="ways-four">
+    <div><dt>Show the working</dt><dd>Formulas, constants and sources are there to read, not hidden.</dd></div>
+    <div><dt>Say how far to trust it</dt><dd>An estimate says it's an estimate and shows its spread. You never get a go/no-go verdict.</dd></div>
+    <div><dt>Work at the field</dt><dd>Readable in sun, with big targets for cold hands. HPR Sim's core needs no network.</dd></div>
+    <div><dt>No accounts, no tracking</dt><dd>This site sets no cookies and loads nothing from anyone else. It keeps one thing, your theme choice, in your own browser.</dd></div>
+  </dl>
+</section>
+</div>
+</main>
+
+<footer class="wrap">
+  <div class="site-foot">
+    <span class="brand"><img src="/brand/fusion-space-mark-color.svg" alt="" width="22" height="22">FusionSpace</span>
+    <p>Open-source software for rocketry, made by one person. Releases as of <span class="nowrap">2026-10-12</span>.</p>
+    <nav aria-label="Elsewhere"><a href="https://github.com/nrdptel">GitHub</a><a href="https://github.com/nrdptel/fusionspace-site">This site's source</a></nav>
+  </div>
+</footer>
 </body>
 </html>
