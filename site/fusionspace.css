@@ -247,15 +247,12 @@ img, svg, video { max-width: 100%; }
 @media (max-width: 640px) { .fs-scroll-hint { display: block; } }
 .fs-visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-/* ------------------------------------------------------------------ levels (principles.md, Three levels)
-   A record wears the whole drawing, and is what a page is without `data-level`. A tool (`data-level="tool"`) and a front
-   page (`data-level="front"`) set headings in Archivo's wide cut, and labels, controls and chips in Archivo, sentence
-   case. Numbers, units and code stay in Cascadia Mono. The attribute works on <html> or on any element inside. */
-:root, [data-level="record"] {
-  --fs-head-stretch: normal; --fs-case: uppercase; --fs-font-ui: var(--fs-font-mono); --fs-ui-size: 14px; --fs-chip-size: 12px;
-  --fs-font-chart: var(--fs-font-mono);
-}
-:is([data-level="front"], [data-level="tool"]), :is([data-level="front"], [data-level="tool"]) .fs-read {
+/* ------------------------------------------------------------------ one voice (principles.md, Three levels)
+   Every page, at every level, shares one frame and one type: headings in Archivo's wide cut, labels, controls and chips
+   in Archivo, sentence case; numbers, units and code in Cascadia Mono. The levels differ in the parts a page uses, not in
+   its type: a record adds sheet numbers, designation tags and a title block, which keep the drawing's lettering
+   (Cascadia Mono, capitals). `data-level` on a page names its level; it changes nothing on its own. */
+:root, .fs-read {
   --fs-font-display: var(--fs-font-text);
   --fs-head-stretch: 118%; --fs-head-track: -0.012em;
   --fs-case: none; --fs-case-track: 0; --fs-signal-track: 0.04em;
@@ -267,16 +264,16 @@ img, svg, video { max-width: 100%; }
   --fs-type-title: 600 clamp(2rem, 1.6rem + 1.4vw, 2.4375rem)/1.1 var(--fs-font-text);
   --fs-type-display: 600 clamp(2.25rem, 1.6rem + 2.2vw, 3.0625rem)/1.04 var(--fs-font-text);
 }
-:is([data-level="front"], [data-level="tool"]) .fs-header { border-bottom: 0; }
-:is([data-level="front"], [data-level="tool"]) .fs-note > .fs-note-head { font-size: 14px; line-height: 20px; }
-:is([data-level="front"], [data-level="tool"]) .fs-note:is([data-kind="caution"], [data-kind="warning"], [data-kind="danger"], [data-kind="notice"]) > .fs-note-head { font-size: 13px; line-height: 16px; }
+.fs-note > .fs-note-head { font-size: 14px; line-height: 20px; }
+.fs-note:is([data-kind="caution"], [data-kind="warning"], [data-kind="danger"], [data-kind="notice"]) > .fs-note-head { font-size: 13px; line-height: 16px; }
+/* A page that is an example or a mock-up says so, in one style everywhere. */
+.fs-example { margin-top: 8px; padding: 6px 10px; border: 1px dashed var(--fs-rule-strong); font: var(--fs-type-small); color: var(--fs-ink-muted); max-width: none; }
 
 /* ------------------------------------------------------------------ page frame: strip, header, sheets, title block */
 .fs-strip { height: 4px; background: var(--fs-gradient); }
 .fs-page { max-width: 1120px; margin: 0 auto; padding: 0 16px 64px; }
 @media (min-width: 720px) { .fs-page { padding-inline: 32px; } }
-.fs-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
-  padding: 16px 0; border-bottom: 1px solid var(--fs-rule); }
+.fs-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 0; }
 .fs-header .fs-logo { display: flex; align-items: center; height: 24px; color: inherit; }
 .fs-header .fs-logo svg { height: 24px; width: auto; }
 /* Under 32 px tall on a light background the lockup is one color (brand rule); the gradient lockup is for dark. */
@@ -285,14 +282,15 @@ img, svg, video { max-width: 100%; }
 :root[data-theme="dark"] .fs-logo .on-dark { display: block; }
 :root[data-theme="dark"] .fs-logo .on-light { display: none; }
 .fs-nav { display: flex; gap: 4px 20px; flex-wrap: wrap; font: 400 var(--fs-ui-size)/20px var(--fs-font-ui); }
-.fs-nav a { color: var(--fs-ink-muted); text-decoration: none; padding: 2px 0; min-height: 24px; }
+.fs-nav a { color: var(--fs-ink); text-decoration: none; padding: 2px 0; min-height: 24px; }
 .fs-nav a:hover, .fs-nav a[aria-current="page"] { color: var(--fs-ink); box-shadow: inset 0 -2px 0 var(--fs-ink); }
 
-/* A sheet is one section of a page: a 2 px rule on top (the sheet edge), a rail with its number and name, then content. */
-.fs-sheet { border-top: 2px solid var(--fs-ink); padding: 24px 0 48px; display: grid; gap: 16px 32px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 880px) { .fs-sheet { grid-template-columns: 184px minmax(0, 1fr); } }
-.fs-sheet-rail { display: grid; gap: 8px; align-content: start; }
-.fs-sheet-no { font: var(--fs-type-label); letter-spacing: 0.06em; color: var(--fs-ink-muted); }
+/* A sheet is one section of a record, laid out as a tool's part is: a 2 px rule on top (the sheet edge), its number and
+   name on one line, then content. Only the number, in the drawing's lettering, says it's a sheet. */
+.fs-sheet { border-top: 2px solid var(--fs-ink); padding: 20px 0 56px; display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
+.fs-sheet-rail { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.fs-sheet-rail > p { flex-basis: 100%; }
+.fs-sheet-no { font: 400 12px/16px var(--fs-font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--fs-ink-muted); }
 .fs-sheet-body { display: grid; gap: 24px; min-width: 0; }
 .fs-stack { display: grid; gap: 16px; }
 .fs-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
@@ -302,13 +300,15 @@ img, svg, video { max-width: 100%; }
 .fs-panel { background: var(--fs-surface); border: 1px solid var(--fs-rule); padding: 16px; }
 
 /* Title block: the footer of every page, the "about" of every app, the corner of every printout (ISO 7200 fields). */
-.fs-titleblock { display: grid; grid-template-columns: repeat(auto-fit, minmax(132px, 1fr)); border: 2px solid var(--fs-ink);
-  background: var(--fs-surface); margin-top: 48px; }
-.fs-titleblock > div { padding: 6px 10px 8px; border-right: 1px solid var(--fs-rule-strong); border-bottom: 1px solid var(--fs-rule-strong);
-  display: grid; gap: 2px; min-width: 0; margin: 0 -1px -1px 0; }
+/* The cells wrap instead of squeezing, and each row's cells grow to fill it, so no row ends in an empty space. */
+.fs-titleblock { display: flex; flex-wrap: wrap; border: 2px solid var(--fs-ink); background: var(--fs-surface); margin-top: 48px; }
+.fs-titleblock > div { flex: 1 1 132px; padding: 6px 10px 8px; border-right: 1px solid var(--fs-rule-strong); border-bottom: 1px solid var(--fs-rule-strong);
+  display: grid; gap: 2px; align-content: start; min-width: 0; margin: 0 -1px -1px 0; }
 .fs-titleblock dt, .fs-titleblock .k { font: 400 12px/16px var(--fs-font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fs-ink-muted); }
 .fs-titleblock dd, .fs-titleblock .v { margin: 0; font: 400 14px/20px var(--fs-font-mono); overflow-wrap: anywhere; }
-.fs-titleblock .wide { grid-column: span 2; }
+.fs-titleblock .wide { flex-basis: 264px; }
+/* A designation is one unit: it moves to a line of its own rather than break. */
+.fs-titleblock .fs-designation { white-space: nowrap; overflow-wrap: normal; }
 .fs-titleblock .mark svg { height: 20px; width: auto; }
 
 /* A tool's name beside the lockup, after a 1 px rule. */
@@ -318,6 +318,10 @@ img, svg, video { max-width: 100%; }
 .fs-brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 /* A tool's part: the sheet's 2 px rule and its name, without the rail. Numbered (.fs-step) only when the parts are steps. */
 .fs-part { border-top: 2px solid var(--fs-ink); padding: 20px 0 56px; display: grid; gap: 24px; min-width: 0; }
+/* A page's intro, the same at every level but the front page's own opening: title, one sentence, then any tags. */
+.fs-intro { padding: 36px 0 32px; display: grid; gap: 10px; justify-items: start; }
+.fs-intro > .fs-lead { max-width: 40em; }
+.fs-intro > .fs-row { margin-top: 6px; }
 .fs-part > h2 { display: flex; gap: 12px; align-items: baseline; }
 .fs-step { font: 600 var(--fs-text)/1 var(--fs-font-text); font-stretch: normal; color: var(--fs-ink-muted); font-variant-numeric: tabular-nums; }
 /* A tool's footer: one line holding what a record's title block holds. */

@@ -20,14 +20,11 @@ html { scroll-padding-top: 16px; }
    14 px narrower than the chip's words, which ran through its padding and over its border. */
 .fs-status svg, .fs-btn svg, .fs-error svg, .fs-note > .fs-note-head svg { max-width: none; }
 
-.fs-header .fs-nav a { color: var(--fs-ink); }
 .num { font-family: var(--fs-font-mono); font-variant-numeric: tabular-nums slashed-zero; }
 /* main is one column of full-width bands; each band's content sits in a 1120 px column of its own. */
 main { display: grid; grid-template-columns: minmax(0, 1fr); }
 .wrap { width: 100%; max-width: var(--fs-content); margin: 0 auto; padding-inline: 16px; }
 @media (min-width: 720px) { .wrap { padding-inline: 32px; } }
-.fs-header .fs-nav a { color: var(--fs-ink); }
-.fs-header .fs-nav a:hover { box-shadow: inset 0 -2px 0 var(--fs-ink); }
 
 .intro { display: grid; gap: 14px; max-width: 38rem; }
 .intro p { color: var(--fs-ink-muted); font-size: 1.0625rem; line-height: 1.6; }
@@ -151,14 +148,9 @@ main { display: grid; grid-template-columns: minmax(0, 1fr); }
 .tools .d { color: var(--fs-ink-muted); }
 .tools .addr { font: 400 0.875rem/1.25rem var(--fs-font-mono); color: var(--fs-action); overflow-wrap: anywhere; }
 
-/* --- footer */
-.site-foot { margin-top: 112px; padding: 28px 0 40px; border-top: 1px solid var(--fs-rule); display: flex; flex-wrap: wrap; gap: 16px 40px;
-  align-items: center; font: var(--fs-type-small); color: var(--fs-ink-muted); }
-.site-foot .brand { display: flex; gap: 10px; align-items: center; color: var(--fs-ink); font-weight: 600; font-size: 1rem; }
-.site-foot .brand svg { height: 22px; width: auto; flex: none; }
-.site-foot nav { display: flex; flex-wrap: wrap; gap: 4px 20px; }
-@media (min-width: 900px) { .site-foot nav { margin-left: auto; } }
-.site-foot p { max-width: 30rem; }
+/* --- footer: the system's one-line footer, with the room a front page leaves before it */
+footer .fs-foot { margin-top: 112px; padding-bottom: 40px; }
+.fs-foot .fs-foot-name img { width: 20px; height: 20px; flex: none; }
 
 @media (prefers-reduced-motion: reduce) { .flight svg .late { transition: none; } }
 
@@ -186,9 +178,8 @@ main { display: grid; grid-template-columns: minmax(0, 1fr); }
   .skip { display: none; }
   .ink-band { background: none; color: inherit; border: 0; }
 }
-.site-foot .brand img { height: 22px; width: auto; flex: none; }
 
 /* --- the page for an address that doesn't exist */
-.not-found { padding: 64px 0 24px; display: grid; gap: 18px; justify-items: start; }
+.not-found { padding: 36px 0 32px; display: grid; gap: 18px; justify-items: start; }
 .not-found h1 { font: var(--fs-type-display); font-stretch: var(--fs-head-stretch); letter-spacing: -0.018em; }
 .not-found .lead { font-size: 1.125rem; line-height: 1.6; color: var(--fs-ink-muted); max-width: 31em; }
