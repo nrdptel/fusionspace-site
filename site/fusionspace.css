@@ -299,7 +299,7 @@ img, svg, video { max-width: 100%; }
 @media (min-width: 880px) { .fs-split { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } .fs-split > .fs-sticky { position: sticky; top: 16px; align-self: start; } }
 .fs-panel { background: var(--fs-surface); border: 1px solid var(--fs-rule); padding: 16px; }
 
-/* Title block: the footer of every page, the "about" of every app, the corner of every printout (ISO 7200 fields). */
+/* Title block (ISO 7200 fields): the corner of a drawing and an app's about box. Web pages end with .fs-foot instead. */
 /* The cells wrap instead of squeezing, and each row's cells grow to fill it, so no row ends in an empty space. */
 .fs-titleblock { display: flex; flex-wrap: wrap; border: 2px solid var(--fs-ink); background: var(--fs-surface); margin-top: 48px; }
 .fs-titleblock > div { flex: 1 1 132px; padding: 6px 10px 8px; border-right: 1px solid var(--fs-rule-strong); border-bottom: 1px solid var(--fs-rule-strong);
@@ -324,12 +324,21 @@ img, svg, video { max-width: 100%; }
 .fs-intro > .fs-row { margin-top: 6px; }
 .fs-part > h2 { display: flex; gap: 12px; align-items: baseline; }
 .fs-step { font: 600 var(--fs-text)/1 var(--fs-font-text); font-stretch: normal; color: var(--fs-ink-muted); font-variant-numeric: tabular-nums; }
-/* A tool's footer: one line holding what a record's title block holds. */
+/* The footer of every page: one line. A tool's holds its version, data date and units; a record's, its designation,
+   revision, date and status. */
 .fs-foot { border-top: 1px solid var(--fs-rule); margin-top: 8px; padding: 18px 0 8px; display: flex; flex-wrap: wrap; gap: 8px 28px;
   align-items: center; font: var(--fs-type-small); color: var(--fs-ink-muted); }
 .fs-foot .fs-foot-name { display: flex; gap: 8px; align-items: center; color: var(--fs-ink); font-weight: 600; }
 .fs-foot .fs-foot-name svg { height: 20px; width: auto; }
 .fs-foot .fs-push { margin-left: auto; }
+
+/* A list of facts: a name, then its value, one to a row, on hairlines. A record's source, a star's details. */
+.fs-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); margin: 0; max-width: 48rem;
+  border-bottom: 1px solid var(--fs-rule); }
+.fs-facts > dt, .fs-facts > dd { margin: 0; padding: 9px 0; border-top: 1px solid var(--fs-rule); min-width: 0; }
+/* The label's 18 px line sits 1 px lower than the value's 20 px one, so their baselines meet. */
+.fs-facts > dt { padding: 10px 24px 10px 0; font: var(--fs-type-label); text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); color: var(--fs-ink-muted); }
+.fs-facts > dd { font: var(--fs-type-code); overflow-wrap: anywhere; }
 
 /* Designation tag: FS · SW · TOOL 002. The one chamfered corner points where the mark points (up and right, 45 degrees). */
 .fs-tag { --c: var(--fs-chamfer-s); display: inline-flex; width: fit-content; white-space: nowrap; align-items: center; gap: 6px; padding: 2px 10px 2px 8px; min-height: 24px;

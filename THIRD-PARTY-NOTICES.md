@@ -4,12 +4,12 @@ Files in this repository that come from elsewhere, and the terms each is under. 
 is under the repository's MIT or Apache-2.0 license.
 
 - **The design system's stylesheet** (`site/fusionspace.css`): `product/web/fusionspace.css` of
-  [fusionspace-design](https://github.com/nrdptel/fusionspace-design) at `50731d8` (product
+  [fusionspace-design](https://github.com/nrdptel/fusionspace-design) at `b5ebe60` (product
   system Rev E, with the front and tool levels), unchanged, under the Apache License 2.0, as its
   first line states.
 
 - **The fonts** (`site/fonts/*.woff2`): Archivo, with its wide cut for headings, and Cascadia
-  Mono, the WOFF2 subsets in `product/web/fonts/` of fusionspace-design at `50731d8`, under the SIL
+  Mono, the WOFF2 subsets in `product/web/fonts/` of fusionspace-design at `b5ebe60`, under the SIL
   Open Font License 1.1;
   the licenses are beside them, `site/fonts/OFL-Archivo.txt` and `site/fonts/OFL-CascadiaMono.txt`.
 
