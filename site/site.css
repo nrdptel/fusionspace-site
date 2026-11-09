@@ -82,7 +82,13 @@ main { display: grid; grid-template-columns: minmax(0, 1fr); }
 .fs-chart.hist text { font-size: inherit; font-variant-numeric: tabular-nums; }
 .fs-chart.hist .bar { fill: var(--fs-ink-muted); }
 .fs-chart.hist .bar.in { fill: var(--fs-ink); }
-.fs-chart.hist .within { fill: var(--fs-rule); opacity: 0.55; }
+/* The band is a solid color, so a count inside it can wear a halo of the same color where a grid line crosses it. */
+.fs-chart.hist { --band: color-mix(in srgb, var(--fs-rule) 55%, var(--fs-canvas)); }
+.fs-chart.hist .within { fill: var(--band); }
+.fs-chart.hist .t-ink.in { stroke: var(--band); }
+.fs-chart.hist .band-label, .fs-chart.hist .t-mean { stroke: none; }   /* no line crosses these */
+/* In the field theme the muted ink is near the ink itself; the bars outside the band take the faint ink, 6.3 : 1. */
+:root[data-theme="field"] .fs-chart.hist .bar:not(.in) { fill: var(--fs-ink-faint); }
 .fs-chart.hist .mean { stroke: var(--fs-action); stroke-width: 2; }
 .fs-chart.hist .t-mean { fill: var(--fs-action); font-weight: 600; paint-order: stroke; stroke: var(--fs-canvas); stroke-width: 4px; }
 .fs-chart.hist .t-ink { font-weight: 600; }
@@ -105,6 +111,7 @@ main { display: grid; grid-template-columns: minmax(0, 1fr); }
 .listing .l.last { padding-bottom: 18px; border-bottom: 1px solid var(--fs-rule); }
 .listing .l.kv { display: grid; grid-template-columns: 22ch minmax(0, 1fr); }
 @media (max-width: 599px) { .listing .l.kv { grid-template-columns: minmax(0, 1fr); } .listing .l.kv > span + span { padding-left: 2ch; } }
+.listing .nb { white-space: nowrap; }   /* a file name breaks as a whole, not at its hyphen */
 .listing .p { color: var(--fs-ink-muted); } .listing .h { color: var(--fs-ink); font-weight: 600; } .listing .w { color: var(--fs-caution); }
 .listing .note { margin: 0; font: var(--fs-type-small); color: var(--fs-ink-muted); display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; align-items: start; }
 .listing .note::before { content: ""; height: 1px; margin-top: 10px; background: var(--fs-ink-muted); }
@@ -112,6 +119,9 @@ main { display: grid; grid-template-columns: minmax(0, 1fr); }
 @media (max-width: 999px) {
   .listing .note { background: var(--fs-surface); border-inline: 1px solid var(--fs-rule); padding: 6px 20px 12px; }
   .listing .note::before { margin-top: 9px; }
+  /* A note after the last line is inside the box here, so the box closes under the note. */
+  .listing .l.last:has(+ .note) { padding-bottom: 6px; border-bottom: 0; }
+  .listing .l.last + .note { padding-bottom: 18px; border-bottom: 1px solid var(--fs-rule); }
 }
 .ways { display: grid; gap: 8px 32px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
 .ways p { font: var(--fs-type-small); color: var(--fs-ink-muted); }
@@ -150,6 +160,10 @@ main { display: grid; grid-template-columns: minmax(0, 1fr); }
 
 /* --- footer: the system's one-line footer, with the room a front page leaves before it */
 footer .fs-foot { margin-top: 112px; padding-bottom: 40px; }
+@media (max-width: 719px) { footer .fs-foot { margin-top: 72px; padding-bottom: 32px; } }
+
+/* The header's frame holds only the header here: the hero sets the space under it. */
+body > .fs-page { padding-bottom: 0; }
 .fs-foot .fs-foot-name img { width: 20px; height: 20px; flex: none; }
 
 @media (prefers-reduced-motion: reduce) { .flight svg .late { transition: none; } }
@@ -164,6 +178,7 @@ footer .fs-foot { margin-top: 112px; padding-bottom: 40px; }
 /* --- links under a release, and a product's address */
 .links { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font: var(--fs-type-small); }
 .links a { display: inline-block; padding-block: 2px; }
+@media (min-width: 900px) { .road .links { flex-direction: column; gap: 2px; } }
 .road .more { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 4px; font: var(--fs-type-small); color: var(--fs-ink-muted); }
 .road .more b { font: inherit; font-weight: 600; color: var(--fs-ink); }
 

@@ -80,11 +80,12 @@
       const area = `${path} L${X(T_END).toFixed(1)} ${Y(0)} L${X(0)} ${Y(0)} Z`;
       const labels = narrow
         ? [[9.12, 1063, "Apogee", "1,063 ft", "top"], [22.41, 492, "Main", "", "right"]]
-        : [[3.5, 535, "Burnout", "535 ft", "right"], [9.12, 1063, "Apogee", "1,063 ft at 9.1 s", "top"], [22.41, 492, "Main opens", "492 ft", "left"]];
+        : [[3.5, 535, "Burnout", "535 ft", "upleft"], [9.12, 1063, "Apogee", "1,063 ft at 9.1 s", "top"], [22.41, 492, "Main opens", "492 ft", "left"]];
       const lab = ([t, h, name, val, side]) => {
         const x = X(t), y = Y(h);
-        const [lx, ly, anchor] = side === "top" ? [x - 6, y - 14, "start"] : side === "right" ? [x + 12, y + 5, "start"] : [x - 12, y + 22, "end"];
-        return `<g class="late${played ? "" : " wait"}" data-t="${t}"><circle class="ev-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5"/>` +
+        const [lx, ly, anchor] = side === "top" ? [x - 6, y - 14, "start"] : side === "right" ? [x + 12, y + 5, "start"]
+          : side === "upleft" ? [x - 10, y - 10, "end"] : [x - 12, y + 22, "end"];
+        return `<g class="late${played ? "" : " wait"}" data-t="${t}"${side === "upleft" ? ' data-fit="left"' : ""}><circle class="ev-dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="4.5"/>` +
           `<text class="ev" x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}">${esc(name)}${val ? ` <tspan class="ev-v">${esc(val)}</tspan>` : ""}</text></g>`;
       };
       const reveal = played ? W : 0;
@@ -98,10 +99,16 @@ ${yt.map((v, i) => `<line class="tick" x1="${ml - 6}" x2="${ml}" y1="${Y(v)}" y2
 ${xt.map((v, i) => `<text x="${X(v)}" y="${Y(0) + 22}" text-anchor="${i ? "middle" : "start"}">${v}${i === xt.length - 1 ? " s" : ""}</text>`).join("")}
 <g class="rv"><path d="${area}" fill="url(#fl-g)" mask="url(#fl-m)"/><path class="under" d="${path}"/>
 <path d="${path}" fill="none" stroke="url(#fl-g)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></g>
+<line class="scrub-line" x1="0" x2="0" y1="0" y2="0"/>
 ${labels.map(lab).join("")}
-<line class="scrub-line" x1="0" x2="0" y1="0" y2="0"/><circle class="scrub-dot" r="5"/>
+<circle class="scrub-dot" r="5"/>
 </svg>`;
       const svg = plot.firstElementChild;
+      // A label set to the left of its point keeps its value only while the whole label clears the chart's left edge.
+      for (const g of svg.querySelectorAll('[data-fit="left"]')) {
+        const text = g.querySelector("text"), v = text.querySelector(".ev-v");
+        if (v && +text.getAttribute("x") - text.getComputedTextLength() < 2) v.remove();
+      }
       S = { X, Y, ml, pw, xmax, line: svg.querySelector(".scrub-line"), dot: svg.querySelector(".scrub-dot"), rv: svg.querySelector(".rv"), W };
       S.rv.style.clipPath = `inset(0 ${W - reveal}px 0 0)`; // set through the CSSOM: the security policy refuses style attributes
       show(cur);
@@ -157,10 +164,10 @@ ${labels.map(lab).join("")}
   const MEAN = 7.76;
   const hf = document.querySelector(".hist-plot");
   if (hf) {
-    const drawHist = () => {
+    const drawHist = (above = false) => {
       const W = Math.round(hf.clientWidth); if (!W) return;
       const narrow = W < 520;
-      const ml = 30, mr = 6, mt = 34, mb = 52;
+      const ml = 30, mr = 6, mb = 52, mt = above ? 58 : 34;   // the band's label gets a line above the band when it can't fit inside
       const H = Math.round(Math.max(250, Math.min(340, W * 0.4)));
       const pw = W - ml - mr, ph = H - mt - mb, lo = -35, hi = 35, cmax = 16;
       const X = (v) => ml + ((v - lo) / (hi - lo)) * pw;
@@ -169,20 +176,29 @@ ${labels.map(lab).join("")}
       const sign = (v) => (v > 0 ? "+" : v < 0 ? "−" : "") + Math.abs(v) + "%";
       const gap = narrow ? 2 : 3;
       const mx = X(MEAN), meanRight = mx + 6 + 104 < W;
+      const bin = HIST.find(([b]) => MEAN >= b && MEAN < b + 5), cnt = Y(bin[1]) - 6;   // the count over the bar the average falls in
+      const parted = Math.abs(mx - X(bin[0] + 2.5)) < 14;                             // its digits are about 16 px wide
+      const meanLine = parted
+        ? `<line class="mean" x1="${mx}" x2="${mx}" y1="${mt + 2}" y2="${cnt - 15}"/><line class="mean" x1="${mx}" x2="${mx}" y1="${cnt + 4}" y2="${Y(0)}"/>`
+        : `<line class="mean" x1="${mx}" x2="${mx}" y1="${mt + 2}" y2="${Y(0)}"/>`;
       hf.innerHTML = `<svg class="fs-chart hist" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true" focusable="false">
 <rect class="within" x="${X(-10)}" y="${mt - 26}" width="${X(10) - X(-10)}" height="${ph + 26}"/>
-<text class="t-ink" x="${X(-10) + 8}" y="${mt - 9}">32 within 10%</text>
-${[0, 5, 10, 15].map((c) => `<line class="grid" x1="${ml}" x2="${ml + pw}" y1="${Y(c)}" y2="${Y(c)}"/><text x="${ml - 8}" y="${Y(c) + 4.5}" text-anchor="end">${c}</text>`).join("")}
+<text class="t-ink band-label" x="${X(-10) + 8}" y="${mt - 9}">32 within 10%</text>
+${[0, 5, 10].map((c) => `<line class="grid" x1="${ml}" x2="${ml + pw}" y1="${Y(c)}" y2="${Y(c)}"/><text x="${ml - 8}" y="${Y(c) + 4.5}" text-anchor="end">${c}</text>`).join("")}
 ${HIST.filter(([, c]) => c).map(([b, c]) => `<rect class="bar${b >= -10 && b < 10 ? " in" : ""}" x="${X(b) + gap / 2}" y="${Y(c)}" width="${X(b + 5) - X(b) - gap}" height="${Y(0) - Y(c)}"/>`).join("")}
 <line class="axis" x1="${ml}" x2="${ml + pw}" y1="${Y(0)}" y2="${Y(0)}"/>
-<line class="mean" x1="${mx}" x2="${mx}" y1="${mt + 2}" y2="${Y(0)}"/>
-${HIST.filter(([, c]) => c).map(([b, c]) => `<text class="t-ink" x="${X(b + 2.5)}" y="${Y(c) - 6}" text-anchor="middle">${c}</text>`).join("")}
+${meanLine}
+${HIST.filter(([, c]) => c).map(([b, c]) => `<text class="t-ink${b >= -10 && b < 10 ? " in" : ""}" x="${X(b + 2.5)}" y="${Y(c) - 6}" text-anchor="middle">${c}</text>`).join("")}
 <text class="t-mean" x="${meanRight ? mx + 6 : mx - 6}" y="${mt + 12}" text-anchor="${meanRight ? "start" : "end"}">average +7.8%</text>
 ${xt.map((v) => `<text x="${X(v)}" y="${Y(0) + 20}" text-anchor="middle">${sign(v)}</text>`).join("")}
 <text x="${ml}" y="${Y(0) + 42}">read low</text><text x="${ml + pw}" y="${Y(0) + 42}" text-anchor="end">read high</text>
 </svg>`;
+      const band = hf.querySelector(".band-label");
+      if (!above && band.getComputedTextLength() + 16 > X(10) - X(-10)) return drawHist(true);
+      if (above) { band.setAttribute("x", X(-10)); band.setAttribute("y", mt - 34); }
     };
     let hq = 0, hw = -1;
     new ResizeObserver(() => { if (hf.clientWidth === hw) return; cancelAnimationFrame(hq); hq = requestAnimationFrame(() => { hw = hf.clientWidth; drawHist(); }); }).observe(hf);
+    if (document.fonts) document.fonts.ready.then(() => { cancelAnimationFrame(hq); hq = requestAnimationFrame(() => drawHist()); });   // it measures its words
   }
 })();

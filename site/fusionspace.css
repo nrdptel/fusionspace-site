@@ -237,11 +237,12 @@ kbd { padding: 0 4px; border: 1px solid var(--fs-rule-strong); border-bottom-wid
 pre { padding: 12px 16px; border: 1px solid var(--fs-rule); background: var(--fs-surface); overflow-x: auto; line-height: 20px; }
 hr { border: 0; border-top: 1px solid var(--fs-rule); margin: 24px 0; }
 img, svg, video { max-width: 100%; }
-.fs-num, .fs-mono { font-family: var(--fs-font-mono); font-variant-numeric: tabular-nums slashed-zero; }
 .fs-muted { color: var(--fs-ink-muted); }
 .fs-small { font: var(--fs-type-small); }
 .fs-label { font: var(--fs-type-label); text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); color: var(--fs-ink-muted); }
 .fs-lead { font: var(--fs-type-lead); color: var(--fs-ink-muted); }
+/* After the type classes, which set the whole font: .fs-small.fs-mono is small Cascadia. */
+.fs-num, .fs-mono { font-family: var(--fs-font-mono); font-variant-numeric: tabular-nums slashed-zero; }
 .fs-label .u, .fs-table th .u, .fs-field > label .u, .fs-status .u, .fs-titleblock .k .u { text-transform: none; letter-spacing: 0; }
 .fs-scroll-hint { display: none; font: var(--fs-type-small); color: var(--fs-ink-muted); }
 @media (max-width: 640px) { .fs-scroll-hint { display: block; } }
@@ -331,6 +332,7 @@ img, svg, video { max-width: 100%; }
 .fs-foot .fs-foot-name { display: flex; gap: 8px; align-items: center; color: var(--fs-ink); font-weight: 600; }
 .fs-foot .fs-foot-name svg { height: 20px; width: auto; }
 .fs-foot .fs-push { margin-left: auto; }
+@media (max-width: 599px) { .fs-foot .fs-push { margin-left: 0; } }
 
 /* A list of facts: a name, then its value, one to a row, on hairlines. A record's source, a star's details. */
 .fs-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); margin: 0; max-width: 48rem;
@@ -359,6 +361,8 @@ img, svg, video { max-width: 100%; }
 .fs-btn[data-variant="secondary"]:hover { border-color: var(--fs-action); color: var(--fs-action); }
 .fs-btn[data-variant="quiet"] { background: transparent; border-color: transparent; color: var(--fs-action); padding-inline: 4px; }
 .fs-btn[data-variant="quiet"]:hover { text-decoration: underline; text-underline-offset: 4px; }
+/* "Show the math" and other disclosures: the quiet button's words line up with the text above it. */
+details > summary.fs-btn[data-variant="quiet"] { margin-inline-start: -5px; }
 .fs-btn[data-variant="danger"] { background: var(--fs-danger-fill); border-color: var(--fs-danger-fill); color: var(--fs-on-danger-fill); }
 .fs-btn[data-variant="danger"]:hover { background: var(--fs-danger-fill); border-color: var(--fs-danger-fill); color: var(--fs-on-danger-fill);
   outline: 2px solid var(--fs-ink); outline-offset: 2px; }
@@ -413,6 +417,9 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--fs-ink); width
 .fs-readout[data-kind="stale"] .fs-value::before { content: ""; width: 10px; align-self: stretch; background-image: var(--fs-hatch); border: 1px solid var(--fs-rule-strong); }
 .fs-readouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 168px), 1fr)); border-top: 1px solid var(--fs-rule); }
 .fs-readouts > .fs-readout { padding: 12px 16px 16px 0; border-bottom: 1px solid var(--fs-rule); }
+/* On a phone the grid's cells are about 155 px: its readouts step down a size so a value keeps its unit on its line. A
+   readout that stands alone, the value a screen exists to show, keeps its size. */
+@media (max-width: 599px) { .fs-readouts > .fs-readout .fs-value { font: var(--fs-type-readout); font-variant-numeric: tabular-nums slashed-zero; } }
 
 .fs-table-wrap { overflow-x: auto; }
 .fs-table { width: 100%; border-collapse: collapse; font: var(--fs-type-body); }
@@ -420,7 +427,7 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--fs-ink); width
   position: sticky; left: 0; max-width: min(100%, calc(100vw - 32px)); }
 .fs-table th { font: var(--fs-type-label); text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); color: var(--fs-ink-muted); text-align: left;
   padding: 8px 12px 8px 0; border-bottom: 2px solid var(--fs-ink); vertical-align: bottom; }
-.fs-table td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--fs-rule); vertical-align: top; }
+.fs-table td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--fs-rule); vertical-align: baseline; }   /* a row's first lines share a baseline, whatever their size */
 .fs-table td.fs-mono { white-space: nowrap; }
 .fs-table .n { text-align: right; font-family: var(--fs-font-mono); font-variant-numeric: tabular-nums slashed-zero; white-space: nowrap; }
 .fs-table th.n { font: var(--fs-type-label); }
@@ -440,10 +447,13 @@ input[type="checkbox"], input[type="radio"] { accent-color: var(--fs-ink); width
   .fs-table[data-stack] td:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .fs-table[data-stack] .fs-cell-label { display: block; font: var(--fs-type-label); text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); color: var(--fs-ink-muted); }
   .fs-table[data-stack] .fs-status { justify-self: start; }
+  .fs-table[data-stack] td[data-wide] { grid-column: 1 / -1; }
+  .fs-table[data-stack] td[data-lead] { order: -1; }
 }
 /* Working shown in a narrow panel ("Show the math") wraps inside its box instead of scrolling it. */
 pre.fs-wrap { white-space: break-spaces; overflow-wrap: anywhere; overflow: visible; }
 
+.fs-event { display: inline-flex; align-items: baseline; gap: 10px; }
 .fs-balloon { display: inline-grid; place-items: center; width: 24px; height: 24px; border: 1px solid currentColor; border-radius: 50%;
   font: 400 12px/1 var(--fs-font-mono); flex: none; }
 .fs-hatch { background-image: var(--fs-hatch); }
@@ -503,12 +513,14 @@ dialog.fs-dialog > footer { padding: 12px 16px; border-top: 1px solid var(--fs-r
 .fs-empty { display: grid; gap: 12px; justify-items: start; padding: 32px; border: 1px dashed var(--fs-rule-strong);
   background-image: repeating-linear-gradient(-45deg, var(--fs-rule) 0 1px, transparent 1px 10px); }
 .fs-empty > * { background: var(--fs-canvas); padding: 2px 6px; }
+.fs-empty > .fs-btn { padding: 0 16px; }
 .fs-icon { width: 20px; height: 20px; vertical-align: -4px; }
 
 /* Charts drawn inline: see product/data.md. Classes the chart SVGs use, so they follow the theme. */
 .fs-chart { width: 100%; height: auto; overflow: visible; font-family: var(--fs-font-chart); font-variant-numeric: tabular-nums; }
 .fs-chart text { fill: var(--fs-ink-muted); font-size: 12px; }
 .fs-chart .t-ink { fill: var(--fs-ink); paint-order: stroke; stroke: var(--fs-canvas); stroke-width: 4px; stroke-linejoin: round; }
+.fs-chart .plate { fill: var(--fs-canvas); }
 .fs-chart .grid { stroke: var(--fs-rule); stroke-width: 1; }
 .fs-chart .axis { stroke: var(--fs-rule-strong); stroke-width: 1; }
 .fs-chart .measured { fill: none; stroke: var(--fs-ink); stroke-width: 2; stroke-linejoin: round; }
@@ -523,6 +535,20 @@ dialog.fs-dialog > footer { padding: 12px 16px; border-top: 1px solid var(--fs-r
 .fs-chart .balloon text { fill: var(--fs-ink); font-size: 12px; text-anchor: middle; }
 .fs-chart .hatch-fill { fill: url(#fs-hatch); }
 .fs-chart .hatch-line { stroke: var(--fs-ink-faint); stroke-width: 1; }
+/* The specimen's line types: a sample, then its name and use. */
+.fs-line-rows { display: grid; gap: 14px; }
+.fs-line-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px 24px; align-items: center; }
+@media (min-width: 640px) { .fs-line-row { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); } }
+.fs-line-row > p { color: var(--fs-ink-muted); }
+.fs-line-row > p b { color: var(--fs-ink); font-weight: 600; }
+/* A chart drawn at several widths (data.md, Charts): each drawing shows from the width it was made for, so its words stay
+   12 to 18 px at every width without a script. The drawings are 288, 440, 640 and 880 px wide. */
+.fs-chart-set { container-type: inline-size; }
+.fs-chart-set > .fs-chart { display: none; }
+.fs-chart-set > .fs-chart[data-from="0"] { display: block; }
+@container (min-width: 440px) { .fs-chart-set > .fs-chart[data-from="0"] { display: none; } .fs-chart-set > .fs-chart[data-from="440"] { display: block; } }
+@container (min-width: 640px) { .fs-chart-set > .fs-chart[data-from="440"] { display: none; } .fs-chart-set > .fs-chart[data-from="640"] { display: block; } }
+@container (min-width: 880px) { .fs-chart-set > .fs-chart[data-from="640"] { display: none; } .fs-chart-set > .fs-chart[data-from="880"] { display: block; } }
 
 /* ------------------------------------------------------------------ motion, contrast modes, print */
 @keyframes fs-flash-warning { 50% { visibility: hidden; } }
