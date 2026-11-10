@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-US">
+<html lang="en-US" data-level="front">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +9,7 @@
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F3F4F7">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0B0F1C">
 <link rel="preload" href="/fonts/Archivo-Regular.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/CascadiaMono-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Archivo-WideSemiBold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="/fusionspace.css">
 <link rel="stylesheet" href="/site.css">
@@ -21,15 +21,17 @@
 <body>
 <a class="skip" href="#main">Skip to the content</a>
 <div class="fs-strip"></div>
-<div class="fs-page">
+<div class="fs-page" id="top">
   <header class="fs-header">
     <a class="fs-logo" href="/">
       <img class="on-light" src="/brand/fusion-space-horizontal-void.svg" alt="FusionSpace" width="142" height="24">
       <img class="on-dark" src="/brand/fusion-space-horizontal-white.svg" alt="FusionSpace" width="142" height="24">
     </a>
     <nav class="fs-nav" aria-label="Sections">
-      <a href="/#hpr">FusionSpace HPR</a>
-      <a href="/#projects">Other projects</a>
+      <a href="/#sim">HPR Sim</a>
+      <a href="/#accuracy">Accuracy</a>
+      <a href="/#hpr">Roadmap</a>
+      <a href="/#projects">Projects</a>
       <a href="/#tools">Web tools</a>
     </nav>
     <div class="fs-seg fs-noprint" role="group" aria-label="Theme">
@@ -40,27 +42,26 @@
     </div>
   </header>
 
-  <main id="main">
-    <section class="intro" aria-labelledby="title">
-      <span class="fs-tag">FS · SITE 001 · 404</span>
-      <h1 id="title">There's no page at this address.</h1>
-      <p class="fs-lead">I rebuilt the site, so an old link can lead to a page that moved or is gone. Every FusionSpace project and tool is listed on the home page.</p>
-      <div class="fs-row">
-        <a class="fs-btn" href="/">Go to the home page</a>
-      </div>
-    </section>
-  </main>
-
-  <footer class="fs-titleblock" aria-label="Title block">
-    <div class="mark wide"><span class="k">Owner</span><span class="v"><img src="/brand/fusion-space-mark-color.svg" alt="" width="24" height="24"> FusionSpace</span></div>
-    <div><span class="k">Title</span><span class="v">FusionSpace</span></div>
-    <div><span class="k">Designation</span><span class="v">FS · SITE 001</span></div>
-    <div><span class="k">Rev</span><span class="v">B</span></div>
-    <div><span class="k">Date</span><span class="v">2026-10-19</span></div>
-    <div class="wide"><span class="k">Data</span><span class="v">Releases as of 2026-10-12</span></div>
-    <div><span class="k">Status</span><span class="v">Released</span></div>
-    <div class="wide"><span class="k">Source</span><span class="v"><a href="https://github.com/nrdptel/fusionspace-site">nrdptel/fusionspace-site</a></span></div>
-  </footer>
 </div>
+
+<main id="main">
+<div class="wrap">
+  <section class="not-found" aria-labelledby="title">
+    <h1 id="title">There's no page at this address.</h1>
+    <p class="lead">I rebuilt the site, so an old link can lead to a page that moved or is gone. Every FusionSpace project and tool is listed on the home page.</p>
+    <div class="fs-row">
+      <a class="fs-btn" href="/">Go to the home page</a>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer class="wrap">
+  <div class="fs-foot">
+    <span class="fs-foot-name"><img src="/brand/fusion-space-mark-color.svg" alt="" width="20" height="20">FusionSpace</span>
+    <span>Open-source software for rocketry, made by one person.</span>
+    <a class="fs-push" href="https://github.com/nrdptel">GitHub</a><a href="https://github.com/nrdptel/fusionspace-site">This site&#39;s source</a>
+  </div>
+</footer>
 </body>
 </html>

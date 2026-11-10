@@ -1,69 +1,194 @@
 /* SPDX-License-Identifier: MIT OR Apache-2.0 */
-/* fusionspace.co's own layout, on the design system's roles and components (fusionspace.css).
-   Only roles (--fs-*) here, never a color value. */
+/* fusionspace.co's own layout, on the design system's roles and components (fusionspace.css). The page is a front
+   page (the system's product/principles.md, Three levels): each section takes the form of what it holds, so this
+   layout is the page's own. Only roles (--fs-*) here, except the terminal band, which is dark in every theme. */
 
 html { scroll-padding-top: 16px; }
 
 /* For keyboards: hidden until focused, then drawn inside the page's top-left margin. */
-.skip { position: absolute; left: 16px; top: 8px; z-index: 1; padding: 8px 12px; background: var(--fs-surface);
-  border: 2px solid var(--fs-action); font: 600 14px/20px var(--fs-font-mono); }
+.skip { position: absolute; left: 16px; top: 8px; z-index: 5; padding: 8px 12px; background: var(--fs-surface);
+  border: 2px solid var(--fs-action); font: 600 14px/20px var(--fs-font-text); }
 .skip:not(:focus) { width: 1px; height: 1px; padding: 0; border: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .fs-logo { gap: 0; }
-.nowrap { white-space: nowrap; }
 .fs-logo img { height: 24px; width: auto; }
+.nowrap { white-space: nowrap; }
 
-/* An icon in a status chip, button, note or error keeps its set size. fusionspace.css gives every
-   svg max-width: 100%, and WebKit (Safari) counts an icon that may shrink like that as no width
-   at all when it sizes a table column, so the column, and the chip in it, came out the icon's
-   14 px narrower than the chip's words, which ran through its padding and over its border. */
-.fs-status svg, .fs-btn svg, .fs-error svg, .fs-note > .fs-note-head svg { max-width: none; }
+.num { font-family: var(--fs-font-mono); font-variant-numeric: tabular-nums slashed-zero; }
+/* main is one column of full-width bands; each band's content sits in a 1120 px column of its own. */
+main { display: grid; grid-template-columns: minmax(0, 1fr); }
+.wrap { width: 100%; max-width: var(--fs-content); margin: 0 auto; padding-inline: 16px; }
+@media (min-width: 720px) { .wrap { padding-inline: 32px; } }
 
-.intro { padding: 56px 0 40px; display: grid; gap: 20px; max-width: 760px; }
-.intro h1 { font: var(--fs-type-display); }
-@media (max-width: 479px) { .intro { padding: 40px 0 32px; } .intro h1 { font: var(--fs-type-title); } }
+.intro { display: grid; gap: 14px; max-width: 38rem; }
+.intro p { color: var(--fs-ink-muted); font-size: 1.0625rem; line-height: 1.6; }
+.intro a { font-weight: 500; }
 
-/* The register: a table of numbered rows. Wide screens read it as columns; below 720 px each row
-   becomes a block with its fields labelled, so nothing is cut off or scrolls sideways. */
-.register { width: 100%; border-collapse: collapse; }
-.register caption { text-align: left; caption-side: top; padding-bottom: 8px; font: var(--fs-type-small); color: var(--fs-ink-muted); }
-.register th { font: var(--fs-type-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--fs-ink-muted); text-align: left;
-  padding: 8px 12px 8px 0; border-bottom: 2px solid var(--fs-ink); vertical-align: bottom; }
-.register td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--fs-rule); vertical-align: top; }
-.register td > div { margin-top: 4px; }
-.register td > .no { margin: 0 0 6px; }
-.register .fs-tag { white-space: nowrap; }
-/* Each field's name, for the narrow layout below; screen readers have the table's own headers. */
-.register .label { display: none; }
-
-@media (max-width: 719px) {
-  .register thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .register, .register tbody, .register tr, .register td { display: block; width: auto; }
-  .register caption { display: block; }
-  .register tr { padding: 12px 0; border-bottom: 1px solid var(--fs-rule); display: grid; gap: 8px; }
-  .register tbody tr:first-child { border-top: 2px solid var(--fs-ink); }
-  .register td { padding: 0; border: 0; }
-  .register .label { display: block; font: var(--fs-type-label); text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--fs-ink-muted); margin-bottom: 2px; }
+/* --- the hero: the flight itself, with the words in the sky above its descent */
+.hero { padding: 24px 0 0; display: grid; gap: 28px; }
+.hero-copy { display: grid; gap: 18px; align-content: start; max-width: 36rem; position: relative; z-index: 1; }
+.hero h1 { font: var(--fs-type-display); font-stretch: var(--fs-head-stretch); letter-spacing: -0.018em; }
+.hero .lead { font-size: 1.125rem; line-height: 1.6; color: var(--fs-ink-muted); max-width: 31em; }
+.hero .lead b { color: var(--fs-ink); font-weight: 600; }
+.hero .fs-row { margin-top: 6px; }
+@media (min-width: 1080px) {
+  .hero.overlay { grid-template-areas: "all"; padding-top: 8px; }
+  .hero.overlay > * { grid-area: all; }
+  .hero.overlay .hero-copy { justify-self: end; align-self: start; width: 47%; padding-top: 40px; }
 }
-/* A designation is one unit and is never broken; on the narrowest screens it is set smaller so it still fits. */
-@media (max-width: 359px) { .register .fs-tag { font-size: 11px; letter-spacing: 0; padding-inline: 6px; } }
 
-.links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; }
-.links li { max-width: none; }
-.links a { display: inline-flex; align-items: center; min-height: 24px; }
+.flight { margin: 0; display: grid; gap: 14px; min-width: 0; }
+.flight .plot { position: relative; min-width: 0; touch-action: pan-y; outline-offset: 6px; cursor: crosshair; }
+.flight svg { display: block; width: 100%; height: auto; overflow: visible; }
+.flight svg text { font: 400 13px/1 var(--fs-font-text); fill: var(--fs-ink-muted); font-variant-numeric: tabular-nums; }
+.flight svg .ev { font-weight: 600; fill: var(--fs-ink); paint-order: stroke; stroke: var(--fs-canvas); stroke-width: 5px; stroke-linejoin: round; }
+.flight svg .ev-v { fill: var(--fs-ink-muted); font-weight: 400; }
+.flight svg .ev-dot { fill: var(--fs-canvas); stroke: var(--fs-ink); stroke-width: 1.75; }
+.flight svg .axis { stroke: var(--fs-rule-strong); stroke-width: 1; }
+.flight svg .tick { stroke: var(--fs-rule-strong); stroke-width: 1; }
+.flight svg .under { display: none; }
+.flight svg .scrub-line { stroke: var(--fs-ink); stroke-width: 1; stroke-dasharray: 2 3; }
+.flight svg .scrub-dot { fill: var(--fs-ink); stroke: var(--fs-canvas); stroke-width: 2; }
+.flight svg .late { transition: opacity 260ms var(--fs-ease-standard); }
+.flight svg .late.wait { opacity: 0; }
+:root[data-theme="field"] .flight svg .under { display: inline; stroke: var(--fs-ink); stroke-width: 6.5; fill: none; stroke-linejoin: round; stroke-linecap: round; }
 
-.principles { display: grid; gap: 16px; max-width: var(--fs-measure); }
-.principles > div { border-top: 1px solid var(--fs-rule); padding-top: 12px; display: grid; gap: 4px; }
-.principles dd { margin: 0; }
+.readout { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr)); gap: 12px 24px; padding-top: 14px; border-top: 1px solid var(--fs-rule); }
+.readout div { display: grid; gap: 2px; min-width: 0; align-content: start; }
+@media (max-width: 599px) {
+  .readout { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 16px; }
+  .readout .ph { grid-column: 1 / -1; }
+  .readout dd { font-size: 1.125rem; }
+}
+.readout dt { font: 500 0.8125rem/1.125rem var(--fs-font-text); color: var(--fs-ink-muted); }
+.readout dd { margin: 0; font: 400 1.25rem/1.75rem var(--fs-font-mono); font-variant-numeric: tabular-nums slashed-zero; white-space: nowrap; }
+.readout dd small { font: 400 0.875rem/1 var(--fs-font-mono); color: var(--fs-ink-muted); margin-left: 0.3em; }
+.readout dd.phase { font: 600 1.0625rem/1.75rem var(--fs-font-text); white-space: normal; }
+.flight figcaption { font: var(--fs-type-small); color: var(--fs-ink-muted); max-width: 46rem; }
 
-/* The title block wraps its cells instead of squeezing them, so no value is ever cut off. */
-.fs-titleblock { display: flex; flex-wrap: wrap; }
-.fs-titleblock > div { flex: 1 1 132px; }
-.fs-titleblock > .wide { flex-basis: 264px; }
-.fs-titleblock .mark .v { display: flex; align-items: center; gap: 8px; }
-.fs-titleblock .mark img { width: 24px; height: 24px; }
+/* --- sections */
+.section { padding-top: 104px; display: grid; gap: 36px; }
+@media (max-width: 719px) { .section { padding-top: 72px; gap: 28px; } }
+
+.trust-fig { margin: 0; display: grid; gap: 12px; max-width: 860px; }
+.trust-fig figcaption { font: var(--fs-type-small); color: var(--fs-ink-muted); max-width: 40rem; }
+.fs-chart.hist { font-family: var(--fs-font-text); font-size: 13px; }
+.fs-chart.hist text { font-size: inherit; font-variant-numeric: tabular-nums; }
+.fs-chart.hist .bar { fill: var(--fs-ink-muted); }
+.fs-chart.hist .bar.in { fill: var(--fs-ink); }
+/* The band is a solid color, so a count inside it can wear a halo of the same color where a grid line crosses it. */
+.fs-chart.hist { --band: color-mix(in srgb, var(--fs-rule) 55%, var(--fs-canvas)); }
+.fs-chart.hist .within { fill: var(--band); }
+.fs-chart.hist .t-ink.in { stroke: var(--band); }
+.fs-chart.hist .band-label, .fs-chart.hist .t-mean { stroke: none; }   /* no line crosses these */
+/* In the field theme the muted ink is near the ink itself; the bars outside the band take the faint ink, 6.3 : 1. */
+:root[data-theme="field"] .fs-chart.hist .bar:not(.in) { fill: var(--fs-ink-faint); }
+.fs-chart.hist .mean { stroke: var(--fs-action); stroke-width: 2; }
+.fs-chart.hist .t-mean { fill: var(--fs-action); font-weight: 600; paint-order: stroke; stroke: var(--fs-canvas); stroke-width: 4px; }
+.fs-chart.hist .t-ink { font-weight: 600; }
+.hh-n { display: none; }
+@media (max-width: 599px) { .hh-w { display: none; } .hh-n { display: block; } }
+
+/* --- the terminal band: dark in every theme, because that is what a terminal is */
+.ink-band { margin-top: 104px; padding: 88px 0 96px; background: #0B0F1C; color: #F3F4F7; border-block: 1px solid #2A3248;
+  /* The dark theme's roles (foundations.md, Themes), in every theme: a terminal is dark. */
+  --fs-canvas: #0B0F1C; --fs-surface: #141A2B; --fs-ink: #F3F4F7; --fs-ink-muted: #98A1B8; --fs-rule: #2A3248; --fs-rule-strong: #6D7790;
+  --fs-action: #768DF5; --fs-focus: #768DF5; --fs-caution: #F5AF20; }
+@media (max-width: 719px) { .ink-band { margin-top: 72px; padding: 64px 0 72px; } }
+.ink-band .section { padding-top: 0; }
+
+.listing { display: grid; grid-template-columns: minmax(0, 1fr); margin: 0; }
+@media (min-width: 1000px) { .listing { grid-template-columns: minmax(0, 1fr) 17rem; column-gap: 0; } }
+.listing .l { margin: 0; padding: 0 20px; background: var(--fs-surface); border-inline: 1px solid var(--fs-rule); color: #D6DAE4;
+  font: 400 0.8125rem/1.375rem var(--fs-font-mono); white-space: break-spaces; overflow-wrap: anywhere; min-width: 0; }
+.listing .l.first { padding-top: 16px; border-top: 1px solid var(--fs-rule); }
+.listing .l.last { padding-bottom: 18px; border-bottom: 1px solid var(--fs-rule); }
+.listing .l.kv { display: grid; grid-template-columns: 22ch minmax(0, 1fr); }
+@media (max-width: 599px) { .listing .l.kv { grid-template-columns: minmax(0, 1fr); } .listing .l.kv > span + span { padding-left: 2ch; } }
+.listing .nb { white-space: nowrap; }   /* a file name breaks as a whole, not at its hyphen */
+.listing .p { color: var(--fs-ink-muted); } .listing .h { color: var(--fs-ink); font-weight: 600; } .listing .w { color: var(--fs-caution); }
+.listing .note { margin: 0; font: var(--fs-type-small); color: var(--fs-ink-muted); display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 10px; align-items: start; }
+.listing .note::before { content: ""; height: 1px; margin-top: 10px; background: var(--fs-ink-muted); }
+@media (min-width: 1000px) { .listing .note { padding: 0 0 12px 0; margin-left: -1px; } }
+@media (max-width: 999px) {
+  .listing .note { background: var(--fs-surface); border-inline: 1px solid var(--fs-rule); padding: 6px 20px 12px; }
+  .listing .note::before { margin-top: 9px; }
+  /* A note after the last line is inside the box here, so the box closes under the note. */
+  .listing .l.last:has(+ .note) { padding-bottom: 6px; border-bottom: 0; }
+  .listing .l.last + .note { padding-bottom: 18px; border-bottom: 1px solid var(--fs-rule); }
+}
+.ways { display: grid; gap: 8px 32px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.ways p { font: var(--fs-type-small); color: var(--fs-ink-muted); }
+.ways b { display: block; color: var(--fs-ink); font: 600 1rem/1.5rem var(--fs-font-text); }
+.ways code { font-size: 0.875rem; color: var(--fs-ink); overflow-wrap: anywhere; }
+
+/* --- what comes next: a real sequence, so it is drawn as one */
+.road { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; grid-template-columns: minmax(0, 1fr); }
+.road > li { position: relative; display: grid; gap: 4px; align-content: start; padding: 0 0 28px 32px; }
+.road > li::before { content: ""; position: absolute; left: 5px; top: 8px; bottom: -8px; width: 2px; background: var(--fs-rule); }
+.road > li:last-child::before { display: none; }
+.road > li::after { content: ""; position: absolute; left: 0; top: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--fs-canvas); border: 2px solid var(--fs-ink-muted); }
+.road > li.now::after { background: var(--fs-ink); border-color: var(--fs-ink); }
+.road > li.now::before { background: linear-gradient(var(--fs-ink-muted), var(--fs-rule)); }
+.road .v { font: 600 0.875rem/1.125rem var(--fs-font-text); font-stretch: var(--fs-head-stretch); color: var(--fs-ink-muted); font-variant-numeric: tabular-nums; }
+.road > .now .v { color: var(--fs-ink); }
+.road b { font: 600 1.125rem/1.5rem var(--fs-font-text); }
+.road span.d { font: var(--fs-type-small); color: var(--fs-ink-muted); max-width: 26em; }
+@media (min-width: 900px) {
+  .road { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; }
+  .road > li { padding: 28px 8px 0 0; }
+  .road > li::before { left: 0; right: -24px; top: 5px; bottom: auto; width: auto; height: 2px; }
+  .road > li::after { top: 0; }
+  .road > li.now::before { background: linear-gradient(90deg, var(--fs-ink-muted), var(--fs-rule)); }
+}
+
+/* --- the older tools: a plain index, not a wall of cards */
+.tools { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); column-gap: 48px; }
+@media (min-width: 760px) { .tools { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tools a { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 18px 0 20px; border-top: 1px solid var(--fs-rule);
+  color: inherit; text-decoration: none; }
+.tools b { font: 600 1.125rem/1.5rem var(--fs-font-text); }
+.tools a:hover b { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.tools .d { color: var(--fs-ink-muted); }
+.tools .addr { font: 400 0.875rem/1.25rem var(--fs-font-mono); color: var(--fs-action); overflow-wrap: anywhere; }
+
+/* --- footer: the system's one-line footer, with the room a front page leaves before it */
+footer .fs-foot { margin-top: 112px; padding-bottom: 40px; }
+@media (max-width: 719px) { footer .fs-foot { margin-top: 72px; padding-bottom: 32px; } }
+
+/* The header's frame holds only the header here: the hero sets the space under it. */
+body > .fs-page { padding-bottom: 0; }
+.fs-foot .fs-foot-name img { width: 20px; height: 20px; flex: none; }
+
+@media (prefers-reduced-motion: reduce) { .flight svg .late { transition: none; } }
+
+
+/* The flight is one control under the hero's words, so its focus is shown on the flight itself, not as a box round both. */
+.flight .plot:focus-visible { outline: none; }
+.flight .plot:focus-visible .scrub-dot { stroke: var(--fs-focus); stroke-width: 3; r: 7px; }
+.flight .plot:focus-visible .scrub-line { stroke: var(--fs-focus); stroke-dasharray: none; stroke-width: 2; }
+.flight:has(.plot:focus-visible) .readout { border-top: 2px solid var(--fs-focus); padding-top: 13px; }
+
+/* --- links under a release, and a product's address */
+.links { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font: var(--fs-type-small); }
+.links a { display: inline-block; padding-block: 2px; }
+@media (min-width: 900px) { .road .links { flex-direction: column; gap: 2px; } }
+.road .more { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 4px; font: var(--fs-type-small); color: var(--fs-ink-muted); }
+.road .more b { font: inherit; font-weight: 600; color: var(--fs-ink); }
+
+
+/* --- how I build them */
+.ways-four { display: grid; gap: 20px 48px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); margin: 0; }
+.ways-four > div { display: grid; gap: 4px; align-content: start; padding-top: 14px; border-top: 1px solid var(--fs-rule); }
+.ways-four dt { font: 600 1.0625rem/1.5rem var(--fs-font-text); }
+.ways-four dd { margin: 0; color: var(--fs-ink-muted); }
 
 @media print {
   .skip { display: none; }
+  .ink-band { background: none; color: inherit; border: 0; }
 }
+
+/* --- the page for an address that doesn't exist */
+.not-found { padding: 36px 0 32px; display: grid; gap: 18px; justify-items: start; }
+.not-found h1 { font: var(--fs-type-display); font-stretch: var(--fs-head-stretch); letter-spacing: -0.018em; }
+.not-found .lead { font-size: 1.125rem; line-height: 1.6; color: var(--fs-ink-muted); max-width: 31em; }

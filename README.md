@@ -7,23 +7,26 @@
 # fusionspace.co
 
 This is the source of fusionspace.co, FusionSpace's front page (`FS · SITE 001`). The page shows
-what I make under the name FusionSpace. It lists each project and product with its status, guide,
-docs and latest release. The four older web tools stay on it until their rebuilds in FusionSpace
-HPR ship.
+what I make under the name FusionSpace. It opens with HPR Sim's own flight, then its check against
+real flights, its output, what comes next with each product's status, the brand system's tools,
+and the four older web tools, which stay on it until their rebuilds in FusionSpace HPR ship.
 
-It's one static page: plain HTML and CSS, with one small script for the theme switch. It's built on
-the [FusionSpace design system](https://github.com/nrdptel/fusionspace-design)'s web rules. There's
-no build step: `site/` is what the host serves.
+It's one static page: plain HTML and CSS, with two small scripts, one for the theme switch and one
+that redraws the page's two figures to fit. It's built on the
+[FusionSpace design system](https://github.com/nrdptel/fusionspace-design)'s web rules, as a front
+page (the system's `product/principles.md`, *Three levels*). There's no build step: `site/` is what
+the host serves.
 
 ## What's here
 
 | Path | What |
 |---|---|
-| `site/index.html` | The page: an intro, four sheets (FusionSpace HPR, other projects, web tools, principles) and a title block |
+| `site/index.html` | The page: HPR Sim's flight, its check against 60 logged flights, its output in a terminal, what comes next, the brand system's tools, the web tools, and how I build them. Each figure is drawn into the page too, so it shows without the script |
 | `site/404.html` | The page for an address that doesn't exist |
 | `site/site.css` | The page's own layout, on the design system's roles |
+| `site/flight.js` | Redraws the flight and the 60-flight check at the width they're shown, and lets a reader move along the flight with a pointer or the arrow keys. The flight is HPR Sim 0.1.0's recording of Loft Demo 54mm on an H54 |
 | `site/fusionspace.css` | The design system's stylesheet, copied unchanged (Apache-2.0) |
-| `site/fonts.css`, `site/fonts/` | Archivo and Cascadia Mono, self-hosted (SIL OFL) |
+| `site/fonts.css`, `site/fonts/` | Archivo (with its wide cut for headings) and Cascadia Mono, self-hosted (SIL OFL) |
 | `site/theme.js` | The theme switch: Auto, Light, Dark, Field |
 | `site/sw.js` | Removes the service worker the previous site installed |
 | `site/_headers`, `site/_redirects` | Response headers (a strict content security policy) and redirects from the previous site's pages, for Cloudflare Pages |
@@ -40,6 +43,7 @@ to its path if it isn't in the usual place).
 
 ```sh
 node checks/check.mjs                 # the page, at every width, in every theme
+node checks/figure.mjs                # the flight clear of the headline, at every width
 node --test checks/checks.test.mjs    # the checks' own tests
 node checks/links.mjs                 # links and release numbers (needs a network)
 ```
@@ -78,6 +82,14 @@ field theme, as a reader picks it. It fails when:
   against each line of text;
 - a font doesn't load, or the browser reports an error, such as a request the security policy
   refused.
+
+### The flight clear of the headline
+
+On a wide window the headline and its buttons sit over the flight, in the sky above its descent.
+`flight.js` grows the chart until the flight passes at least 40 px under them. `figure.mjs` lays
+the page out at each width `check.mjs` uses, in the light and field themes. It fails when a point
+of the flight's line, or an event's label, comes within 16 px of the words, or when a label of
+either figure reaches past its drawing.
 
 ### No claim without a comparison
 

@@ -31,6 +31,8 @@ jobs:
           node-version: "24"
       - name: Layout, claims and origins
         run: node checks/check.mjs
+      - name: The flight clear of the headline
+        run: node checks/figure.mjs
       - name: Tests of the checks
         run: node --test checks/checks.test.mjs
 
@@ -59,6 +61,8 @@ jobs:
           npx playwright-core install ${{ runner.os == 'Linux' && '--with-deps' || '' }} webkit
       - name: Layout, claims and origins
         run: node checks/check.mjs
+      - name: The flight clear of the headline
+        run: node checks/figure.mjs
       - name: Tests of the checks
         run: node --test checks/checks.test.mjs
 
