@@ -356,7 +356,7 @@ img, svg, video { max-width: 100%; }
   color: var(--fs-canvas); background: var(--fs-ink); border: 2px solid var(--fs-ink); border-radius: 0;
   transition: background-color var(--fs-dur-quick) var(--fs-ease-standard), border-color var(--fs-dur-quick) var(--fs-ease-standard); }
 .fs-btn:hover { background: var(--fs-action); border-color: var(--fs-action); color: var(--fs-on-action); }
-.fs-btn svg { width: 16px; height: 16px; flex: none; }
+.fs-btn svg { width: 16px; height: 16px; max-width: none; flex: none; }
 .fs-btn[data-variant="secondary"] { background: transparent; color: var(--fs-ink); }
 .fs-btn[data-variant="secondary"]:hover { border-color: var(--fs-action); color: var(--fs-action); }
 .fs-btn[data-variant="quiet"] { background: transparent; border-color: transparent; color: var(--fs-action); padding-inline: 4px; }
@@ -388,7 +388,7 @@ details > summary.fs-btn[data-variant="quiet"] { margin-inline-start: -5px; }
 .fs-help { font: var(--fs-type-small); color: var(--fs-ink-muted); }
 .fs-field[data-invalid] .fs-input-group, .fs-field[data-invalid] > .fs-input { border: 2px solid var(--fs-danger); }
 .fs-error { display: flex; gap: 6px; align-items: flex-start; font: var(--fs-type-small); color: var(--fs-danger); }
-.fs-error svg { width: 16px; height: 16px; flex: none; margin-top: 2px; }
+.fs-error svg { width: 16px; height: 16px; max-width: none; flex: none; margin-top: 2px; }
 input[type="checkbox"], input[type="radio"] { accent-color: var(--fs-ink); width: 18px; height: 18px; margin: 0; }
 .fs-check { display: flex; gap: 10px; align-items: center; min-height: 44px; }
 .fs-input::placeholder { color: var(--fs-ink-muted); opacity: 1; }
@@ -461,18 +461,23 @@ pre.fs-wrap { white-space: break-spaces; overflow-wrap: anywhere; overflow: visi
 .fs-dim::before, .fs-dim::after { content: ""; flex: 1; border-top: 1px solid currentColor; }
 
 /* ------------------------------------------------------------------ status: word + shape + color, never color alone */
-.fs-status { display: inline-flex; align-items: center; gap: 6px; min-height: 24px; padding: 2px 8px; font: 600 var(--fs-chip-size)/16px var(--fs-font-ui);
+/* The chip sits on the line's baseline by its word, not its icon (an svg has no baseline, so it would lend its bottom edge and
+   lift the word 3 px above the text beside it); the icon is centered on its own. */
+.fs-status { display: inline-flex; align-items: baseline; gap: 6px; min-height: 24px; padding: 3px 8px; font: 600 var(--fs-chip-size)/16px var(--fs-font-ui);
   text-transform: var(--fs-case); letter-spacing: var(--fs-case-track, 0.06em); border: 1px solid transparent; white-space: nowrap; }
 /* A single-word state (ARMED, SAFE) keeps its capitals at every level. */
 .fs-status[data-caps] { text-transform: uppercase; letter-spacing: 0.06em; }
-.fs-status svg { width: 14px; height: 14px; flex: none; }
+/* An icon keeps its set size (max-width: none, here and on the button, error and note icons): WebKit counts an svg that
+   may shrink to max-width: 100% as no width at all when it sizes a table column, and the chip came out 14 px narrower
+   than its word, which ran through its padding and over its edge. */
+.fs-status svg { width: 14px; height: 14px; max-width: none; flex: none; align-self: center; }
 .fs-status[data-state="danger"]  { background: var(--fs-danger-fill);  color: var(--fs-on-danger-fill); }
 .fs-status[data-state="caution"] { background: var(--fs-caution-fill); color: var(--fs-on-caution-fill); }
 .fs-status[data-state="ok"]      { background: var(--fs-ok-fill);      color: var(--fs-on-ok-fill); }
 .fs-status[data-state="info"]    { background: transparent; color: var(--fs-action); border-color: currentColor; }
 .fs-status[data-state="off"]     { background: transparent; color: var(--fs-ink-muted); border-color: var(--fs-rule-strong); }
 .fs-status[data-state="stale"]   { background: var(--fs-surface); color: var(--fs-ink-muted); border-color: var(--fs-rule-strong); padding-left: 0; }
-.fs-status[data-state="stale"]::before { content: ""; width: 8px; align-self: stretch; margin: -2px 0; background-image: var(--fs-hatch); border-right: 1px solid var(--fs-rule-strong); }
+.fs-status[data-state="stale"]::before { content: ""; width: 8px; align-self: stretch; margin: -3px 0; background-image: var(--fs-hatch); border-right: 1px solid var(--fs-rule-strong); }
 .fs-status[data-state="predicted"] { background: transparent; color: var(--fs-predicted); border: 1px dashed currentColor; }
 .fs-status[data-flash="warning"] svg { animation: fs-flash-warning 333ms steps(1, end) infinite; }
 
@@ -483,7 +488,7 @@ pre.fs-wrap { white-space: break-spaces; overflow-wrap: anywhere; overflow: visi
 /* Signal words keep the safety-label capitals at every level (ANSI Z535); on front pages and tools, in the wide cut. */
 .fs-note:is([data-kind="caution"], [data-kind="warning"], [data-kind="danger"], [data-kind="notice"]) > .fs-note-head {
   text-transform: uppercase; letter-spacing: var(--fs-signal-track, 0.08em); font-stretch: var(--fs-head-stretch); }
-.fs-note > .fs-note-head svg { width: 14px; height: 14px; }
+.fs-note > .fs-note-head svg { width: 14px; height: 14px; max-width: none; flex: none; }
 .fs-note > .fs-note-body { padding: 12px; display: grid; gap: 8px; }
 .fs-note[data-kind="caution"] { border-color: var(--fs-caution-fill); }
 .fs-note[data-kind="caution"] > .fs-note-head { background: var(--fs-caution-fill); color: var(--fs-on-caution-fill); border-color: var(--fs-caution-fill); }
